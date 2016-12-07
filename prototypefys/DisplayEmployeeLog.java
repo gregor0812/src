@@ -33,10 +33,10 @@ import javafx.stage.Stage;
  * @author Michael Cheung
  */
 public class DisplayEmployeeLog {
-    Rootpane rootpane = new Rootpane();
-    FlowPane emplog = new FlowPane();
+    private static Rootpane rootpane = new Rootpane();
+    private static FlowPane emplog = new FlowPane();
     private static adminScherm terugscherm = new adminScherm();
-    private static rootpane terugadminscherm = terugscherm.maakAdminScherm();
+    private static HBox terugadminscherm = terugscherm.maakAdminScherm();
     
     DisplayEmployeeLog(){
         
@@ -107,7 +107,7 @@ public class DisplayEmployeeLog {
             bt_backButton.setOnAction(new EventHandler<ActionEvent>() {
              @Override
              public void handle(ActionEvent event) {
-             rootpane.addnewpane(terugscherm);
+             rootpane.addnewpane(terugadminscherm);
             }
             });
         response.setFont(Font.font("Arial", 14));
