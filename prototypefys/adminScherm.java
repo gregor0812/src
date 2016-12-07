@@ -9,6 +9,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -23,6 +24,11 @@ public class adminScherm {
     
     private static HomeScreen nieuwscherm = new HomeScreen();
     private static HBox homescreen = nieuwscherm.maakhomescreen();    
+    private static DisplayEmployeeLog employeelog = new DisplayEmployeeLog();
+    private static FlowPane employeeScherm = employeelog.employeelog();
+    
+    
+    
     
     adminScherm(){
         
@@ -56,7 +62,7 @@ public class adminScherm {
             @Override
             public void handle(ActionEvent event) {
                 
-                System.out.println("X");
+                rootpane.addnewpane(employeeScherm);
             }
             });
             

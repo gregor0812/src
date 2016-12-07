@@ -17,6 +17,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontPosture;
@@ -28,20 +29,25 @@ import javafx.stage.Stage;
  *
  * @author Michael Cheung
  */
-public class DisplayEmployeeLog extends Application {
+public class DisplayEmployeeLog {
+    FlowPane emplog = new FlowPane();
     
-    @Override
-    public void start(Stage primaryStage) {
+    DisplayEmployeeLog(){
+        
+    }
+    
+   
+    public FlowPane employeelog() {
          Label response = new Label("");
         Label title = new Label("Corendon Employee Log\n");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         title.setTextFill(Color.CADETBLUE);
        
         
-        FlowPane root = new FlowPane();
-        root.setAlignment(Pos.CENTER);
         
-        Scene scene = new Scene(root, 900, 800);
+        emplog.setAlignment(Pos.CENTER);
+        
+        Scene scene = new Scene(emplog, 900, 800);
         
         ObservableList<Logs> logList = FXCollections.observableArrayList(
                 new Logs("001", "Fisher", "Deleted record"), 
@@ -89,10 +95,8 @@ public class DisplayEmployeeLog extends Application {
         });
         
         response.setFont(Font.font("Arial", 14));
-        root.getChildren().addAll(title,EmployeeLog, response);
-        primaryStage.setTitle("Log List");
-        primaryStage.setScene(scene);
-        primaryStage.show();
+        emplog.getChildren().addAll(title,EmployeeLog, response);
+        return emplog;
     }
 
     /**
