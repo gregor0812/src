@@ -72,7 +72,7 @@ public class LoginScherm {
         login.setText("Login");
         login.setStyle("-fx-background-color: #009b91;-fx-text-fill:#eaaf00");
 
-        root.setStyle("-fx-background-color: red");
+        root.setStyle("-fx-background-color: #16302e");
         
 
 
