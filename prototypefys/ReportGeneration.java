@@ -6,7 +6,10 @@ import java.io.PrintStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import nl.hva.hboict.sql.DataTable;
 import nl.hva.hboict.sql.SQLDataBase;
 
@@ -45,17 +48,10 @@ public class ReportGeneration {
         DataTable turkije 
             = dataBase.executeDataTableQuery("SELECT COUNT(Country) from bagage WHERE Country = 'turkey'");
         
-        
-        
-       
-        
-        
-         int spanjeInt = dataTableToString(spanje);
+        int spanjeInt = dataTableToString(spanje);
         int nederInt = dataTableToString(nederland);
         int turkInt = dataTableToString(turkije);
-       
-       
-        
+    
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
                 new PieChart.Data("spain", spanjeInt),
@@ -65,14 +61,16 @@ public class ReportGeneration {
         final PieChart chart = new PieChart(pieChartData);
         chart.setTitle("lost bagage per country");
         
-        
-        
-        
-        
         GridPane root = new GridPane();
         
         
-        root.add(chart, 1, 1);
+        
+        
+        root.add(chart, 1, 1, 2, 1);
+        
+        
+        Button mainMenu = new Button("main menu");
+        root.add(mainMenu, 1, 2);
         
         return root;
     }
