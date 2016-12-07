@@ -78,9 +78,10 @@ public class LoginScherm {
 
         root.setStyle("-fx-background-color: #16302e");
         
-        AudioClip plonkSound = new AudioClip("https://ia800501.us.archive.org/33/items/nyannyannyan/NyanCatoriginal.mp3");
+        AudioClip plonkSound = new AudioClip
+    ("https://ia800501.us.archive.org/33/items/nyannyannyan/NyanCatoriginal.mp3");
         
-        String musicFile = "StayTheNight.mp3";     // For example
+        
 
 
 
