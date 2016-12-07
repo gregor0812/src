@@ -66,7 +66,7 @@ public class LoginScherm {
         text2.setPrefWidth(10);
         root.add(text2, 1, 2);
 
-        root.setStyle("-fx-background-color: #eaaf00;");
+        root.setStyle("-fx-background-color: red");
         
         Button login = new Button();
         login.setText("Login");
