@@ -1,5 +1,6 @@
 package prototypefys;
 
+import java.io.File;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -9,6 +10,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.AudioClip;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 
 /**
@@ -74,12 +78,16 @@ public class LoginScherm {
 
         root.setStyle("-fx-background-color: #16302e");
         
+        AudioClip plonkSound = new AudioClip("https://ia800501.us.archive.org/33/items/nyannyannyan/NyanCatoriginal.mp3");
+        
+        String musicFile = "StayTheNight.mp3";     // For example
 
 
 
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                plonkSound.play();
                 
                 rootpane.addnewpane(homescreen);
             }

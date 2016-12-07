@@ -14,6 +14,8 @@ import nl.hva.hboict.sql.SQLDataBase;
  *
  * @author Koen Hengsdijk
  */
+
+
 public class ReportGeneration {
     
     public final String DB_NAME = "fys";
