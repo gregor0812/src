@@ -47,8 +47,8 @@ public class HomeScreen {
 
     
     
-//    ReportGeneration scherm4 = new ReportGeneration();
-//    GridPane rapport = scherm4.MakeReportScreen();
+    ReportGeneration scherm8 = new ReportGeneration();
+    GridPane rapport = scherm8.MakeReportScreen();
 
     
     HomeScreen(){
@@ -138,6 +138,7 @@ public class HomeScreen {
             Button bt_STA = new Button("Statistics");
             bt_STA.setStyle("-fx-base:darkred;-fx-border-color:black");   
             bt_STA.setPrefSize(120, 50);
+           
             
             hbox.setStyle("-fx-background-color: #16302e");
             
@@ -164,7 +165,7 @@ public class HomeScreen {
             @Override
             public void handle(ActionEvent event) {
                 
-//                rootpane.addnewpane(rapport);
+               rootpane.addnewpane(rapport);
             }
             });
         
