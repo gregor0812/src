@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 
 
 /**
- * jasdhakjsdjkasqegewg
+ * jasdhakjsdjkas
  * @author Koen Hengsdijk
  */
 public class PrototypeFys extends Application {
