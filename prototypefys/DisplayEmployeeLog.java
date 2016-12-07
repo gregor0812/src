@@ -21,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -35,7 +36,7 @@ import javafx.stage.Stage;
  */
 public class DisplayEmployeeLog {
     private static Rootpane rootpane = new Rootpane();
-    private static FlowPane emplog = new FlowPane();
+    private static GridPane emplog = new GridPane();
     private static adminScherm terugscherm = new adminScherm();
     private static HBox terugadminscherm = terugscherm.maakAdminScherm();
     
@@ -46,13 +47,14 @@ public class DisplayEmployeeLog {
     
     
    
-    public FlowPane employeelog() {
+    public GridPane employeelog() {
          Label response = new Label("");
         Label title = new Label("Corendon Employee Log\n");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         title.setTextFill(Color.CADETBLUE);
         emplog.setHgap(10);
        emplog.setVgap(10);
+       
         
         
         emplog.setAlignment(Pos.CENTER);
@@ -105,8 +107,8 @@ public class DisplayEmployeeLog {
         });
         
                     Button bt_backButton = new Button("Back ");
-            bt_backButton.setPrefSize(150, 50);
-            bt_backButton.setPadding(new Insets(25,25,25,25));
+            bt_backButton.setPrefSize(100, 50);
+
             bt_backButton.setOnAction(new EventHandler<ActionEvent>() {
              @Override
              public void handle(ActionEvent event) {
@@ -114,7 +116,8 @@ public class DisplayEmployeeLog {
             }
             });
         response.setFont(Font.font("Arial", 14));
-        emplog.getChildren().addAll(title,EmployeeLog, response, bt_backButton);
+        emplog.getChildren().addAll(title,EmployeeLog, response);
+        emplog.add(bt_backButton, 1, 4);
         return emplog;
     }
     

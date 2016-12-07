@@ -25,7 +25,7 @@ public class adminScherm {
     private static HomeScreen nieuwscherm = new HomeScreen();
     private static HBox homescreen = nieuwscherm.maakhomescreen();    
     private static DisplayEmployeeLog employeelog = new DisplayEmployeeLog();
-    private static FlowPane employeeScherm = employeelog.employeelog();
+    private static GridPane employeeScherm = employeelog.employeelog();
     
     
     
