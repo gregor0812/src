@@ -10,8 +10,11 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -30,11 +33,16 @@ import javafx.stage.Stage;
  * @author Michael Cheung
  */
 public class DisplayEmployeeLog {
+    Rootpane rootpane = new Rootpane();
     FlowPane emplog = new FlowPane();
+    private static adminScherm terugscherm = new adminScherm();
+    private static rootpane terugadminscherm = terugscherm.maakAdminScherm();
     
     DisplayEmployeeLog(){
         
     }
+    
+    
     
    
     public FlowPane employeelog() {
@@ -94,10 +102,22 @@ public class DisplayEmployeeLog {
             }
         });
         
+                    Button bt_backButton = new Button("Back ");
+            bt_backButton.setPrefSize(150, 50);
+            bt_backButton.setOnAction(new EventHandler<ActionEvent>() {
+             @Override
+             public void handle(ActionEvent event) {
+             rootpane.addnewpane(terugscherm);
+            }
+            });
         response.setFont(Font.font("Arial", 14));
         emplog.getChildren().addAll(title,EmployeeLog, response);
         return emplog;
     }
+    
+    
+    
+    
 
     /**
      * @param args the command line arguments
