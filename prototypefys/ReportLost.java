@@ -37,19 +37,19 @@ public class ReportLost {
         // ------------------------------
         btn = new Button(); // button 1
         btn.setText("Main Menu");
-        btn.setPrefSize(90, 50);
+        btn.setPrefSize(160, 50);
         btn.setStyle("-fx-base:darkred;-fx-border-color:white");
         btn.setFont(Font.font("Verdana", 12));
         // ------------------------------
         btn2 = new Button(); // button 2
         btn2.setText("Options");
-        btn2.setPrefSize(80, 50);
+        btn2.setPrefSize(160, 50);
         btn2.setStyle("-fx-base:darkred;-fx-border-color:white");
         btn2.setFont(Font.font("Verdana", 12));
         //--------------------------------
         btnS = new Button(); // button Submit
         btnS.setText("Submit Case");
-        btnS.setPrefSize(100, 50);
+        btnS.setPrefSize(160, 50);
         btnS.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnS.setFont(Font.font("Verdana", 12));
         
