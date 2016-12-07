@@ -1,7 +1,8 @@
 
 package prototypefys;
 
-import java.util.Collections;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.chart.PieChart;
@@ -42,14 +43,22 @@ public class ReportGeneration {
         DataTable turkije 
             = dataBase.executeDataTableQuery("SELECT COUNT(Country) from bagage WHERE Country = 'turkey'");
         
-        int spanjeInt = spanje.getValue();
         
+        
+       
+        
+        
+         int spanjeInt = dataTableToString(spanje);
+        int nederInt = dataTableToString(nederland);
+        int turkInt = dataTableToString(turkije);
+       
+       
         
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
-                new PieChart.Data("spain", spanje.getInt),
-                new PieChart.Data("turkey", 25),
-                new PieChart.Data("netherlands", 10)
+                new PieChart.Data("spain", spanjeInt),
+                new PieChart.Data("turkey", turkInt),
+                new PieChart.Data("netherlands", nederInt)
                );
         final PieChart chart = new PieChart(pieChartData);
         chart.setTitle("lost bagage per country");
@@ -66,7 +75,32 @@ public class ReportGeneration {
         return root;
     }
     
-        
+    
+    public int dataTableToString(DataTable data){
+        // Create a stream to hold the output
+    ByteArrayOutputStream baos = new ByteArrayOutputStream();
+    PrintStream ps = new PrintStream(baos);
+    // IMPORTANT: Save the old System.out!
+    PrintStream old = System.out;
+    // Tell Java to use your special stream
+    System.setOut(ps);
+    // Print some output: goes to your special stream
+    System.out.println(data);
+    // Put things back
+    System.out.flush();
+    System.setOut(old);
+    // Show what happened
+    
+    String Gegevens = baos.toString();
+    
+    String cijferString = Character.toString(Gegevens.charAt(2));
+    
+    int Cijfer = Integer.parseInt(cijferString);
+    
+        return Cijfer;
+    }
+
+    
     // test 5634t
     
     
