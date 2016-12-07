@@ -10,7 +10,7 @@ package prototypefys;
  * @author Koen Hengsdijk
  */
 
-import protoapps.BagageCatalogue;
+import prototypefys.BagageCatalogue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
