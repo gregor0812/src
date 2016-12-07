@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -50,7 +51,8 @@ public class DisplayEmployeeLog {
         Label title = new Label("Corendon Employee Log\n");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         title.setTextFill(Color.CADETBLUE);
-       
+        emplog.setHgap(10);
+       emplog.setVgap(10);
         
         
         emplog.setAlignment(Pos.CENTER);
@@ -104,6 +106,7 @@ public class DisplayEmployeeLog {
         
                     Button bt_backButton = new Button("Back ");
             bt_backButton.setPrefSize(150, 50);
+            bt_backButton.setPadding(new Insets(25,25,25,25));
             bt_backButton.setOnAction(new EventHandler<ActionEvent>() {
              @Override
              public void handle(ActionEvent event) {
@@ -111,7 +114,7 @@ public class DisplayEmployeeLog {
             }
             });
         response.setFont(Font.font("Arial", 14));
-        emplog.getChildren().addAll(title,EmployeeLog, response);
+        emplog.getChildren().addAll(title,EmployeeLog, response, bt_backButton);
         return emplog;
     }
     
