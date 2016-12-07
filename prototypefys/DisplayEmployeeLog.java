@@ -10,8 +10,12 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -30,11 +34,16 @@ import javafx.stage.Stage;
  * @author Michael Cheung
  */
 public class DisplayEmployeeLog {
-    FlowPane emplog = new FlowPane();
+    private static Rootpane rootpane = new Rootpane();
+    private static FlowPane emplog = new FlowPane();
+    private static adminScherm terugscherm = new adminScherm();
+    private static HBox terugadminscherm = terugscherm.maakAdminScherm();
     
     DisplayEmployeeLog(){
         
     }
+    
+    
     
    
     public FlowPane employeelog() {
@@ -42,7 +51,8 @@ public class DisplayEmployeeLog {
         Label title = new Label("Corendon Employee Log\n");
         title.setFont(Font.font("Arial", FontWeight.BOLD, 20));
         title.setTextFill(Color.CADETBLUE);
-       
+        emplog.setHgap(10);
+       emplog.setVgap(10);
         
         
         emplog.setAlignment(Pos.CENTER);
@@ -94,10 +104,23 @@ public class DisplayEmployeeLog {
             }
         });
         
+                    Button bt_backButton = new Button("Back ");
+            bt_backButton.setPrefSize(150, 50);
+            bt_backButton.setPadding(new Insets(25,25,25,25));
+            bt_backButton.setOnAction(new EventHandler<ActionEvent>() {
+             @Override
+             public void handle(ActionEvent event) {
+             rootpane.addnewpane(terugadminscherm);
+            }
+            });
         response.setFont(Font.font("Arial", 14));
-        emplog.getChildren().addAll(title,EmployeeLog, response);
+        emplog.getChildren().addAll(title,EmployeeLog, response, bt_backButton);
         return emplog;
     }
+    
+    
+    
+    
 
     /**
      * @param args the command line arguments

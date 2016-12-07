@@ -1,3 +1,4 @@
+
 package prototypefys;
 
 import java.io.ByteArrayOutputStream;
@@ -15,10 +16,10 @@ import nl.hva.hboict.sql.SQLDataBase;
  */
 public class ReportGeneration {
     
-    public final String DB_NAME = "MyAirline";
-    public final String DB_SERVER = "localhost:3306";
-    public final String DB_ACCOUNT = "beheerder";
-    public final String DB_PASSWORD = "nooitgedacht";
+    public final String DB_NAME = "fys";
+    public final String DB_SERVER = "it95.nl:3306";
+    public final String DB_ACCOUNT = "fys";
+    public final String DB_PASSWORD = "ESCXZoaIlK07pwUS";
 
     ReportGeneration() {
 
@@ -125,6 +126,7 @@ public class ReportGeneration {
 
 
 
+
 //package prototypefys;
 //
 //import java.util.Collections;
@@ -194,4 +196,5 @@ public class ReportGeneration {
 //    }
 //
 //}
+
 
