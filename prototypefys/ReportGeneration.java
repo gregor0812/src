@@ -33,10 +33,31 @@ public class ReportGeneration {
         DataTable airportData
                 = dataBase.executeDataTableQuery("SELECT country FROM bagage");
         
+        DataTable spanje 
+            = dataBase.executeDataTableQuery("SELECT COUNT(Country) from bagage WHERE Country = 'spain'");
+        
+        DataTable nederland 
+            = dataBase.executeDataTableQuery("SELECT COUNT(Country) from bagage WHERE Country = 'netherlands'");
+        DataTable turkije 
+            = dataBase.executeDataTableQuery("SELECT COUNT(Country) from bagage WHERE Country = 'turkey'");
+        
+        ObservableList<PieChart.Data> pieChartData =
+                FXCollections.observableArrayList(
+                new PieChart.Data("spain", spanje),
+                new PieChart.Data("turkey", 25),
+                new PieChart.Data("netherlands", 10)
+               );
+        final PieChart chart = new PieChart(pieChartData);
+        chart.setTitle("lost bagage per country");
+        
+        
+        
+        
+        
         GridPane root = new GridPane();
         
         
-        root.add(createJavaFXChartAirport(), 1, 1);
+        root.add(chart, 1, 1);
         
         return root;
     }
@@ -47,20 +68,20 @@ public class ReportGeneration {
     
     
     
-    private static PieChart createJavaFXChartAirport() {
-        
-
-        ObservableList<PieChart.Data> pieChartData =
-                FXCollections.observableArrayList(
-                new PieChart.Data("Grapefruit", 13),
-                new PieChart.Data("Oranges", 25),
-                new PieChart.Data("Plums", 10),
-                new PieChart.Data("Pears", 22),
-                new PieChart.Data("Apples", 30));
-        final PieChart chart = new PieChart(pieChartData);
-        chart.setTitle("lost bagage per country");
-
-        return chart;
-    }
+//    private static PieChart createJavaFXChartAirport() {
+//        
+//
+//        ObservableList<PieChart.Data> pieChartData =
+//                FXCollections.observableArrayList(
+//                new PieChart.Data("Grapefruit", 13),
+//                new PieChart.Data("Oranges", 25),
+//                new PieChart.Data("Plums", 10),
+//                new PieChart.Data("Pears", 22),
+//                new PieChart.Data("Apples", 30));
+//        final PieChart chart = new PieChart(pieChartData);
+//        chart.setTitle("lost bagage per country");
+//
+//        return chart;
+//    }
 
 }
