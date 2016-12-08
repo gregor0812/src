@@ -26,29 +26,24 @@ public class HomeScreen {
     private static LoginScherm scherm1 = new LoginScherm();
     private static GridPane loginScherm = scherm1.MaakHetScherm();
     
-    BagageCatalogue scherm2 = new BagageCatalogue();
-    GridPane cataloog = scherm2.MaakCatalogue();
+    private final BagageCatalogue scherm2 = new BagageCatalogue();
+    private final GridPane cataloog = scherm2.MaakCatalogue();
 
-    viewExistingCase scherm3 = new viewExistingCase();
-    GridPane viewcase = scherm3.MaakExistingCase();
+    private final viewExistingCase scherm3 = new viewExistingCase();
+    private final GridPane viewcase = scherm3.MaakExistingCase();
     
-    submitCase scherm4 = new submitCase();
-    GridPane submitCase = scherm4.MakeSubmitScreen();
+    private final submitCase scherm4 = new submitCase();
+    private final GridPane submitCase = scherm4.MakeSubmitScreen();
     
-    ReportLost scherm5 = new ReportLost();
-    GridPane ReportLost = scherm5.MakeLostReport();
-
-    
-    adminScherm scherm6 = new adminScherm();
-    HBox adminScherm = scherm6.maakAdminScherm();
-
+    private final ReportLost scherm5 = new ReportLost();
+    private final GridPane ReportLost = scherm5.MakeLostReport();
 
     
-
+    private final adminScherm scherm6 = new adminScherm();
+    private final HBox adminScherm = scherm6.maakAdminScherm();
     
-    
-    ReportGeneration scherm8 = new ReportGeneration();
-    GridPane rapport = scherm8.MakeReportScreen();
+    private final ReportGeneration scherm8 = new ReportGeneration();
+    private final BorderPane rapport = scherm8.MakeReportScreen();
 
     
     HomeScreen(){
@@ -63,7 +58,7 @@ public class HomeScreen {
         VBox vbox1 = new VBox(20);
         vbox1.setAlignment(Pos.CENTER);
 
-        
+            
             Button bt_VEC = new Button("View Existing Case");
             bt_VEC.setStyle("-fx-base:darkred;-fx-border-color:black");
             bt_VEC.setPrefSize(160, 50);
@@ -169,7 +164,7 @@ public class HomeScreen {
             }
             });
         
-
+                
         hbox.getChildren().addAll(vbox1);
     
         return hbox;
