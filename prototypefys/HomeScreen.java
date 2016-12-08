@@ -22,28 +22,9 @@ import javafx.scene.layout.VBox;
 public class HomeScreen {
     
     Rootpane rootpane = new Rootpane();
-    
-    private static LoginScherm scherm1 = new LoginScherm();
-    private static GridPane loginScherm = scherm1.MaakHetScherm();
-    
-    private final BagageCatalogue scherm2 = new BagageCatalogue();
-    private final GridPane cataloog = scherm2.MaakCatalogue();
 
-    private final viewExistingCase scherm3 = new viewExistingCase();
-    private final GridPane viewcase = scherm3.MaakExistingCase();
-    
-    private final submitCase scherm4 = new submitCase();
-    private final GridPane submitCase = scherm4.MakeSubmitScreen();
-    
-    private final ReportLost scherm5 = new ReportLost();
-    private final GridPane ReportLost = scherm5.MakeLostReport();
 
-    
-    private final adminScherm scherm6 = new adminScherm();
-    private final HBox adminScherm = scherm6.maakAdminScherm();
-    
-    private final ReportGeneration scherm8 = new ReportGeneration();
-    private final BorderPane rapport = scherm8.MakeReportScreen();
+ 
 
     
     HomeScreen(){
@@ -66,6 +47,9 @@ public class HomeScreen {
             @Override
             public void handle(ActionEvent event) {
                 
+                viewExistingCase scherm3 = new viewExistingCase();
+                GridPane viewcase = scherm3.MaakExistingCase();
+                
                 rootpane.addnewpane(viewcase);
             }
             });
@@ -77,6 +61,9 @@ public class HomeScreen {
             @Override
             public void handle(ActionEvent event) {
                 
+                BagageCatalogue scherm2 = new BagageCatalogue();
+                GridPane cataloog = scherm2.MaakCatalogue();
+                
                 rootpane.addnewpane(cataloog);
             }
             });
@@ -87,6 +74,8 @@ public class HomeScreen {
             bt_RFB.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+               submitCase scherm4 = new submitCase();
+               GridPane submitCase = scherm4.MakeSubmitScreen();
                 
                 rootpane.addnewpane(submitCase);
             }
@@ -98,7 +87,8 @@ public class HomeScreen {
             bt_RLB.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+                ReportLost scherm5 = new ReportLost();
+                GridPane ReportLost = scherm5.MakeLostReport();
                 rootpane.addnewpane(ReportLost);
             }
             });
@@ -111,7 +101,9 @@ public class HomeScreen {
             bt_ADM.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+                  
+                adminScherm scherm6 = new adminScherm();
+                HBox adminScherm = scherm6.maakAdminScherm();
                 rootpane.addnewpane(adminScherm);
             }
             });
@@ -122,7 +114,8 @@ public class HomeScreen {
             bt_LOG.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+                LoginScherm scherm1 = new LoginScherm();
+                GridPane loginScherm = scherm1.MaakHetScherm();
                 rootpane.addnewpane(loginScherm);
             }
             });    
@@ -159,7 +152,8 @@ public class HomeScreen {
             bt_STA.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+               ReportGeneration scherm8 = new ReportGeneration();
+               BorderPane rapport = scherm8.MakeReportScreen();
                rootpane.addnewpane(rapport);
             }
             });
