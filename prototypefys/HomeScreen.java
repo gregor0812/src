@@ -10,11 +10,11 @@ package prototypefys;
  * @author Koen Hengsdijk
  */
 
-import prototypefys.BagageCatalogue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -22,33 +22,9 @@ import javafx.scene.layout.VBox;
 public class HomeScreen {
     
     Rootpane rootpane = new Rootpane();
-    
-    private static LoginScherm scherm1 = new LoginScherm();
-    private static GridPane loginScherm = scherm1.MaakHetScherm();
-    
-    BagageCatalogue scherm2 = new BagageCatalogue();
-    GridPane cataloog = scherm2.MaakCatalogue();
-
-    viewExistingCase scherm3 = new viewExistingCase();
-    GridPane viewcase = scherm3.MaakExistingCase();
-    
-    submitCase scherm4 = new submitCase();
-    GridPane submitCase = scherm4.MakeSubmitScreen();
-    
-    ReportLost scherm5 = new ReportLost();
-    GridPane ReportLost = scherm5.MakeLostReport();
-
-    
-    adminScherm scherm6 = new adminScherm();
-    HBox adminScherm = scherm6.maakAdminScherm();
 
 
-    // micheal is hitleer
-
-    
-    
-    ReportGeneration scherm8 = new ReportGeneration();
-    GridPane rapport = scherm8.MakeReportScreen();
+ 
 
     
     HomeScreen(){
@@ -63,13 +39,16 @@ public class HomeScreen {
         VBox vbox1 = new VBox(20);
         vbox1.setAlignment(Pos.CENTER);
 
-        
+            
             Button bt_VEC = new Button("View Existing Case");
             bt_VEC.setStyle("-fx-base:darkred;-fx-border-color:black");
             bt_VEC.setPrefSize(160, 50);
             bt_VEC.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                
+                viewExistingCase scherm3 = new viewExistingCase();
+                GridPane viewcase = scherm3.MaakExistingCase();
                 
                 rootpane.addnewpane(viewcase);
             }
@@ -82,6 +61,9 @@ public class HomeScreen {
             @Override
             public void handle(ActionEvent event) {
                 
+                BagageCatalogue scherm2 = new BagageCatalogue();
+                GridPane cataloog = scherm2.MaakCatalogue();
+                
                 rootpane.addnewpane(cataloog);
             }
             });
@@ -92,6 +74,8 @@ public class HomeScreen {
             bt_RFB.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+               submitCase scherm4 = new submitCase();
+               GridPane submitCase = scherm4.MakeSubmitScreen();
                 
                 rootpane.addnewpane(submitCase);
             }
@@ -103,7 +87,8 @@ public class HomeScreen {
             bt_RLB.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+                ReportLost scherm5 = new ReportLost();
+                GridPane ReportLost = scherm5.MakeLostReport();
                 rootpane.addnewpane(ReportLost);
             }
             });
@@ -116,7 +101,9 @@ public class HomeScreen {
             bt_ADM.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+                  
+                adminScherm scherm6 = new adminScherm();
+                HBox adminScherm = scherm6.maakAdminScherm();
                 rootpane.addnewpane(adminScherm);
             }
             });
@@ -127,7 +114,8 @@ public class HomeScreen {
             bt_LOG.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+                LoginScherm scherm1 = new LoginScherm();
+                GridPane loginScherm = scherm1.MaakHetScherm();
                 rootpane.addnewpane(loginScherm);
             }
             });    
@@ -164,12 +152,13 @@ public class HomeScreen {
             bt_STA.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+               ReportGeneration scherm8 = new ReportGeneration();
+               BorderPane rapport = scherm8.MakeReportScreen();
                rootpane.addnewpane(rapport);
             }
             });
         
-
+                
         hbox.getChildren().addAll(vbox1);
     
         return hbox;

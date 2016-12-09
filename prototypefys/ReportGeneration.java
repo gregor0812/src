@@ -5,8 +5,14 @@ import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.chart.PieChart;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.Button;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import nl.hva.hboict.sql.DataTable;
 import nl.hva.hboict.sql.SQLDataBase;
 
@@ -14,6 +20,8 @@ import nl.hva.hboict.sql.SQLDataBase;
  *
  * @author Koen Hengsdijk
  */
+
+
 public class ReportGeneration {
     
     public final String DB_NAME = "fys";
@@ -21,11 +29,16 @@ public class ReportGeneration {
     public final String DB_ACCOUNT = "fys";
     public final String DB_PASSWORD = "ESCXZoaIlK07pwUS";
 
+    private static Rootpane rootpane = new Rootpane();
+    
+    private static HomeScreen nieuwscherm = new HomeScreen();
+    private static HBox homescreen = nieuwscherm.maakhomescreen();
+    
     ReportGeneration() {
 
     }
     
-    public GridPane MakeReportScreen(){
+    public BorderPane MakeReportScreen(){
         
          // setup a connection to MyAirline database on my local server
         SQLDataBase dataBase
@@ -43,17 +56,10 @@ public class ReportGeneration {
         DataTable turkije 
             = dataBase.executeDataTableQuery("SELECT COUNT(Country) from bagage WHERE Country = 'turkey'");
         
-        
-        
-       
-        
-        
-         int spanjeInt = dataTableToString(spanje);
+        int spanjeInt = dataTableToString(spanje);
         int nederInt = dataTableToString(nederland);
         int turkInt = dataTableToString(turkije);
-       
-       
-        
+    
         ObservableList<PieChart.Data> pieChartData =
                 FXCollections.observableArrayList(
                 new PieChart.Data("spain", spanjeInt),
@@ -62,15 +68,28 @@ public class ReportGeneration {
                );
         final PieChart chart = new PieChart(pieChartData);
         chart.setTitle("lost bagage per country");
+        chart.setMaxSize(500, 500);
+        
+        BorderPane root = new BorderPane();
+        root.setStyle("-fx-background-color: white");
         
         
         
+        root.setCenter(chart);
         
         
-        GridPane root = new GridPane();
+        Button mainMenu = new Button("main menu");
+        mainMenu.setPadding(new Insets(10, 10, 10, 10));
+        mainMenu.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                
+                rootpane.addnewpane(homescreen);
+            }
+            });
+        root.setBottom(mainMenu);
         
-        
-        root.add(chart, 1, 1);
+        BorderPane.setAlignment(mainMenu, Pos.BOTTOM_CENTER);
         
         return root;
     }

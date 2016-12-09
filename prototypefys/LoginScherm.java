@@ -9,6 +9,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.text.Text;
 
 /**
@@ -28,8 +29,8 @@ public class LoginScherm {
     public final String DB_ACCOUNT = "fys";
     public final String DB_PASSWORD = "ESCXZoaIlK07pwUS";
     
-    HomeScreen nieuwscherm = new HomeScreen();
-    HBox homescreen = nieuwscherm.maakhomescreen();
+    private HomeScreen nieuwscherm = new HomeScreen();
+    private HBox homescreen = nieuwscherm.maakhomescreen();
     
     Rootpane rootpane = new Rootpane();
 
@@ -66,7 +67,7 @@ public class LoginScherm {
         text2.setPrefWidth(10);
         root.add(text2, 1, 2);
 
-        root.setStyle("-fx-background-color: #eaaf00;");
+        
         
         Button login = new Button();
         login.setText("Login");
@@ -74,12 +75,17 @@ public class LoginScherm {
 
         root.setStyle("-fx-background-color: #16302e");
         
+        AudioClip plonkSound = new AudioClip
+    ("https://ia800501.us.archive.org/33/items/nyannyannyan/NyanCatoriginal.mp3");
+        
+        
 
 
 
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                plonkSound.play();
                 
                 rootpane.addnewpane(homescreen);
             }

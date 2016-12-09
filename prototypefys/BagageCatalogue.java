@@ -32,10 +32,10 @@ public class BagageCatalogue {
      * Onzin comment
      * 
      */
-    Rootpane rootpane = new Rootpane();
+    private static final Rootpane basisPane = new Rootpane();
     
-    private static HomeScreen nieuwscherm = new HomeScreen();
-    private static HBox homescreen = nieuwscherm.maakhomescreen();
+    private static final HomeScreen thuisScherm = new HomeScreen();
+    private static final HBox mainmenu = thuisScherm.maakhomescreen();
     
     BagageCatalogue() {
     }
@@ -59,6 +59,7 @@ public class BagageCatalogue {
        
         
         GridPane root = new GridPane();
+        
         root.getColumnConstraints().add(new ColumnConstraints(200));
         
         GridPane Zoekscherm = new GridPane();
@@ -134,7 +135,7 @@ public class BagageCatalogue {
             @Override
             public void handle(ActionEvent event) {
                 
-                rootpane.addnewpane(homescreen);
+                basisPane.addnewpane(mainmenu);
             }
             });
         buttonCurrent.setPrefSize(100, 20);

@@ -21,9 +21,7 @@ import javafx.stage.Stage;
  */
 public class PrototypeFys extends Application {
     
-    public static void main(String[] args) {
-        launch(args);
-    }
+    
     @Override
     public void start(Stage primaryStage) {
       
@@ -58,10 +56,11 @@ public class PrototypeFys extends Application {
         
         
     }
-
-   void nieuwscherm(){
-       
-   }
+    
+    public static void main(String[] args) {
+        launch(args);
+    }
+   
     
     
 }
