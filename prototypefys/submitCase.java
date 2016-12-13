@@ -17,24 +17,23 @@ import javafx.scene.text.FontWeight;
  * @author Koen Hengsdijk
  */
 public class submitCase {
+
     Rootpane rootpane = new Rootpane();
-    
+
     private static HomeScreen nieuwscherm = new HomeScreen();
     private static HBox homescreen = nieuwscherm.maakhomescreen();
-    
-    submitCase(){
-        
+
+    submitCase() {
+
     }
-    
-    public GridPane MakeSubmitScreen(){
-        
+
+    public GridPane MakeSubmitScreen() {
+
         Button btn;
         Button btn2;
         Button btnS;
-        
-        
-        
-         HBox Menu = new HBox();
+
+        HBox Menu = new HBox();
         // ------------------------------
         btn = new Button(); // button 1
         btn.setText("Main Menu");
@@ -53,160 +52,148 @@ public class submitCase {
         btnS.setPrefSize(160, 50);
         btnS.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnS.setFont(Font.font("Verdana", 12));
-        
+
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10,10,10,10));
+        grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
-        
+
         GridPane.setConstraints(btn, 1, 15);
-        
+
         GridPane.setConstraints(btn2, 2, 15);
-        
+
         GridPane.setConstraints(btnS, 40, 30);
 
-        
         grid.setStyle("-fx-background-color: white");
-        
+
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+
                 rootpane.addnewpane(homescreen);
             }
-            });
-        
-        Label Case = new Label("Case Data");
-        Case.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-        grid.add(Case, 10, 15, 10 , 1);
-        
+        });
+
+        Label Case = new Label("Found");
+        Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        grid.add(Case, 10, 16, 15, 1);
+
         Label personal = new Label("Personal Data");
-        personal.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-        grid.add(personal, 30, 15, 10 ,1);
-        
-        
-        Label caseID = new Label("Case ID#");
-        grid.add(caseID, 10, 17, 10 ,1);
-        TextField caseIDT = new TextField();
-        grid.add(caseIDT, 20, 17);
-        
-        Label caseName = new Label("Case Name");
-        grid.add(caseName, 10, 18, 10 ,1);
-        TextField caseNameT = new TextField();
-        grid.add(caseNameT, 20, 18);
-        
-        Label flightNumber = new Label("Flight Number");
-        grid.add(flightNumber, 10, 19, 10 ,1);
-        TextField flightNumberT = new TextField();
-        grid.add(flightNumberT, 20, 19);
-        
-        Label dateReport = new Label("Date Reported");
-        grid.add(dateReport, 10, 20, 10 ,1);
-        TextField dateReportT = new TextField();
-        grid.add(dateReportT, 20, 20);
-        dateReportT.setPromptText("dd/mm/yyyy");
-        
-        Label status = new Label("Status:");
-        grid.add(status, 10, 21, 10 ,1);
-        TextField statusT = new TextField();
-        grid.add(statusT, 20, 21);
-        
-        Label airport = new Label("Airport:");
-        grid.add(airport, 10, 22, 10 ,1);
-        TextField airportT = new TextField();
-        grid.add(airportT, 20, 22);
-        
-        Label itemName = new Label("Item Name");
-        grid.add(itemName, 10, 26, 10 ,1);
-        TextField itemNameT = new TextField();
-        grid.add(itemNameT, 20, 26);
-        
-        Label itemColor = new Label("Item color");
-        grid.add(itemColor, 10, 27, 10 ,1);
+        personal.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        grid.add(personal, 10, 22, 15, 1);
+
+        Label label = new Label("Label Information");
+        label.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        grid.add(label, 30, 16, 15, 1);
+
+        Label luggage = new Label("Luggage information");
+        luggage.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        grid.add(luggage, 30, 22, 15, 1);
+
+        Label date = new Label("Date:");
+        grid.add(date, 10, 17, 10, 1);
+        TextField dateT = new TextField();
+        grid.add(dateT, 20, 17);
+        dateT.setPromptText("dd/mm/yyyy");
+
+        Label time = new Label("Time:");
+        grid.add(time, 10, 18, 10, 1);
+        TextField timeT = new TextField();
+        grid.add(timeT, 20, 18);
+
+        Label airport= new Label("Airport:");
+        grid.add(airport, 10, 19, 10, 1);
+        TextField airportT= new TextField();
+        grid.add(airportT, 20, 19);
+
+        Label labelN= new Label("Label number:");
+        grid.add(labelN, 30, 17, 10, 1);
+        TextField labelNT = new TextField();
+        grid.add(labelNT, 40, 17);
+
+        Label flightN = new Label("Flight number:");
+        grid.add(flightN, 30, 18, 10, 1);
+        TextField flightT = new TextField();
+        grid.add(flightT, 40, 18);
+
+        Label destination = new Label("Destination:");
+        grid.add(destination, 30, 19, 10, 1);
+        TextField destinationT = new TextField();
+        grid.add(destinationT, 40, 19);
+
+        Label type = new Label("Type:");
+        grid.add(type, 30, 23, 10, 1);
+        TextField typeT = new TextField();
+        grid.add(typeT, 40, 23);
+
+        Label itemBrand = new Label("Brand:");
+        grid.add(itemBrand, 30, 24, 10, 1);
+        TextField itemBrandT = new TextField();
+        grid.add(itemBrandT, 40, 24);
+
+        Label itemColor = new Label("Color:");
+        grid.add(itemColor, 30, 25, 10, 1);
         TextField itemColorT = new TextField();
-        grid.add(itemColorT, 20, 27);
-        
-        Label itemInfo = new Label("Item misc. info");
-        grid.add(itemInfo, 10, 28, 10 ,1);
-        TextField itemInfoT = new TextField();
-        grid.add(itemInfoT, 20, 28);
-        
-        Label itemLocation = new Label("Item current location");
-        grid.add(itemLocation, 10, 29, 10 ,1);
-        TextField itemLocationT = new TextField();
-        grid.add(itemLocationT, 20, 29);
-        
-        Label  ownerName = new Label("Owner Name");
-        grid.add(ownerName, 30, 17, 10 ,1);
+        grid.add(itemColorT, 40, 25);
+
+        Label ownerName = new Label("Name:");
+        grid.add(ownerName, 10, 23, 10, 1);
         TextField ownerNameT = new TextField();
-        grid.add(ownerNameT, 40, 17);
-        
-        Label ownerNr1 = new Label("Owner telephone number 1");
-        grid.add(ownerNr1, 30, 18, 10 ,1);
-        TextField ownerNr1T = new TextField();
-        grid.add(ownerNr1T, 40, 18);
-        
-        Label ownerNr2 = new Label("Owner telephone number 2");
-        grid.add(ownerNr2, 30, 19, 10 ,1);
-        TextField ownerNr2T = new TextField();
-        grid.add(ownerNr2T, 40, 19);
-        
-        Label ownerMail = new Label("Owner email");
-        grid.add(ownerMail, 30, 20, 10 ,1);
-        TextField ownerMailT = new TextField();
-        grid.add(ownerMailT, 40, 20);
-        
-        Label ownerAddress = new Label("Owner Address");
-        grid.add(ownerAddress, 30, 21, 10 ,1);
-        TextField ownerAddressT = new TextField();
-        grid.add(ownerAddressT, 40, 21);
-        
-        Label zipCode = new Label("Zip Code");
-        grid.add(zipCode, 30, 26, 10 ,1);
-        TextField zipCodeT = new TextField();
-        grid.add(zipCodeT, 40, 26);
-        
-        Label employeeName = new Label("Employee Name");
-        grid.add(employeeName, 30, 27, 10 ,1);
-        TextField employeeNameT = new TextField();
-        grid.add(employeeNameT, 40, 27);
-        
-        Label lastUpdate = new Label("Last Updated");
-        grid.add(lastUpdate, 30, 28, 10 ,1);
-        TextField lastUpdateT = new TextField();
-        grid.add(lastUpdateT, 40, 28);
-        lastUpdateT.setPromptText("dd/mm/yyyy");
-        
-        Label addNotes = new Label("Additional Notes");
-        grid.add(addNotes, 10, 30, 10 ,1);
+        grid.add(ownerNameT, 20, 23);
+
+        Label ownerAdd = new Label("Address:");
+        grid.add(ownerAdd, 10, 24, 10, 1);
+        TextField ownerAddT = new TextField();
+        grid.add(ownerAddT, 20, 24);
+
+        Label ownerCity = new Label("City:");
+        grid.add(ownerCity, 10, 25, 10, 1);
+        TextField ownerCityT = new TextField();
+        grid.add(ownerCityT, 20, 25);
+
+        Label ownerZip = new Label("Zipcode:");
+        grid.add(ownerZip, 10, 26, 10, 1);
+        TextField ownerZipT = new TextField();
+        grid.add(ownerZipT, 20, 26);
+
+        Label ownerCountry = new Label("Country:");
+        grid.add(ownerCountry, 10, 27, 10, 1);
+        TextField ownerCountryT = new TextField();
+        grid.add(ownerCountryT, 20, 27);
+
+        Label telNumber = new Label("Telephone number:");
+        grid.add(telNumber, 10, 28, 10, 1);
+        TextField telNumberT = new TextField();
+        grid.add(telNumberT, 20, 28);
+
+        Label eMail = new Label("E-mail:");
+        grid.add(eMail, 10, 29, 10, 1);
+        TextField eMailT = new TextField();
+        grid.add(eMailT, 20, 29);
+
+        Label addNotes = new Label("Additional notes:");
+        grid.add(addNotes, 30, 26, 10, 1);
         TextField addNotesT = new TextField();
-        grid.add(addNotesT, 20, 30);
-        addNotesT.setPrefSize(80, 80);
+        grid.add(addNotesT, 40, 26);
         
+
         ImageView Calendar = new ImageView("/resources/Calendar-icon.png");
         Calendar.setFitHeight(30);
         Calendar.setFitWidth(30);
-        
-        grid.add(Calendar, 21, 20);
-        
-        ImageView Calendar2 = new ImageView("/resources/Calendar-icon.png");
-        Calendar2.setFitHeight(30);
-        Calendar2.setFitWidth(30);
-        
-        grid.add(Calendar2, 41, 28);
-        
+
+        grid.add(Calendar, 21, 17);
+
         ImageView Corendon = new ImageView("/resources/corendon.jpg");
         Corendon.setFitHeight(100);
         Corendon.setFitWidth(300);
 
         grid.add(Corendon, 1, 1, 10, 10);
-        
-        
+
         // Toevoegen van buttons
         grid.getChildren().addAll(btn, btn2, btnS);
-        
+
         return grid;
-        
+
     }
-    
+
 }

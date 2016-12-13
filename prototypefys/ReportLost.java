@@ -62,7 +62,7 @@ public class ReportLost {
         
         GridPane.setConstraints(btn2, 2, 15);
         
-        GridPane.setConstraints(btnS, 40, 30);
+        GridPane.setConstraints(btnS, 40, 28);
 
         
         grid.setStyle("-fx-background-color: white");
@@ -75,124 +75,88 @@ public class ReportLost {
             }
             });
         
-        Label Case = new Label("Case Data");
-        Case.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-        grid.add(Case, 10, 15, 10 , 1);
-        
-        Label personal = new Label("Personal Data");
-        personal.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-        grid.add(personal, 30, 15, 10 ,1);
-        
-        
-        Label caseID = new Label("Case ID#");
-        grid.add(caseID, 10, 17, 10 ,1);
-        TextField caseIDT = new TextField();
-        grid.add(caseIDT, 20, 17);
-        
-        Label caseName = new Label("Case Name");
-        grid.add(caseName, 10, 18, 10 ,1);
-        TextField caseNameT = new TextField();
-        grid.add(caseNameT, 20, 18);
-        
-        Label flightNumber = new Label("Flight Number");
-        grid.add(flightNumber, 10, 19, 10 ,1);
-        TextField flightNumberT = new TextField();
-        grid.add(flightNumberT, 20, 19);
-        
-        Label dateReport = new Label("Date Reported");
-        grid.add(dateReport, 10, 20, 10 ,1);
-        TextField dateReportT = new TextField();
-        grid.add(dateReportT, 20, 20);
-        dateReportT.setPromptText("dd/mm/yyyy");
-        
-        Label status = new Label("Status:");
-        grid.add(status, 10, 21, 10 ,1);
-        TextField statusT = new TextField();
-        grid.add(statusT, 20, 21);
-        
+        Label Case = new Label("Found");
+        Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        grid.add(Case, 10, 16, 15, 1);
+
+        Label label = new Label("Label Information");
+        label.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        grid.add(label, 30, 16, 15, 1);
+
+        Label luggage = new Label("Luggage information");
+        luggage.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        grid.add(luggage, 10, 23, 15, 1);
+
+        Label date = new Label("Date:");
+        grid.add(date, 10, 17, 10, 1);
+        TextField dateT = new TextField();
+        grid.add(dateT, 20, 17);
+        dateT.setPromptText("dd/mm/yyyy");
+
+        Label time = new Label("Time:");
+        grid.add(time, 10, 18, 10, 1);
+        TextField timeT = new TextField();
+        grid.add(timeT, 20, 18);
+
         Label airport = new Label("Airport:");
-        grid.add(airport, 10, 22, 10 ,1);
-        TextField airportT = new TextField();
-        grid.add(airportT, 20, 22);
+        grid.add(airport, 10, 19, 10, 1);
+        TextField airtportT = new TextField();
+        grid.add(airtportT, 20, 19);
+
+        Label labelNumber = new Label("Label number:");
+        grid.add(labelNumber, 30, 17, 10, 1);
+        TextField labelNumberT = new TextField();
+        grid.add(labelNumberT, 40, 17);
+
+        Label flight = new Label("Flight number:");
+        grid.add(flight, 30, 18, 10, 1);
+        TextField flightT = new TextField();
+        grid.add(flightT, 40, 18);
+
+        Label destination = new Label("Destination:");
+        grid.add(destination, 30, 19, 10, 1);
+        TextField destinationT = new TextField();
+        grid.add(destinationT, 40, 19);
         
-        Label itemName = new Label("Item Name");
-        grid.add(itemName, 10, 26, 10 ,1);
-        TextField itemNameT = new TextField();
-        grid.add(itemNameT, 20, 26);
-        
-        Label itemColor = new Label("Item color");
-        grid.add(itemColor, 10, 27, 10 ,1);
+        Label naamReiziger = new Label("Name traveler:");
+        grid.add(naamReiziger, 30, 20, 10, 1);
+        TextField naamReizigerT = new TextField();
+        grid.add(naamReizigerT, 40, 20);
+
+        Label itemType = new Label("Type:");
+        grid.add(itemType, 10, 24, 10, 1);
+        TextField itemTypeT = new TextField();
+        grid.add(itemTypeT, 20, 24);
+
+        Label itemBrand = new Label("Brand:");
+        grid.add(itemBrand, 10, 25, 10, 1);
+        TextField itemBrandT = new TextField();
+        grid.add(itemBrandT, 20, 25);
+
+        Label itemColor = new Label("Color:");
+        grid.add(itemColor, 10, 26, 10, 1);
         TextField itemColorT = new TextField();
-        grid.add(itemColorT, 20, 27);
+        grid.add(itemColorT, 20, 26);
+
+        Label lostandfound = new Label("Lost-and-found ID");
+        grid.add(lostandfound, 10, 20, 10, 1);
+        TextField lostandfoundT = new TextField();
+        grid.add(lostandfoundT, 20, 20);
+
         
-        Label itemInfo = new Label("Item misc. info");
-        grid.add(itemInfo, 10, 28, 10 ,1);
-        TextField itemInfoT = new TextField();
-        grid.add(itemInfoT, 20, 28);
-        
-        Label itemLocation = new Label("Item current location");
-        grid.add(itemLocation, 10, 29, 10 ,1);
-        TextField itemLocationT = new TextField();
-        grid.add(itemLocationT, 20, 29);
-        
-        Label  ownerName = new Label("Owner Name");
-        grid.add(ownerName, 30, 17, 10 ,1);
-        TextField ownerNameT = new TextField();
-        grid.add(ownerNameT, 40, 17);
-        
-        Label ownerNr1 = new Label("Owner telephone number 1");
-        grid.add(ownerNr1, 30, 18, 10 ,1);
-        TextField ownerNr1T = new TextField();
-        grid.add(ownerNr1T, 40, 18);
-        
-        Label ownerNr2 = new Label("Owner telephone number 2");
-        grid.add(ownerNr2, 30, 19, 10 ,1);
-        TextField ownerNr2T = new TextField();
-        grid.add(ownerNr2T, 40, 19);
-        
-        Label ownerMail = new Label("Owner email");
-        grid.add(ownerMail, 30, 20, 10 ,1);
-        TextField ownerMailT = new TextField();
-        grid.add(ownerMailT, 40, 20);
-        
-        Label ownerAddress = new Label("Owner Address");
-        grid.add(ownerAddress, 30, 21, 10 ,1);
-        TextField ownerAddressT = new TextField();
-        grid.add(ownerAddressT, 40, 21);
-        
-        Label zipCode = new Label("Zip Code");
-        grid.add(zipCode, 30, 26, 10 ,1);
-        TextField zipCodeT = new TextField();
-        grid.add(zipCodeT, 40, 26);
-        
-        Label employeeName = new Label("Employee Name");
-        grid.add(employeeName, 30, 27, 10 ,1);
-        TextField employeeNameT = new TextField();
-        grid.add(employeeNameT, 40, 27);
-        
-        Label lastUpdate = new Label("Last Updated");
-        grid.add(lastUpdate, 30, 28, 10 ,1);
-        TextField lastUpdateT = new TextField();
-        grid.add(lastUpdateT, 40, 28);
-        lastUpdateT.setPromptText("dd/mm/yyyy");
-        
-        Label addNotes = new Label("Additional Notes");
-        grid.add(addNotes, 10, 30, 10 ,1);
+
+        Label addNotes = new Label("Additional notes:");
+        grid.add(addNotes, 10, 27, 10, 1);
         TextField addNotesT = new TextField();
-        grid.add(addNotesT, 20, 30);
-        addNotesT.setPrefSize(80, 80);
+        grid.add(addNotesT, 20, 27);
         
         ImageView Calendar = new ImageView("/resources/Calendar-icon.png");
         Calendar.setFitHeight(30);
         Calendar.setFitWidth(30);
         
-        grid.add(Calendar, 21, 20);
+        grid.add(Calendar, 21, 17);
         
-        ImageView Calendar2 = new ImageView("/resources/Calendar-icon.png");
-        Calendar2.setFitHeight(30);
-        Calendar2.setFitWidth(30);
         
-        grid.add(Calendar2, 41, 28);
         
         ImageView Corendon = new ImageView("/resources/corendon.jpg");
         Corendon.setFitHeight(100);

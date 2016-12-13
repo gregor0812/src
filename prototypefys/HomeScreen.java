@@ -41,19 +41,19 @@ public class HomeScreen {
         vbox1.setAlignment(Pos.CENTER);
 
             
-            Button bt_VEC = new Button("View Existing Case");
-            bt_VEC.setStyle("-fx-base:darkred;-fx-border-color:black");
-            bt_VEC.setPrefSize(160, 50);
-            bt_VEC.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                
-                viewExistingCase scherm3 = new viewExistingCase();
-                GridPane viewcase = scherm3.MaakExistingCase();
-                
-                rootpane.addnewpane(viewcase);
-            }
-            });
+//            Button bt_VEC = new Button("View Existing Case");
+//            bt_VEC.setStyle("-fx-base:darkred;-fx-border-color:black");
+//            bt_VEC.setPrefSize(160, 50);
+//            bt_VEC.setOnAction(new EventHandler<ActionEvent>() {
+//            @Override
+//            public void handle(ActionEvent event) {
+//                
+//                viewExistingCase scherm3 = new viewExistingCase();
+//                GridPane viewcase = scherm3.MaakExistingCase();
+//                
+//                rootpane.addnewpane(viewcase);
+//            }
+//            });
 
             Button bt_VBC = new Button("View Baggage Catalogue ");
             bt_VBC.setStyle("-fx-base:darkred;-fx-border-color:black");
@@ -131,7 +131,7 @@ public class HomeScreen {
             
             hbox.setStyle("-fx-background-color: #16302e");
             
-            bt_VEC.setPrefSize(180, 20);
+ //           bt_VEC.setPrefSize(180, 20);
             bt_VBC.setPrefSize(180, 20);
             bt_RFB.setPrefSize(180, 20);
             bt_RLB.setPrefSize(180, 20);
@@ -141,7 +141,7 @@ public class HomeScreen {
             bt_LOG.setPrefSize(180, 20);
 
             
-            vbox1.getChildren().add(bt_VEC);
+//            vbox1.getChildren().add(bt_VEC);
             vbox1.getChildren().add(bt_VBC);
             vbox1.getChildren().add(bt_RFB);
             vbox1.getChildren().add(bt_RLB);

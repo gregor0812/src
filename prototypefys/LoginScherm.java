@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.AudioClip;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
 /**
@@ -53,7 +54,7 @@ public class LoginScherm {
         
         Text username = new Text("Username:");
         root.add(username, 0, 1);
-
+        username.setFill(Color.WHITE);
         TextField text = new TextField();
         text.setPrefColumnCount(1);
         text.setPrefWidth(100);
@@ -61,7 +62,7 @@ public class LoginScherm {
 
         Text password = new Text("Password:");
         root.add(password, 0, 2);
-
+        password.setFill(Color.WHITE);
         TextField text2 = new TextField();
         text2.setPrefColumnCount(1);
         text2.setPrefWidth(10);

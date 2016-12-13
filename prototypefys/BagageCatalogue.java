@@ -61,6 +61,8 @@ public class BagageCatalogue {
         GridPane root = new GridPane();
         
         root.getColumnConstraints().add(new ColumnConstraints(200));
+        root.setPadding(new Insets(30,30,30,30));
+        
         
         GridPane Zoekscherm = new GridPane();
         Zoekscherm.setPadding(new Insets(25, 25, 25, 25));
@@ -102,8 +104,10 @@ public class BagageCatalogue {
         "Flight Code"
                  );
         final ComboBox comboBox = new ComboBox(options);
-        Button ZoekTabel = new Button("Search");
-        ZoekTabel.setOnAction(new EventHandler<ActionEvent>() {
+        comboBox.setMinSize(150, 20);
+        Button zoekTabel = new Button("Search");
+        zoekTabel.setMinSize(70, 20);
+        zoekTabel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 
@@ -129,7 +133,7 @@ public class BagageCatalogue {
         });
         
         Button buttonCurrent = new Button("Main Menu");
-        buttonCurrent.setPrefSize(90, 50);
+        //buttonCurrent.setPrefSize(90, 50);
         buttonCurrent.setStyle("-fx-base:darkred;-fx-border-color:white");
         buttonCurrent.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -140,16 +144,28 @@ public class BagageCatalogue {
             });
         buttonCurrent.setPrefSize(100, 20);
 
+        Button buttonViewCase = new Button("View Case");
+        buttonViewCase.setMinSize(150, 20);
+        buttonViewCase.setStyle("-fx-base:darkred;-fx-border-color:white");
+        buttonViewCase.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("X");
+                //basisPane.addnewpane(mainmenu);
+            }
+            });
+        
         Button buttonProjected = new Button("Options");
         buttonProjected.setStyle("-fx-base:darkred;-fx-border-color:white");
         buttonProjected.setPrefSize(100, 20);
         hbox.getChildren().addAll(buttonCurrent, buttonProjected);
         
         HBox tabelKnoppen = new HBox();
-        tabelKnoppen.getChildren().addAll(ZoekTabel, reset);
+        tabelKnoppen.getChildren().addAll(zoekTabel, reset);
         tabelKnoppen.setSpacing(10);
         Zoekscherm.add(tekst, 1, 1);
         Zoekscherm.add(comboBox, 1, 0);
+        Zoekscherm.add(buttonViewCase, 1, 3);
 //        Zoekscherm.add(ZoekTabel, 1, 2);
 //        Zoekscherm.add(reset, 2, 2);
         Zoekscherm.add(tabelKnoppen, 1, 2);
@@ -157,6 +173,7 @@ public class BagageCatalogue {
         root.add(Zoekscherm, 0 , 3);
         root.add(hbox, 0, 2);
         root.add(EmptyPane2, 1, 1);
+        
         
         root.add(createJavaFXReadOnlyDataTableView(airportData), 2 , 3 , 2, 3);
         
