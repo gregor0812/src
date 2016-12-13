@@ -5,6 +5,8 @@
  */
 package prototypefys;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 /**
  *
  * @author Delug
@@ -15,7 +17,7 @@ public class BaggageInventory implements Comparable<BaggageInventory> {
     private String description;
     private String dateOfArrival;
     
-    public BaggageInventory(Resultset rs) throws SQLException {
+    public BaggageInventory(ResultSet rs) throws SQLException {
         loadFromSQL(rs);
     }
     
@@ -48,7 +50,7 @@ public class BaggageInventory implements Comparable<BaggageInventory> {
                 + "VALUES (item+\",\"+description+\",\"+dateOfArrival);";
     }
         
-        public void loadFromSQL(Resultset rs) throws SQLException
+        public void loadFromSQL(ResultSet rs) throws SQLException
         {
                 item = rs.getString("item");
                 description = rs.getString("description");
