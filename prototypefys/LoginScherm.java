@@ -75,8 +75,7 @@ public class LoginScherm {
 
         root.setStyle("-fx-background-color: #16302e");
         
-        AudioClip plonkSound = new AudioClip
-    ("https://ia800501.us.archive.org/33/items/nyannyannyan/NyanCatoriginal.mp3");
+        
         
         
 
@@ -85,7 +84,7 @@ public class LoginScherm {
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                plonkSound.play();
+                
                 
                 rootpane.addnewpane(homescreen);
             }
