@@ -61,6 +61,8 @@ public class BagageCatalogue {
         GridPane root = new GridPane();
         
         root.getColumnConstraints().add(new ColumnConstraints(200));
+        root.setPadding(new Insets(30,30,30,30));
+        
         
         GridPane Zoekscherm = new GridPane();
         Zoekscherm.setPadding(new Insets(25, 25, 25, 25));
@@ -143,7 +145,7 @@ public class BagageCatalogue {
         buttonCurrent.setPrefSize(100, 20);
 
         Button buttonViewCase = new Button("View Case");
-        buttonViewCase.setPrefSize(150, 20);
+        buttonViewCase.setMinSize(150, 20);
         buttonViewCase.setStyle("-fx-base:darkred;-fx-border-color:white");
         buttonViewCase.setOnAction(new EventHandler<ActionEvent>() {
             @Override
