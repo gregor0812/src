@@ -9,9 +9,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
@@ -34,16 +34,20 @@ public class adminScherm {
         
     }   
     
-    public HBox maakAdminScherm() {
+    public StackPane maakAdminScherm() {
     
-    
+        // make the main area
+        StackPane basis = new StackPane();
 
     
-        HBox hbox = new HBox(200);
-        hbox.setAlignment(Pos.CENTER);
+        HBox adminstart = new HBox(200);
+        adminstart.setAlignment(Pos.CENTER);
 
         VBox vbox1 = new VBox(20);
         vbox1.setAlignment(Pos.CENTER);
+        
+        // make a empoyee view screen
+        GridPane EmployeeData = new GridPane();
         
                     
             Button bt_MA = new Button("Manage Accounts ");
@@ -52,7 +56,8 @@ public class adminScherm {
             @Override
             public void handle(ActionEvent event) {
                 
-                System.out.println("X");
+                basis.getChildren().clear();
+                basis.getChildren().add(EmployeeData);
             }
             });
             
@@ -91,13 +96,39 @@ public class adminScherm {
             vbox1.getChildren().add(bt_backButton);
     
             
-        hbox.getChildren().addAll(vbox1);
+            adminstart.getChildren().addAll(vbox1);
+        
+        basis.getChildren().add(adminstart);
+        
+        
+        
+        
+        Button bt_goback = new Button("Back");
+        EmployeeData.add(bt_goback, 1, 1);
+        
+        
+        
+         bt_goback.setOnAction(new EventHandler<ActionEvent>() {
+             @Override
+             public void handle(ActionEvent event) {
+             basis.getChildren().clear();
+             basis.getChildren().add(adminstart);
+            }
+            });
+        
+        
+        
+        
+        
     
-        return hbox;
+        return basis;
        
             
     }
- 
+    
+    
+    
+    
      
 
 }

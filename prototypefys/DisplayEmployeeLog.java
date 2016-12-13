@@ -5,14 +5,12 @@
  */
 package prototypefys;
 
-import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,14 +18,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
-import javafx.scene.text.FontPosture;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 
 
 /**
@@ -38,7 +33,7 @@ public class DisplayEmployeeLog {
     private static Rootpane rootpane = new Rootpane();
     private static GridPane emplog = new GridPane();
     private static adminScherm terugscherm = new adminScherm();
-    private static HBox terugadminscherm = terugscherm.maakAdminScherm();
+    private static StackPane terugadminscherm = terugscherm.maakAdminScherm();
     
     DisplayEmployeeLog(){
         

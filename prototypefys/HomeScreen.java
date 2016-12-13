@@ -17,6 +17,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class HomeScreen {
@@ -103,7 +104,7 @@ public class HomeScreen {
             public void handle(ActionEvent event) {
                   
                 adminScherm scherm6 = new adminScherm();
-                HBox adminScherm = scherm6.maakAdminScherm();
+                StackPane adminScherm = scherm6.maakAdminScherm();
                 rootpane.addnewpane(adminScherm);
             }
             });
