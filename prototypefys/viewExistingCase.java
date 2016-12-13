@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
@@ -47,9 +48,12 @@ public class viewExistingCase {
 
         Text scenetitle = new Text("Enter Case ID#");
         scenetitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 20));
+        scenetitle.setFill(Color.WHITE);
         grid.add(scenetitle, 0, 0, 2, 1);
-
-        Label userName = new Label("Case ID#:");
+        
+        
+        Text userName = new Text("Case ID#:");
+        userName.setFill(Color.WHITE);
         grid.add(userName, 0, 1);
 
         TextField userTextField = new TextField();
