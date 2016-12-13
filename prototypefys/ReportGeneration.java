@@ -24,7 +24,7 @@ import nl.hva.hboict.sql.SQLDataBase;
 
 public class ReportGeneration {
     
-    public final String DB_NAME = "fys";
+    public final String DB_NAME = "corendon";
     public final String DB_SERVER = "it95.nl:3306";
     public final String DB_ACCOUNT = "fys";
     public final String DB_PASSWORD = "ESCXZoaIlK07pwUS";

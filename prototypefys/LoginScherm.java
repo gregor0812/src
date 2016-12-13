@@ -9,7 +9,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -25,7 +24,7 @@ public class LoginScherm {
 
     }
     
-    public final String DB_NAME = "fys";
+    public final String DB_NAME = "corendon";
     public final String DB_SERVER = "it95.nl:3306";
     public final String DB_ACCOUNT = "fys";
     public final String DB_PASSWORD = "ESCXZoaIlK07pwUS";
