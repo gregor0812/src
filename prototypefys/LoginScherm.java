@@ -1,5 +1,9 @@
 package prototypefys;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -11,6 +15,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import nl.hva.hboict.sql.DataTable;
+import nl.hva.hboict.sql.SQLDataBase;
 
 /**
  *
@@ -24,10 +30,18 @@ public class LoginScherm {
 
     }
     
+    
+    private final String DB_DRIVER_URL = "com.mysql.jdbc.Driver";
+    private final String DB_DRIVER_PREFIX = "jdbc:mysql://";
+    
+    
     public final String DB_NAME = "corendon";
     public final String DB_SERVER = "it95.nl:3306";
     public final String DB_ACCOUNT = "fys";
     public final String DB_PASSWORD = "ESCXZoaIlK07pwUS";
+    
+    public SQLDataBase dataBase
+                = new SQLDataBase(DB_NAME, DB_SERVER, DB_ACCOUNT, DB_PASSWORD);
     
     private HomeScreen nieuwscherm = new HomeScreen();
     private HBox homescreen = nieuwscherm.maakhomescreen();
@@ -54,18 +68,18 @@ public class LoginScherm {
         Text username = new Text("Username:");
         root.add(username, 0, 1);
         username.setFill(Color.WHITE);
-        TextField text = new TextField();
-        text.setPrefColumnCount(1);
-        text.setPrefWidth(100);
-        root.add(text, 1, 1);
+        TextField userText = new TextField();
+        userText.setPrefColumnCount(1);
+        userText.setPrefWidth(100);
+        root.add(userText, 1, 1);
 
         Text password = new Text("Password:");
         root.add(password, 0, 2);
         password.setFill(Color.WHITE);
-        TextField text2 = new TextField();
-        text2.setPrefColumnCount(1);
-        text2.setPrefWidth(10);
-        root.add(text2, 1, 2);
+        TextField passwordText = new TextField();
+        passwordText.setPrefColumnCount(1);
+        passwordText.setPrefWidth(10);
+        root.add(passwordText, 1, 2);
 
         
         
@@ -86,6 +100,11 @@ public class LoginScherm {
             public void handle(ActionEvent event) {
                 
                 
+                String username = userText.getText();
+                String password = passwordText.getText();
+                
+                
+                LoginCheck(username, password);
                 rootpane.addnewpane(homescreen);
             }
         });
@@ -98,9 +117,55 @@ public class LoginScherm {
     }
     
     
-   
+   public void LoginCheck(String username, String password){
+       
+       try {
+        
+        Connection firstConnection = DriverManager.getConnection(DB_DRIVER_PREFIX + DB_SERVER
+                    + "/" + DB_NAME, DB_ACCOUNT, DB_PASSWORD);
+        
+        Statement statement = firstConnection.createStatement();
+        Statement statement2 = firstConnection.createStatement();
+        System.out.println("database connected");
+        
+        ResultSet knownUsers
+                = statement.executeQuery("SELECT username, password FROM employee;");
+        
+        ResultSet NumberUsers = statement2.executeQuery("select count(*) as total from employee;");
+       
+        int kaka = 1;
+        if (NumberUsers.next()){
+        kaka = NumberUsers.getInt("total");
+        }
+        
+        String[] ListOfKnownUsers;
+           ListOfKnownUsers = new String[kaka];
+        
+           
+        for (int i = 0; knownUsers.next(); i++){
+            ListOfKnownUsers[i] = 
+                (knownUsers.getString(1) + " " + knownUsers.getString(2) );
+        }
+        
+       
+      
+          
+        firstConnection.close();
+           
+        } catch (Exception ex){
+            System.out.println("exception 2 ");
+        }
+       
+       
+       
+       DataTable knownPassword
+                = dataBase.executeDataTableQuery("SELECT username FROM employee");
     
-    public void nieuwscherm(){
+       
+      
+       
        
    }
+    
+   
 }
