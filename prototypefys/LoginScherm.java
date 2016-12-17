@@ -105,7 +105,7 @@ public class LoginScherm {
                 
                 
                 LoginCheck(username, password);
-                rootpane.addnewpane(homescreen);
+                //rootpane.addnewpane(homescreen);
             }
         });
         
@@ -147,24 +147,27 @@ public class LoginScherm {
                 (knownUsers.getString(1) + " " + knownUsers.getString(2) );
         }
         
-       
+       String EnteredUser = username + " " + password;
       
+       for (int i = 0; i < ListOfKnownUsers.length; i++){
+           if(EnteredUser.equals(ListOfKnownUsers[i])){
+               
+                rootpane.addnewpane(homescreen);
+           }
+           
+       }
+       
+       System.out.println("WRONG PASSWORD");
           
         firstConnection.close();
            
         } catch (Exception ex){
             System.out.println("exception 2 ");
         }
+                    
        
-       
-       
-       DataTable knownPassword
-                = dataBase.executeDataTableQuery("SELECT username FROM employee");
-    
-       
-      
-       
-       
+              
+           
    }
     
    
