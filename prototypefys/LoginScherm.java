@@ -149,17 +149,27 @@ public class LoginScherm {
         
        String EnteredUser = username + " " + password;
       
+       boolean GoodPassword = false;
+       
        for (int i = 0; i < ListOfKnownUsers.length; i++){
            if(EnteredUser.equals(ListOfKnownUsers[i])){
                
                 rootpane.addnewpane(homescreen);
+                GoodPassword = true;
+                break;
            }
            
+           
+               
        }
        
+       if (GoodPassword){
+           firstConnection.close();
+       }
+       else{
        System.out.println("WRONG PASSWORD");
-          
-        firstConnection.close();
+       }   
+        
            
         } catch (Exception ex){
             System.out.println("exception 2 ");
