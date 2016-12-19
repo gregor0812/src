@@ -8,14 +8,15 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import nl.hva.hboict.sql.DataTable;
 import nl.hva.hboict.sql.SQLDataBase;
 
 /**
@@ -76,7 +77,7 @@ public class LoginScherm {
         Text password = new Text("Password:");
         root.add(password, 0, 2);
         password.setFill(Color.WHITE);
-        TextField passwordText = new TextField();
+        PasswordField passwordText = new PasswordField();
         passwordText.setPrefColumnCount(1);
         passwordText.setPrefWidth(10);
         root.add(passwordText, 1, 2);
@@ -167,7 +168,11 @@ public class LoginScherm {
            firstConnection.close();
        }
        else{
-       System.out.println("WRONG PASSWORD");
+       Alert alert = new Alert(Alert.AlertType.WARNING);
+       alert.setTitle("Wrong password");
+       alert.setHeaderText("Wrong password");
+       alert.setContentText("Wrong password/username");
+       alert.showAndWait();
        }   
         
            
