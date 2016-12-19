@@ -17,6 +17,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import nl.hva.hboict.sql.DataRow;
 import nl.hva.hboict.sql.DataTable;
 import nl.hva.hboict.sql.SQLDataBase;
@@ -52,7 +53,7 @@ public class BagageCatalogue {
         
         // get a table of airport information from the database
         DataTable airportData
-                = dataBase.executeDataTableQuery("SELECT * FROM bagage");
+                = dataBase.executeDataTableQuery("SELECT * FROM lostluggage");
     
     public GridPane MaakCatalogue() {
         
@@ -117,20 +118,37 @@ public class BagageCatalogue {
                 airportData = dataBase.executeDataTableQuery("SELECT * FROM bagage "
                     + "WHERE " + output + " = " + "'" + zoekConditie + "'");
                 
-                root.add(createJavaFXReadOnlyDataTableView(airportData), 2 , 3 , 2, 3);
+                //root.add(createJavaFXReadOnlyDataTableView(airportData), 2 , 3 , 2, 3);
                 
             }
         });
         
-        Button reset = new Button("Show all");
-        reset.setMinSize(70, 20);
-        reset.setOnAction(new EventHandler<ActionEvent>() {
+        
+        
+        
+        Button showFound = new Button("show found luggage");
+        showFound.setMinSize(150, 20);
+        showFound.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event){
-               airportData = dataBase.executeDataTableQuery("Select * FROM bagage");
+               airportData = dataBase.executeDataTableQuery("Select * FROM foundluggage");
                root.add(createJavaFXReadOnlyDataTableView(airportData), 2 , 3 , 2, 3);
             }
         });
+        
+        
+        
+        Button showLost = new Button("show lost luggage");
+        showLost.setMinSize(150, 20);
+        showLost.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event){
+               airportData = dataBase.executeDataTableQuery("Select * FROM lostluggage");
+               root.add(createJavaFXReadOnlyDataTableView(airportData), 2 , 3 , 2, 3);
+            }
+        });
+        
+        
         
         Button buttonCurrent = new Button("Main Menu");
         //buttonCurrent.setPrefSize(90, 50);
@@ -161,13 +179,13 @@ public class BagageCatalogue {
         hbox.getChildren().addAll(buttonCurrent, buttonProjected);
         
         HBox tabelKnoppen = new HBox();
-        tabelKnoppen.getChildren().addAll(zoekTabel, reset);
+        tabelKnoppen.getChildren().addAll(zoekTabel, showFound, showLost);
         tabelKnoppen.setSpacing(10);
         Zoekscherm.add(tekst, 1, 1);
         Zoekscherm.add(comboBox, 1, 0);
         Zoekscherm.add(buttonViewCase, 1, 3);
-//        Zoekscherm.add(ZoekTabel, 1, 2);
-//        Zoekscherm.add(reset, 2, 2);
+        Zoekscherm.add(showFound, 1, 4);
+        Zoekscherm.add(showLost, 1, 5);
         Zoekscherm.add(tabelKnoppen, 1, 2);
         root.add(EmptyPane, 0, 1);
         root.add(Zoekscherm, 0 , 3);
