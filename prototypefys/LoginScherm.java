@@ -1,5 +1,6 @@
 package prototypefys;
 
+import database.Database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -44,8 +45,13 @@ public class LoginScherm {
     public SQLDataBase dataBase
                 = new SQLDataBase(DB_NAME, DB_SERVER, DB_ACCOUNT, DB_PASSWORD);
     
+    
+    
+    public Database db = new Database();
+    
     private HomeScreen nieuwscherm = new HomeScreen();
     private HBox homescreen = nieuwscherm.maakhomescreen();
+    
     
     Rootpane rootpane = new Rootpane();
 
@@ -122,8 +128,10 @@ public class LoginScherm {
        
        try {
         
-        Connection firstConnection = DriverManager.getConnection(DB_DRIVER_PREFIX + DB_SERVER
-                    + "/" + DB_NAME, DB_ACCOUNT, DB_PASSWORD);
+        Connection firstConnection = db.getConnection();
+        
+        //Connection firstConnection = DriverManager.getConnection(DB_DRIVER_PREFIX + DB_SERVER
+          //          + "/" + DB_NAME, DB_ACCOUNT, DB_PASSWORD);
         
         Statement statement = firstConnection.createStatement();
         Statement statement2 = firstConnection.createStatement();
