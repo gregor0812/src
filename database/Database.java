@@ -31,7 +31,7 @@ public class Database {
         username = "fys";
         password = "ESCXZoaIlK07pwUS";
         hostname = "it95.nl:3306";
-        database = "fys";
+        database = "corendon";
         createConnection();
     }
 
