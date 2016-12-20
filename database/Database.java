@@ -49,7 +49,6 @@ public class Database {
         try {
             conn = DriverManager.getConnection(URL_PREFIX + hostname
                     + "/" + database, username, password);
-            //return dbConnection;
         } catch (SQLException e) {
             System.err.println(e.getMessage());
         }
