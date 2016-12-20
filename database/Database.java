@@ -32,20 +32,15 @@ public class Database {
         password = "ESCXZoaIlK07pwUS";
         hostname = "it95.nl:3306";
         database = "corendon";
-        createConnection();
-    }
-
-    /**
-     * Open a connection to the database
-     */
-    private void createConnection() {
-
+        
+        // Load the database driver.
         try {
             Class.forName(DRIVER);
         } catch (ClassNotFoundException e) {
             System.err.println(e.getMessage());
         }
 
+        // Connect to the database
         try {
             conn = DriverManager.getConnection(URL_PREFIX + hostname
                     + "/" + database, username, password);
