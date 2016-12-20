@@ -6,7 +6,6 @@
 package database;
 
 import java.sql.*;
-import sun.net.smtp.SmtpClient;
 
 /**
  * Create a connection to the database.
@@ -43,7 +42,7 @@ public class Database {
 
         try {
             Class.forName(DRIVER);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             System.err.println(e.getMessage());
         }
 
@@ -51,16 +50,23 @@ public class Database {
             conn = DriverManager.getConnection(URL_PREFIX + hostname
                     + "/" + database, username, password);
             //return dbConnection;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
-            return;
         }
     }
 
+    /**
+     * Return the connection
+     * 
+     * @return The database connection
+     */
     public Connection getConnection() {
         return conn;
     }
 
+    /**
+     * Close the connection to the database
+     */
     public void close() {
         conn = null;
     }
