@@ -32,7 +32,7 @@ public class Database {
         username = "fys";
         password = "ESCXZoaIlK07pwUS";
         hostname = "it95.nl:3306";
-        database = "fys";
+        database = "corendon";
         createConnection();
     }
 
@@ -48,12 +48,12 @@ public class Database {
         }
 
         try {
-            conn = DriverManager.getConnection(URL_PREFIX + hostname
+            this.conn = DriverManager.getConnection(URL_PREFIX + hostname
                     + "/" + database, username, password);
             //return dbConnection;
         } catch (Exception e) {
             System.err.println(e.getMessage());
-            return;
+           
         }
     }
 
