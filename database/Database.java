@@ -6,7 +6,6 @@
 package database;
 
 import java.sql.*;
-import sun.net.smtp.SmtpClient;
 
 /**
  * Create a connection to the database.
@@ -33,6 +32,7 @@ public class Database {
         password = "ESCXZoaIlK07pwUS";
         hostname = "it95.nl:3306";
         database = "corendon";
+
         createConnection();
     }
 
@@ -41,26 +41,38 @@ public class Database {
      */
     private void createConnection() {
 
+
+        
+        // Load the database driver.
+
         try {
             Class.forName(DRIVER);
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             System.err.println(e.getMessage());
         }
 
+        // Connect to the database
         try {
             this.conn = DriverManager.getConnection(URL_PREFIX + hostname
                     + "/" + database, username, password);
-            //return dbConnection;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println(e.getMessage());
-           
+
         }
     }
 
+    /**
+     * Return the connection
+     * 
+     * @return The database connection
+     */
     public Connection getConnection() {
         return conn;
     }
 
+    /**
+     * Close the connection to the database
+     */
     public void close() {
         conn = null;
     }

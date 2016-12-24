@@ -46,12 +46,15 @@ public class adminScherm {
         VBox vbox1 = new VBox(20);
         vbox1.setAlignment(Pos.CENTER);
         
+                adminstart.setStyle("-fx-background-color: #16302e");
+        
         // make a empoyee view screen
         GridPane EmployeeData = new GridPane();
         
                     
             Button bt_MA = new Button("Manage Accounts ");
-            bt_MA.setPrefSize(150, 50);
+            bt_MA.setStyle("-fx-base:darkred;-fx-border-color:black");   
+            bt_MA.setPrefSize(180, 20);
             bt_MA.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -62,7 +65,8 @@ public class adminScherm {
             });
             
             Button bt_VL = new Button("View Logs ");
-            bt_VL.setPrefSize(150, 50);
+            bt_VL.setPrefSize(180, 20);
+            bt_VL.setStyle("-fx-base:darkred;-fx-border-color:black");
             bt_VL.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -72,7 +76,8 @@ public class adminScherm {
             });
             
             Button bt_VDC = new Button("View Deleted Cases ");
-            bt_VDC.setPrefSize(150, 50);
+            bt_VDC.setPrefSize(180, 20);
+            bt_VDC.setStyle("-fx-base:darkred;-fx-border-color:black");
             bt_VDC.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -82,7 +87,8 @@ public class adminScherm {
             });
             
             Button bt_backButton = new Button("Back ");
-            bt_backButton.setPrefSize(150, 50);
+            bt_backButton.setPrefSize(180, 20);
+            bt_backButton.setStyle("-fx-base:darkred;-fx-border-color:black");
             bt_backButton.setOnAction(new EventHandler<ActionEvent>() {
              @Override
              public void handle(ActionEvent event) {
@@ -119,7 +125,7 @@ public class adminScherm {
         
         
         
-        
+
     
         return basis;
        
