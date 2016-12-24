@@ -9,7 +9,7 @@ package prototypefys;
  *
  * @author Koen Hengsdijk
  */
-
+import cataloog.BagageCatalogue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -28,7 +28,7 @@ public class HomeScreen {
  
 
     
-    HomeScreen(){
+    public HomeScreen(){
         
     }
     

@@ -13,7 +13,7 @@ public class Rootpane {
     
     private static BorderPane EerstePane = new BorderPane();
     
-    Rootpane(){      
+    public Rootpane(){      
     }
     
     public Pane getRootPane(){

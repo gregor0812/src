@@ -1,4 +1,4 @@
- package prototypefys;
+ package cataloog;
 
 import database.Database;
 import java.sql.Connection;
@@ -24,6 +24,8 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.util.Callback;
+import prototypefys.HomeScreen;
+import prototypefys.Rootpane;
 
 /**
  *
@@ -44,7 +46,7 @@ public class BagageCatalogue {
     private ObservableList<ObservableList> data;
     private TableView catalogue = new TableView();
 
-    BagageCatalogue() {
+    public BagageCatalogue() {
     }
 
     public Database CatalogueDatabase = new Database();
@@ -204,15 +206,16 @@ public class BagageCatalogue {
             
             while (TableData.next()){
                 ObservableList<String> row = FXCollections.observableArrayList();
-//                for(int i=1 ; i<=TableData.getMetaData().getColumnCount(); i++){
-//                    //Iterate Column
-//                    row.add(TableData.getString(i + 4));
-//                }
-                row.add(TableData.getString(5));
+                for(int i=1 ; i<=TableData.getMetaData().getColumnCount(); i++){
+                    //Iterate Column
+                   row.add(TableData.getString(i + 1));
+              }
+                
 
-                data.add(row);
+                //data.add(row);
             }
             
+            System.out.println(data);
             catalogue.setItems(data);
             
         } catch (Exception ex) {
