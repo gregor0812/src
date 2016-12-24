@@ -100,8 +100,8 @@ public class LoginScherm {
                 String password = passwordText.getText();
                 
                 
-                LoginCheck(username, password);
-                //rootpane.addnewpane(homescreen);
+                //LoginCheck(username, password);
+                rootpane.addnewpane(homescreen);
             }
         });
         

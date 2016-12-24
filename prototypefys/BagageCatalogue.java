@@ -1,4 +1,4 @@
-package prototypefys;
+ package prototypefys;
 
 import database.Database;
 import java.sql.Connection;
@@ -189,19 +189,32 @@ public class BagageCatalogue {
             Statement statement = catalogueConnect.createStatement();
             ResultSet TableData = statement.executeQuery(query);
             
-            TableColumn[] col = new TableColumn[TableData.getMetaData().getColumnCount()];
+            TableColumn col = new TableColumn();
             
             for (int i = 0; i < TableData.getMetaData().getColumnCount(); i++) {
                 
                 
                 final int j = i; 
-                col[i] = new TableColumn(TableData.getMetaData().getColumnName(i + 1));
+                col = new TableColumn(TableData.getMetaData().getColumnName(i + 1));
                
                 
-                catalogue.getColumns().addAll(col[i]); 
+                catalogue.getColumns().addAll(col); 
 
             }
+            
+            while (TableData.next()){
+                ObservableList<String> row = FXCollections.observableArrayList();
+//                for(int i=1 ; i<=TableData.getMetaData().getColumnCount(); i++){
+//                    //Iterate Column
+//                    row.add(TableData.getString(i + 4));
+//                }
+                row.add(TableData.getString(5));
 
+                data.add(row);
+            }
+            
+            catalogue.setItems(data);
+            
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }
