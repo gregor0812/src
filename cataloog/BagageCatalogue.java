@@ -41,7 +41,7 @@ public class BagageCatalogue {
     private Database db = new Database();
 
     private ObservableList<LostLuggage> data;
-    private TableView<LostLuggage> catalogue;
+    private TableView<LostLuggage> catalogue = new TableView();
 
     public BagageCatalogue() {
     }
@@ -52,31 +52,7 @@ public class BagageCatalogue {
     //("SELECT * FROM lostluggage");
     public GridPane MaakCatalogue() {
         
-        // de table colums are made here
-        TableColumn<LostLuggage, Integer> caseidColumn = new TableColumn<>("caseid");
-        caseidColumn.setCellValueFactory(new PropertyValueFactory<>("caseid"));
-        
-        TableColumn<LostLuggage, Integer> owneridColumn = new TableColumn<>("ownerid");
-        owneridColumn.setCellValueFactory(new PropertyValueFactory<>("ownerid"));
-        
-        TableColumn<LostLuggage, Integer> labelnrColumn = new TableColumn<>("labelnr");
-        labelnrColumn.setCellValueFactory(new PropertyValueFactory<>("labelnr"));
-        
-        TableColumn<LostLuggage, Integer> flightnrColumn = new TableColumn<>("flightnumber");
-        flightnrColumn.setCellValueFactory(new PropertyValueFactory<>("flightnr"));
-        
-        TableColumn<LostLuggage, String> airportColumn = new TableColumn<>("airport name");
-        airportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
-        
-        TableColumn<LostLuggage, String> itemnameColumn = new TableColumn<>("item name");
-        itemnameColumn.setCellValueFactory(new PropertyValueFactory<>("itemname"));
-        
-        TableColumn<LostLuggage, String> colorsColumn = new TableColumn<>("colors");
-        colorsColumn.setCellValueFactory(new PropertyValueFactory<>("colors"));
-        
-        TableColumn<LostLuggage, String> descriptionColumn = new TableColumn<>("description");
-        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        
+       
         
         GridPane root = new GridPane();
 
@@ -154,6 +130,7 @@ public class BagageCatalogue {
             @Override
             public void handle(ActionEvent event) {
                 LostLuggageTable("Select * FROM lostluggage");
+                root.add(catalogue, 2 , 3 , 2, 3);
             }
         });
 
@@ -209,6 +186,35 @@ public class BagageCatalogue {
 
     public void LostLuggageTable(String query) {
         catalogue.setEditable(true);
+        
+         // de table colums are made here
+        TableColumn<LostLuggage, Integer> caseidColumn = new TableColumn<>("caseid");
+        caseidColumn.setCellValueFactory(new PropertyValueFactory<>("caseid"));
+        
+        TableColumn<LostLuggage, Integer> owneridColumn = new TableColumn<>("ownerid");
+        owneridColumn.setCellValueFactory(new PropertyValueFactory<>("ownerid"));
+        
+        TableColumn<LostLuggage, Integer> labelnrColumn = new TableColumn<>("labelnr");
+        labelnrColumn.setCellValueFactory(new PropertyValueFactory<>("labelnr"));
+        
+        TableColumn<LostLuggage, Integer> flightnrColumn = new TableColumn<>("flightnumber");
+        flightnrColumn.setCellValueFactory(new PropertyValueFactory<>("flightnr"));
+        
+        TableColumn<LostLuggage, String> airportColumn = new TableColumn<>("airport name");
+        airportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
+        
+        TableColumn<LostLuggage, String> itemnameColumn = new TableColumn<>("item name");
+        itemnameColumn.setCellValueFactory(new PropertyValueFactory<>("itemname"));
+        
+        TableColumn<LostLuggage, String> colorsColumn = new TableColumn<>("colors");
+        colorsColumn.setCellValueFactory(new PropertyValueFactory<>("colors"));
+        
+        TableColumn<LostLuggage, String> descriptionColumn = new TableColumn<>("description");
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        
+        
+        
+        
         try {
             
             // a connection is made
@@ -217,9 +223,10 @@ public class BagageCatalogue {
             ResultSet TableData = statement.executeQuery(query);
             
             // this while loop gets data in the ovservable list
+            data = FXCollections.observableArrayList();
             while (TableData.next()) {
                 //Iterate Row
-                data = FXCollections.observableArrayList();
+                
 
                 data.add(new LostLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
                     TableData.getInt(4), TableData.getString(5), TableData.getString(6),
@@ -229,6 +236,8 @@ public class BagageCatalogue {
 
             //System.out.println(data);
             catalogue.setItems(data);
+            catalogue.getColumns().addAll(caseidColumn, owneridColumn, labelnrColumn,
+            flightnrColumn, airportColumn, itemnameColumn, colorsColumn, descriptionColumn );
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }
