@@ -1,11 +1,9 @@
- package cataloog;
+package cataloog;
 
 import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,15 +13,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
-import javafx.util.Callback;
 import prototypefys.HomeScreen;
 import prototypefys.Rootpane;
 
@@ -43,8 +40,8 @@ public class BagageCatalogue {
     private static final HBox mainmenu = thuisScherm.maakhomescreen();
     private Database db = new Database();
 
-    private ObservableList<ObservableList> data;
-    private TableView catalogue = new TableView();
+    private ObservableList<LostLuggage> data;
+    private TableView<LostLuggage> catalogue;
 
     public BagageCatalogue() {
     }
@@ -54,7 +51,33 @@ public class BagageCatalogue {
     // get a table of airport information from the database
     //("SELECT * FROM lostluggage");
     public GridPane MaakCatalogue() {
-
+        
+        // de table colums are made here
+        TableColumn<LostLuggage, Integer> caseidColumn = new TableColumn<>("caseid");
+        caseidColumn.setCellValueFactory(new PropertyValueFactory<>("caseid"));
+        
+        TableColumn<LostLuggage, Integer> owneridColumn = new TableColumn<>("ownerid");
+        owneridColumn.setCellValueFactory(new PropertyValueFactory<>("ownerid"));
+        
+        TableColumn<LostLuggage, Integer> labelnrColumn = new TableColumn<>("labelnr");
+        labelnrColumn.setCellValueFactory(new PropertyValueFactory<>("labelnr"));
+        
+        TableColumn<LostLuggage, Integer> flightnrColumn = new TableColumn<>("flightnumber");
+        flightnrColumn.setCellValueFactory(new PropertyValueFactory<>("flightnr"));
+        
+        TableColumn<LostLuggage, String> airportColumn = new TableColumn<>("airport name");
+        airportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
+        
+        TableColumn<LostLuggage, String> itemnameColumn = new TableColumn<>("item name");
+        itemnameColumn.setCellValueFactory(new PropertyValueFactory<>("itemname"));
+        
+        TableColumn<LostLuggage, String> colorsColumn = new TableColumn<>("colors");
+        colorsColumn.setCellValueFactory(new PropertyValueFactory<>("colors"));
+        
+        TableColumn<LostLuggage, String> descriptionColumn = new TableColumn<>("description");
+        descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+        
+        
         GridPane root = new GridPane();
 
         root.getColumnConstraints().add(new ColumnConstraints(200));
@@ -110,8 +133,7 @@ public class BagageCatalogue {
                 String zoekConditie = (String) tekst.getText();
 
                 //airportData = dataBase.executeDataTableQuery("SELECT * FROM bagage "
-              //      + "WHERE " + output + " = " + "'" + zoekConditie + "'");
-
+                //      + "WHERE " + output + " = " + "'" + zoekConditie + "'");
                 //root.add(createJavaFXReadOnlyDataTableView(airportData), 2 , 3 , 2, 3);
             }
         });
@@ -131,7 +153,7 @@ public class BagageCatalogue {
         showLost.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                LostLuggage("Select * FROM lostluggage");
+                LostLuggageTable("Select * FROM lostluggage");
             }
         });
 
@@ -177,47 +199,36 @@ public class BagageCatalogue {
         root.add(hbox, 0, 2);
         root.add(EmptyPane2, 1, 1);
 
-        root.add(catalogue, 2, 3, 2, 3);
+        //root.add(catalogue, 2, 3, 2, 3);
 
+        
+        
         return root;
 
     }
 
-    public void LostLuggage(String query) {
-            catalogue.setEditable(true);
+    public void LostLuggageTable(String query) {
+        catalogue.setEditable(true);
         try {
-                    
+            
+            // a connection is made
             Connection catalogueConnect = db.getConnection();
             Statement statement = catalogueConnect.createStatement();
             ResultSet TableData = statement.executeQuery(query);
             
-            TableColumn col = new TableColumn();
-            
-            for (int i = 0; i < TableData.getMetaData().getColumnCount(); i++) {
-                
-                
-                final int j = i; 
-                col = new TableColumn(TableData.getMetaData().getColumnName(i + 1));
-               
-                
-                catalogue.getColumns().addAll(col); 
+            // this while loop gets data in the ovservable list
+            while (TableData.next()) {
+                //Iterate Row
+                data = FXCollections.observableArrayList();
+
+                data.add(new LostLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
+                    TableData.getInt(4), TableData.getString(5), TableData.getString(6),
+                    TableData.getString(7), TableData.getString(8)));
 
             }
-            
-            while (TableData.next()){
-                ObservableList<String> row = FXCollections.observableArrayList();
-                for(int i=1 ; i<=TableData.getMetaData().getColumnCount(); i++){
-                    //Iterate Column
-                   row.add(TableData.getString(i + 1));
-              }
-                
 
-                //data.add(row);
-            }
-            
-            System.out.println(data);
+            //System.out.println(data);
             catalogue.setItems(data);
-            
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }
