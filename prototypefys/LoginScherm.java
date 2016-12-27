@@ -1,5 +1,6 @@
 package prototypefys;
 
+import database.Database;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -31,21 +32,15 @@ public class LoginScherm {
 
     }
     
-    
-    private final String DB_DRIVER_URL = "com.mysql.jdbc.Driver";
-    private final String DB_DRIVER_PREFIX = "jdbc:mysql://";
+   
     
     
-    public final String DB_NAME = "corendon";
-    public final String DB_SERVER = "it95.nl:3306";
-    public final String DB_ACCOUNT = "fys";
-    public final String DB_PASSWORD = "ESCXZoaIlK07pwUS";
     
-    public SQLDataBase dataBase
-                = new SQLDataBase(DB_NAME, DB_SERVER, DB_ACCOUNT, DB_PASSWORD);
+    private Database db = new Database();
     
     private HomeScreen nieuwscherm = new HomeScreen();
     private HBox homescreen = nieuwscherm.maakhomescreen();
+    
     
     Rootpane rootpane = new Rootpane();
 
@@ -105,8 +100,8 @@ public class LoginScherm {
                 String password = passwordText.getText();
                 
                 
-                LoginCheck(username, password);
-                //rootpane.addnewpane(homescreen);
+                //LoginCheck(username, password);
+                rootpane.addnewpane(homescreen);
             }
         });
         
@@ -122,15 +117,17 @@ public class LoginScherm {
        
        try {
         
-        Connection firstConnection = DriverManager.getConnection(DB_DRIVER_PREFIX + DB_SERVER
-                    + "/" + DB_NAME, DB_ACCOUNT, DB_PASSWORD);
+        Connection firstConnection = db.getConnection();
         
+       
         Statement statement = firstConnection.createStatement();
         Statement statement2 = firstConnection.createStatement();
         System.out.println("database connected");
         
         ResultSet knownUsers
                 = statement.executeQuery("SELECT username, password FROM employee;");
+        
+        System.out.println(knownUsers + "teststring");
         
         ResultSet NumberUsers = statement2.executeQuery("select count(*) as total from employee;");
        
@@ -146,6 +143,7 @@ public class LoginScherm {
         for (int i = 0; knownUsers.next(); i++){
             ListOfKnownUsers[i] = 
                 (knownUsers.getString(1) + " " + knownUsers.getString(2) );
+                System.out.println(ListOfKnownUsers[i]);
         }
         
        String EnteredUser = username + " " + password;
