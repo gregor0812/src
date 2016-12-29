@@ -52,8 +52,13 @@ public class BagageCatalogue {
 
     // get a table of airport information from the database
     //("SELECT * FROM lostluggage");
+    
+    private boolean lostOrFound = true;
     public GridPane MaakCatalogue() {
-
+        
+        // this boolean checks wether the lost or found luggage is displayed
+        
+        
         GridPane root = new GridPane();
 
         root.getColumnConstraints().add(new ColumnConstraints(200));
@@ -99,8 +104,12 @@ public class BagageCatalogue {
         ObservableList<String> options
             = FXCollections.observableArrayList(
                 "CaseID",
-                "Country",
-                "Flight Code"
+                "airport name",
+                "owner id",
+                "labelnr",
+                "flightnumber",
+                "item name",
+                "color"                
             );
         final ComboBox comboBox = new ComboBox(options);
         comboBox.setMinSize(150, 20);
@@ -112,10 +121,21 @@ public class BagageCatalogue {
 
                 String output = (String) comboBox.getValue();
                 String zoekConditie = (String) tekst.getText();
-
-                //airportData = dataBase.executeDataTableQuery("SELECT * FROM bagage "
-                //      + "WHERE " + output + " = " + "'" + zoekConditie + "'");
-                //root.add(createJavaFXReadOnlyDataTableView(airportData), 2 , 3 , 2, 3);
+                if (lostOrFound){
+                    catalogue.getItems().clear();
+                    catalogue.getColumns().clear();
+                    
+                LostLuggageTable("SELECT * FROM lostluggage "
+                      + "WHERE " + output + " = " + "'" + zoekConditie + "'");
+                }
+                else {
+                    catalogue.getItems().clear();
+                    catalogue.getColumns().clear();
+                    FoundLuggageTable("SELECT * FROM foundluggage "
+                      + "WHERE " + output + " = " + "'" + zoekConditie + "'");
+                }
+                
+                
             }
         });
 
@@ -126,7 +146,8 @@ public class BagageCatalogue {
             public void handle(ActionEvent event) {
                 catalogue.getItems().clear();
                 catalogue.getColumns().clear();
-                LostLuggageTable("Select * FROM lostluggage WHERE caseid = 1");
+                LostLuggageTable("Select * FROM foundluggage");
+                lostOrFound = false;
             }
         });
 
@@ -138,7 +159,7 @@ public class BagageCatalogue {
                 catalogue.getItems().clear();
                 catalogue.getColumns().clear();
                 LostLuggageTable("Select * FROM lostluggage");
-                
+                lostOrFound = true;
             }
         });
 
@@ -308,11 +329,9 @@ public class BagageCatalogue {
             while (TableData.next()) {
                 //Iterate Row
 
-                data.add(new LostLuggage(TableData.getInt("caseid"), TableData.getInt("ownerid"),
-                    TableData.getInt("labelnr"),
-                    TableData.getInt("flightnr"), TableData.getString("airport"),
-                    TableData.getString("itemname"),
-                    TableData.getString("colors"), TableData.getString("description")));
+                data.add(new LostLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
+                    TableData.getInt(4), TableData.getString(5), TableData.getString(6),
+                    TableData.getString(7), TableData.getString(8)));
 
             }
 

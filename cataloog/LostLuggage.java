@@ -24,7 +24,9 @@ public class LostLuggage {
     private StringProperty itemname;
     private StringProperty colors;
     private StringProperty description;
-
+    
+    
+    
     public LostLuggage(int caseid, int ownerid, int labelnr, int flightnr,
         String airport, String itemname, String colors, String description) {
         this.caseid =  new SimpleIntegerProperty(caseid);
