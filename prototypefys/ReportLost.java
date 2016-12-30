@@ -1,5 +1,9 @@
 package prototypefys;
 
+import database.Database;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,6 +21,7 @@ import javafx.scene.text.FontWeight;
  * @author Koen Hengsdijk
  */
 public class ReportLost {
+    private Database db = new Database();
     
     Rootpane rootpane = new Rootpane();
     
@@ -63,7 +68,11 @@ public class ReportLost {
         GridPane.setConstraints(btn2, 2, 15);
         
         GridPane.setConstraints(btnS, 40, 28);
-
+        Label caseid = new Label();
+        caseid.setText("The case id is: " + getCaseId());
+        caseid.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+        
+        GridPane.setConstraints(caseid, 40, 27);
         
         grid.setStyle("-fx-background-color: white");
         
@@ -75,7 +84,7 @@ public class ReportLost {
             }
             });
         
-        Label Case = new Label("Found");
+        Label Case = new Label("lost");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 16, 15, 1);
 
@@ -165,10 +174,35 @@ public class ReportLost {
         grid.add(Corendon, 1, 1, 10, 10);
         
         // Toevoegen van buttons
-        grid.getChildren().addAll(btn, btn2, btnS);
+        grid.getChildren().addAll(btn, btn2, btnS, caseid);
         
         return grid;
      
     }
+    
+    public int getCaseId(){
+        
+        int newCaseId = 0;
+        
+        try{
+        
+            Connection ReportGenerationConnect = db.getConnection();
+            Statement statement = ReportGenerationConnect.createStatement();
+            ResultSet TableData = statement.executeQuery("select max(caseid) from lostluggage");
+            
+            while (TableData.next()){
+            newCaseId = TableData.getInt(1) + 1;
+            
+            }
+            
+        } catch (Exception ex) {
+            System.out.println("exception 2 ");
+        }
+        
+        
+        return newCaseId;
+    }
+    
+    
     
 }

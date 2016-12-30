@@ -34,28 +34,31 @@ public class ReportGeneration {
     private static HomeScreen nieuwscherm = new HomeScreen();
     private static HBox homescreen = nieuwscherm.maakhomescreen();
 
+    // this boolean checks if a barchart is used or a piechart
+    private boolean BarchartUsed = true;
+
     ReportGeneration() {
 
     }
 
     public BorderPane MakeReportScreen() {
 
+        // this boolean checks if a barchart is used or a piechart
+        // this boolean checks whether the lost or found bagage is shown
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: white");
 
         VBox ButtonContainer = new VBox(10);
         ButtonContainer.setPadding(new Insets(25, 25, 25, 25));
-        ButtonContainer.setPrefSize(150, 100);
-        ButtonContainer.setMaxSize(150, 100);
+
         ButtonContainer.setStyle("-fx-base:darkred;-fx-border-color:darkred");
         ButtonContainer.setAlignment(Pos.CENTER);
-        ButtonContainer.setPrefSize(250, 250);
-        ButtonContainer.setMaxSize(250, 250);
-        
-        
+        ButtonContainer.setPrefSize(280, 250);
+        ButtonContainer.setMaxSize(280, 250);
+
         Button mainMenu = new Button(); // button 1
         mainMenu.setText("Main Menu");
-        mainMenu.setPrefSize(180, 50);
+        mainMenu.setPrefSize(205, 50);
         mainMenu.setStyle("-fx-base:darkred;-fx-border-color:white");
         mainMenu.setFont(Font.font("Verdana", 12));
         mainMenu.setOnAction(new EventHandler<ActionEvent>() {
@@ -68,63 +71,128 @@ public class ReportGeneration {
 
         Button ShowFound = new Button(); // button 1
         ShowFound.setText("Show found luggage per airport");
-        ShowFound.setPrefSize(180, 50);
+        ShowFound.setPrefSize(210, 50);
         ShowFound.setStyle("-fx-base:darkred;-fx-border-color:white");
         ShowFound.setFont(Font.font("Verdana", 12));
         ShowFound.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String FoundAirportQuery = "select airport, count(airport) "
-                    + "from foundluggage "
-                    + "where airport is not null "
-                    + "group by airport";
-                String FoundLuggageName = "Found luggage per airport";
-                PieChart showFound = createPieChart(FoundAirportQuery, FoundLuggageName);
 
-                root.setCenter(showFound);
+                if (BarchartUsed) {
+                    
+                     String BarChartQuery = "select airport, count(airport) "
+                        + "from foundluggage "
+                        + "where airport is not null "
+                        + "group by airport";
+                    String LostLuggageName = "found bagage per airport";
+
+                    BarChart bc = MakeBarchart(BarChartQuery);
+
+                    root.setCenter(bc);
+                    
+                 String FoundAirportQuery = "select airport, count(airport) "
+                        + "from foundluggage "
+                        + "where airport is not null "
+                        + "group by airport";
+                    String FoundLuggageName = "Found luggage per airport";
+                    PieChart showFound = createPieChart(FoundAirportQuery, FoundLuggageName);
+
+                    root.setCenter(showFound);
+                    
+                    
+                } else {
+
+                    
+                     String BarChartQuery = "select airport, count(airport) "
+                        + "from foundluggage "
+                        + "where airport is not null "
+                        + "group by airport";
+                    String LostLuggageName = "found bagage per airport";
+
+                    BarChart bc = MakeBarchart(BarChartQuery);
+
+                    root.setCenter(bc);
+
+                }
+
             }
+
         });
 
         Button ShowLost = new Button(); // button 1
-        ShowLost.setText("Show found luggage per airport");
-        ShowLost.setPrefSize(180, 50);
+        ShowLost.setText("Show lost luggage per airport");
+        ShowLost.setPrefSize(210, 50);
         ShowLost.setStyle("-fx-base:darkred;-fx-border-color:white");
         ShowLost.setFont(Font.font("Verdana", 12));
         ShowLost.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String LostAirportQuery = "select airport, count(airport) "
-                    + "from lostluggage "
-                    + "where airport is not null "
-                    + "group by airport";
-                String LostLuggageName = "lost bagage per airport";
 
-                PieChart showLost = createPieChart(LostAirportQuery, LostLuggageName);
+                if (BarchartUsed) {
 
-                root.setCenter(showLost);
+                    String LostAirportQuery = "select airport, count(airport) "
+                        + "from lostluggage "
+                        + "where airport is not null "
+                        + "group by airport";
+                    String LostLuggageName = "lost bagage per airport";
+
+                    PieChart showLost = createPieChart(LostAirportQuery, LostLuggageName);
+
+                    root.setCenter(showLost);
+                } else {
+
+                    String BarChartQuery = "select airport, count(airport) "
+                        + "from lostluggage "
+                        + "where airport is not null "
+                        + "group by airport";
+                    String LostLuggageName = "lost bagage per airport";
+
+                    BarChart bc = MakeBarchart(BarChartQuery);
+
+                    root.setCenter(bc);
+
+                }
             }
         });
-        
+
         Button ShowBarChart = new Button(); // button 1
+
+        ShowBarChart.setPrefSize(210, 50);
         ShowBarChart.setText("Show barchart");
-        ShowBarChart.setPrefSize(180, 50);
         ShowBarChart.setStyle("-fx-base:darkred;-fx-border-color:white");
         ShowBarChart.setFont(Font.font("Verdana", 12));
         ShowBarChart.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                String BarChartQuery = "select airport, count(airport) "
-                    + "from lostluggage "
-                    + "where airport is not null "
-                    + "group by airport";
-                String LostLuggageName = "lost bagage per airport";
 
-                BarChart bc = MakeBarchart(BarChartQuery);
+                if (BarchartUsed) {
 
-                root.setCenter(bc);
+                    String BarChartQuery = "select airport, count(airport) "
+                        + "from lostluggage "
+                        + "where airport is not null "
+                        + "group by airport";
+                    String LostLuggageName = "lost bagage per airport";
+
+                    BarChart bc = MakeBarchart(BarChartQuery);
+
+                    root.setCenter(bc);
+                    ShowBarChart.setText("Show piechart");
+                    BarchartUsed = false;
+                } else {
+                    String LostAirportQuery = "select airport, count(airport) "
+                        + "from lostluggage "
+                        + "where airport is not null "
+                        + "group by airport";
+                    String LostLuggageName = "lost bagage per airport";
+
+                    PieChart showLost = createPieChart(LostAirportQuery, LostLuggageName);
+
+                    root.setCenter(showLost);
+                    ShowBarChart.setText("Show barchart");
+                    BarchartUsed = true;
+                }
             }
         });
-        
 
         ButtonContainer.getChildren().addAll(mainMenu, ShowFound, ShowLost, ShowBarChart);
 
@@ -169,41 +237,39 @@ public class ReportGeneration {
         chart.setPrefSize(600, 600);
         return chart;
     }
-    
-    private static BarChart MakeBarchart(String query){
-        
+
+    private static BarChart MakeBarchart(String query) {
+
         ObservableList data = FXCollections.observableArrayList();
-        
+
         final CategoryAxis xAxis = new CategoryAxis();
         final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String,Number> bc = 
-            new BarChart<>(xAxis,yAxis);
+        final BarChart<String, Number> bc
+            = new BarChart<>(xAxis, yAxis);
         bc.setTitle("Country Summary");
-        xAxis.setLabel("airport");       
+        xAxis.setLabel("airport");
         yAxis.setLabel("lost luggage");
-        
+
         XYChart.Series series1 = new XYChart.Series();
         try {
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
             ResultSet TableData = statement.executeQuery(query);
-            
-            
+
             series1.setName("kutbarchart");
             while (TableData.next()) {
 
                 series1.getData().add(new XYChart.Data(TableData.getString(1), TableData.getInt(2)));
 
             }
-        
+
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }
-        
+
         bc.getData().addAll(series1);
-        
+
         return bc;
     }
-    
 
 }
