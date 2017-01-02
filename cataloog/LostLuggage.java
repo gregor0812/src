@@ -22,19 +22,21 @@ public class LostLuggage {
     private IntegerProperty flightnr;
     private StringProperty airport;
     private StringProperty itemname;
+    private StringProperty brand;
     private StringProperty colors;
     private StringProperty description;
     
     
     
     public LostLuggage(int caseid, int ownerid, int labelnr, int flightnr,
-        String airport, String itemname, String colors, String description) {
+        String airport, String itemname, String brand, String colors, String description) {
         this.caseid =  new SimpleIntegerProperty(caseid);
         this.ownerid = new SimpleIntegerProperty(ownerid);
         this.labelnr = new SimpleIntegerProperty(labelnr);
         this.flightnr = new SimpleIntegerProperty(flightnr);
         this.airport = new SimpleStringProperty(airport);
         this.itemname = new SimpleStringProperty(itemname);
+        this.brand = new SimpleStringProperty(brand);
         this.colors = new SimpleStringProperty(colors);
         this.description = new SimpleStringProperty(description);
     }
@@ -86,7 +88,15 @@ public class LostLuggage {
     public void setItemname(String itemname) {
         this.itemname.set(itemname);
     }
+    
+    public String getBrand() {
+        return brand.get();
+    }
 
+    public void setBrand(String brand) {
+        this.brand.set(brand);
+    }
+    
     public String getColors() {
         return colors.get();
     }

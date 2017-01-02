@@ -7,8 +7,10 @@ import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -21,69 +23,70 @@ import javafx.scene.text.FontWeight;
  * @author Koen Hengsdijk
  */
 public class ReportLost {
+
     private Database db = new Database();
-    
+
     Rootpane rootpane = new Rootpane();
-    
+
     private static HomeScreen nieuwscherm = new HomeScreen();
     private static HBox homescreen = nieuwscherm.maakhomescreen();
-    
-    ReportLost(){
-        
+
+    ReportLost() {
+
     }
-    
-    public GridPane MakeLostReport(){
-        
+
+    public GridPane MakeLostReport() {
+
         Button btn;
         Button btn2;
         Button btnS;
-        
-         HBox Menu = new HBox();
+
+        HBox Menu = new HBox();
         // ------------------------------
         btn = new Button(); // button 1
         btn.setText("Main Menu");
-        btn.setPrefSize(160, 50);
+        btn.setPrefSize(110, 50);
         btn.setStyle("-fx-base:darkred;-fx-border-color:white");
         btn.setFont(Font.font("Verdana", 12));
         // ------------------------------
         btn2 = new Button(); // button 2
         btn2.setText("Options");
-        btn2.setPrefSize(160, 50);
+        btn2.setPrefSize(110, 50);
         btn2.setStyle("-fx-base:darkred;-fx-border-color:white");
         btn2.setFont(Font.font("Verdana", 12));
         //--------------------------------
         btnS = new Button(); // button Submit
         btnS.setText("Submit Case");
-        btnS.setPrefSize(160, 50);
+        btnS.setPrefSize(100, 50);
         btnS.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnS.setFont(Font.font("Verdana", 12));
-        
+
         GridPane grid = new GridPane();
-        grid.setPadding(new Insets(10,10,10,10));
+        grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
-        
+
         GridPane.setConstraints(btn, 1, 15);
-        
+
         GridPane.setConstraints(btn2, 2, 15);
-        
-        GridPane.setConstraints(btnS, 40, 28);
+
+        GridPane.setConstraints(btnS, 39, 29, 2, 1);
         Label caseid = new Label();
         caseid.setText("The case id is: " + getCaseId());
         caseid.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-        
-        GridPane.setConstraints(caseid, 40, 27);
-        
+
+        GridPane.setConstraints(caseid, 39, 30, 2, 1);
+
         grid.setStyle("-fx-background-color: white");
-        
+
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+
                 rootpane.addnewpane(homescreen);
             }
-            });
-        
+        });
+
         Label Case = new Label("lost");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 16, 15, 1);
@@ -100,7 +103,7 @@ public class ReportLost {
         grid.add(date, 10, 17, 10, 1);
         TextField dateT = new TextField();
         grid.add(dateT, 20, 17);
-        dateT.setPromptText("dd/mm/yyyy");
+        dateT.setPromptText("yyyy-mm-dd");
 
         Label time = new Label("Time:");
         grid.add(time, 10, 18, 10, 1);
@@ -126,11 +129,48 @@ public class ReportLost {
         grid.add(destination, 30, 19, 10, 1);
         TextField destinationT = new TextField();
         grid.add(destinationT, 40, 19);
-        
-        Label naamReiziger = new Label("Name traveler:");
-        grid.add(naamReiziger, 30, 20, 10, 1);
+
+        Label OwnerInfo = new Label("Owner information: ");
+        OwnerInfo.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        grid.add(OwnerInfo, 30, 20, 12, 1);
+
+        Label naamReiziger = new Label("first Name:");
+        grid.add(naamReiziger, 30, 21, 10, 1);
         TextField naamReizigerT = new TextField();
-        grid.add(naamReizigerT, 40, 20);
+        grid.add(naamReizigerT, 40, 21);
+
+        Label NameInsertion = new Label("insertion:");
+        grid.add(NameInsertion, 30, 22, 10, 1);
+        TextField NameInsertionT = new TextField();
+        grid.add(NameInsertionT, 40, 22);
+
+        Label lastName = new Label("last name:");
+        grid.add(lastName, 30, 23, 10, 1);
+        TextField LastNameT = new TextField();
+        grid.add(LastNameT, 40, 23);
+
+        Label phone1 = new Label("phone number 1:");
+        grid.add(phone1, 30, 24, 10, 1);
+        TextField phone1T = new TextField();
+        grid.add(phone1T, 40, 24);
+
+        Label phone2 = new Label("phone number 2:");
+        grid.add(phone2, 30, 25, 10, 1);
+        TextField phone2T = new TextField();
+        grid.add(phone2T, 40, 25);
+
+        Label emailL = new Label("email: ");
+        grid.add(emailL, 30, 26, 10, 1);
+        TextField emailT = new TextField();
+        grid.add(emailT, 40, 26);
+
+        Label addOwnerNotes = new Label("Additional notes:");
+        grid.add(addOwnerNotes, 30, 27, 10, 1);
+        TextField addOwnerNotesT = new TextField();
+        grid.add(addOwnerNotesT, 40, 27, 1, 2);
+
+        Label OwnerId = new Label("The owner id is: " + getOwnerId());
+        grid.add(OwnerId, 40, 28, 2, 1);
 
         Label itemType = new Label("Type:");
         grid.add(itemType, 10, 24, 10, 1);
@@ -147,62 +187,148 @@ public class ReportLost {
         TextField itemColorT = new TextField();
         grid.add(itemColorT, 20, 26);
 
-        Label lostandfound = new Label("Lost-and-found ID");
-        grid.add(lostandfound, 10, 20, 10, 1);
-        TextField lostandfoundT = new TextField();
-        grid.add(lostandfoundT, 20, 20);
-
-        
-
+//        Label lostandfound = new Label("Lost-and-found ID");
+//        grid.add(lostandfound, 10, 20, 10, 1);
+//        TextField lostandfoundT = new TextField();
+//        grid.add(lostandfoundT, 20, 20);
         Label addNotes = new Label("Additional notes:");
         grid.add(addNotes, 10, 27, 10, 1);
         TextField addNotesT = new TextField();
         grid.add(addNotesT, 20, 27);
-        
+
         ImageView Calendar = new ImageView("/resources/Calendar-icon.png");
         Calendar.setFitHeight(30);
         Calendar.setFitWidth(30);
-        
+
         grid.add(Calendar, 21, 17);
-        
-        
-        
+
         ImageView Corendon = new ImageView("/resources/corendon.jpg");
         Corendon.setFitHeight(100);
         Corendon.setFitWidth(300);
 
         grid.add(Corendon, 1, 1, 10, 10);
-        
+
         // Toevoegen van buttons
         grid.getChildren().addAll(btn, btn2, btnS, caseid);
-        
+
+        btnS.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                
+                
+                
+                
+                int ownerid = getOwnerId();
+                String firstname = naamReizigerT.getText();
+                String insertion = NameInsertion.getText();
+
+                String Lastname = LastNameT.getText();
+                int phone1 = Integer.parseInt(phone1T.getText());
+                int phone2 = Integer.parseInt(phone2T.getText());
+                String email = emailL.getText();
+                String notes = addOwnerNotes.getText();
+                int caseid = getCaseId();
+                int labelnr = Integer.parseInt(labelNumberT.getText());
+                int flightnr = Integer.parseInt(flightT.getText());
+                String airportName = airport.getText();
+
+                String itemname = itemTypeT.getText();
+                String Brand = itemBrandT.getText();
+                String color = itemColorT.getText();
+                String description = addNotesT.getText();
+                String dateLost = dateT.getText();
+                
+                
+                insertIntoDatabase(ownerid, firstname,  insertion,
+         Lastname,  phone1,  phone2,  email,  notes,
+         caseid,  labelnr,  flightnr,  airportName,
+         itemname,  Brand,  color,  description,  dateLost);
+                
+
+            }
+        });
+
         return grid;
-     
+
     }
-    
-    public int getCaseId(){
-        
+
+    public int getCaseId() {
+
         int newCaseId = 0;
-        
-        try{
-        
+
+        try {
+
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
             ResultSet TableData = statement.executeQuery("select max(caseid) from lostluggage");
-            
-            while (TableData.next()){
-            newCaseId = TableData.getInt(1) + 1;
-            
+
+            while (TableData.next()) {
+                newCaseId = TableData.getInt(1) + 1;
+
             }
-            
+
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }
-        
-        
+
         return newCaseId;
     }
-    
-    
-    
+
+    public int getOwnerId() {
+
+        int newOwnerId = 0;
+
+        try {
+
+            Connection ReportGenerationConnect = db.getConnection();
+            Statement statement = ReportGenerationConnect.createStatement();
+            ResultSet TableData = statement.executeQuery("select max(ownerid) from luggageowner");
+
+            while (TableData.next()) {
+                newOwnerId = TableData.getInt(1) + 1;
+
+            }
+
+        } catch (Exception ex) {
+            System.out.println("exception 2 ");
+        }
+
+        return newOwnerId;
+    }
+
+    public void insertIntoDatabase(int ownerid, String firstname, String insertion,
+        String Lastname, int phone1, int phone2, String email, String notes,
+        int caseid, int labelnr, int flightnr, String airportName,
+        String itemname, String Brand, String color, String description, String dateLost) {
+
+        try {
+
+            // a connection is made
+            Connection ReportGenerationConnect = db.getConnection();
+            Statement statement = ReportGenerationConnect.createStatement();
+            statement.executeQuery("insert into luggageowner"
+                + " (ownerid, firstname, insertion, lastname, phone1, phone2, email, notes) "
+                + "values( " + ownerid + ", " + firstname + ", " + insertion
+                + ", " + Lastname + ", " + phone1 + ", " + phone2 + ", " + email
+                + ", " + notes + "); insert into lostluggage (caseid, ownerid, labelnr, flightnr, "
+                + "airport, itemname, brand, colors, "
+                + "description, `date lost`) values(" + caseid + ", " + ownerid
+                + ", " + labelnr + ", " + flightnr + ", " + airportName
+                + ", " + itemname + ", " + Brand + ", " + color + ", " + description
+                + ", " + dateLost);
+
+        } catch (Exception ex) {
+            System.out.println("failed to inser data in to the database ");
+        }
+
+    }
+
+//    public TableView userInfo(){
+//        
+//        
+//        
+//        
+//        
+//        
+//    }
 }

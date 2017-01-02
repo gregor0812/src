@@ -109,7 +109,7 @@ public class FoundLuggage {
         return dateFound.get();
     }
 
-    public void setDateLost(String dateFound) {
+    public void setDateFound(String dateFound) {
         this.dateFound.set(dateFound);
     }
 
