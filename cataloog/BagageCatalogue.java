@@ -45,14 +45,21 @@ public class BagageCatalogue {
     private ObservableList<LostLuggage> data;
     private TableView<LostLuggage> catalogue = new TableView();
 
+    private ObservableList<FoundLuggage> dataFound;
+    private TableView<FoundLuggage> catalogueFound = new TableView();
+
     public BagageCatalogue() {
     }
-    
+
     public Database CatalogueDatabase = new Database();
 
-    // get a table of airport information from the database
-    //("SELECT * FROM lostluggage");
+    // this boolean checks wether the lost or found luggage is displayed
+    private boolean lostOrFound = true;
+
     public GridPane MaakCatalogue() {
+
+        // this stackpane contains the tableviews
+        StackPane TablePane = new StackPane();
 
         GridPane root = new GridPane();
 
@@ -93,14 +100,25 @@ public class BagageCatalogue {
 
         // the standard tableview is added here     
         LostLuggageTable("Select * FROM lostluggage");
-        root.add(catalogue, 2, 3, 2, 3);
+        //root.add(catalogue, 2, 3, 2, 3);
         catalogue.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+
+        FoundLuggageTable("Select * FROM foundluggage");
+        catalogueFound.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
+        TablePane.getChildren().addAll(catalogue, catalogueFound);
+        catalogueFound.setVisible(false);
+
+        root.add(TablePane, 2, 3, 2, 3);
 
         ObservableList<String> options
             = FXCollections.observableArrayList(
                 "CaseID",
-                "Country",
-                "Flight Code"
+                "airport name",
+                "owner id",
+                "labelnr",
+                "flightnumber",
+                "item name",
+                "color"
             );
         final ComboBox comboBox = new ComboBox(options);
         comboBox.setMinSize(150, 20);
@@ -112,10 +130,19 @@ public class BagageCatalogue {
 
                 String output = (String) comboBox.getValue();
                 String zoekConditie = (String) tekst.getText();
+                if (lostOrFound) {
+                    catalogue.getItems().clear();
+                    catalogue.getColumns().clear();
 
-                //airportData = dataBase.executeDataTableQuery("SELECT * FROM bagage "
-                //      + "WHERE " + output + " = " + "'" + zoekConditie + "'");
-                //root.add(createJavaFXReadOnlyDataTableView(airportData), 2 , 3 , 2, 3);
+                    LostLuggageTable("SELECT * FROM lostluggage "
+                        + "WHERE " + output + " = " + "'" + zoekConditie + "'");
+                } else {
+                    catalogue.getItems().clear();
+                    catalogue.getColumns().clear();
+                    FoundLuggageTable("SELECT * FROM foundluggage "
+                        + "WHERE " + output + " = " + "'" + zoekConditie + "'");
+                }
+
             }
         });
 
@@ -124,9 +151,12 @@ public class BagageCatalogue {
         showFound.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                catalogue.getItems().clear();
-                catalogue.getColumns().clear();
-                LostLuggageTable("Select * FROM lostluggage WHERE caseid = 1");
+
+                catalogueFound.setVisible(true);
+                catalogue.setVisible(false);
+                // LostLuggageTable("Select * FROM foundluggage");
+                lostOrFound = false;
+                FoundLuggageTable("Select * FROM foundluggage");
             }
         });
 
@@ -135,10 +165,12 @@ public class BagageCatalogue {
         showLost.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                catalogue.getItems().clear();
-                catalogue.getColumns().clear();
+
+                catalogue.setVisible(true);
+                catalogueFound.setVisible(false);
                 LostLuggageTable("Select * FROM lostluggage");
-                
+                // LostLuggageTable("Select * FROM lostluggage");
+                lostOrFound = true;
             }
         });
 
@@ -160,31 +192,49 @@ public class BagageCatalogue {
         buttonViewCase.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("X");
+
 //                int selectedIndex
 //                        = catalogue.getSelectionModel().getSelectedIndex();
-                LostLuggage person = catalogue.getSelectionModel().getSelectedItem();
-                
-                if(person != null){
-                
-                    GridPane Editform  = LostLuggageEdit.MakeLostReport(person);
-                    
-                    basisPane.addnewpane(Editform);
-                }
-                else{
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("foutmelding");
-                    alert.setHeaderText("Wijzig luchthaven");
-                    alert.setContentText("Selecteer eerst een luchthaven in de"
-                        + " lijst om te wijzigen");
+                if (lostOrFound) {
 
-                    alert.showAndWait();
+                    LostLuggage person = catalogue.getSelectionModel().getSelectedItem();
+
+                    if (person != null) {
+
+                        GridPane Editform = LostLuggageEdit.MakeLostReport(person);
+
+                        basisPane.addnewpane(Editform);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("foutmelding");
+                        alert.setHeaderText("Wijzig luchthaven");
+                        alert.setContentText("Selecteer eerst een luchthaven in de"
+                            + " lijst om te wijzigen");
+
+                        alert.showAndWait();
+                    }
+
+                } else {
+
+                    FoundLuggage EditFound = catalogueFound.getSelectionModel().getSelectedItem();
+
+                    if (EditFound != null) {
+
+                        GridPane Editform = LostLuggageEdit.MakeLostReport(EditFound);
+
+                        basisPane.addnewpane(Editform);
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("foutmelding");
+                        alert.setHeaderText("Wijzig luchthaven");
+                        alert.setContentText("Selecteer eerst een luchthaven in de"
+                            + " lijst om te wijzigen");
+
+                        alert.showAndWait();
+                    }
+
                 }
-                
-                
-                
-                
-                
+
             }
         });
 
@@ -234,6 +284,9 @@ public class BagageCatalogue {
         TableColumn<LostLuggage, String> itemnameColumn = new TableColumn<>("item name");
         itemnameColumn.setCellValueFactory(new PropertyValueFactory<>("itemname"));
 
+        TableColumn<LostLuggage, String> brandColumn = new TableColumn<>("brand");
+        brandColumn.setCellValueFactory(new PropertyValueFactory<>("brand"));
+
         TableColumn<LostLuggage, String> colorsColumn = new TableColumn<>("colors");
         colorsColumn.setCellValueFactory(new PropertyValueFactory<>("colors"));
 
@@ -254,14 +307,17 @@ public class BagageCatalogue {
 
                 data.add(new LostLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
                     TableData.getInt(4), TableData.getString(5), TableData.getString(6),
-                    TableData.getString(7), TableData.getString(8)));
+                    TableData.getString(7), TableData.getString(8), TableData.getString(9)));
 
             }
+
+            catalogue.getItems().clear();
+            catalogue.getColumns().clear();
 
             //System.out.println(data);
             catalogue.setItems(data);
             catalogue.getColumns().addAll(caseidColumn, owneridColumn, labelnrColumn,
-                flightnrColumn, airportColumn, itemnameColumn, colorsColumn, descriptionColumn);
+                flightnrColumn, airportColumn, itemnameColumn, brandColumn, colorsColumn, descriptionColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }
@@ -269,32 +325,35 @@ public class BagageCatalogue {
     }
 
     public void FoundLuggageTable(String query) {
-        catalogue.setEditable(true);
+        catalogueFound.setEditable(true);
 
         // de table colums are made here
-        TableColumn<LostLuggage, Integer> caseidColumn = new TableColumn<>("caseid");
+        TableColumn<FoundLuggage, Integer> caseidColumn = new TableColumn<>("caseid");
         caseidColumn.setCellValueFactory(new PropertyValueFactory<>("caseid"));
 
-        TableColumn<LostLuggage, Integer> owneridColumn = new TableColumn<>("ownerid");
+        TableColumn<FoundLuggage, Integer> owneridColumn = new TableColumn<>("ownerid");
         owneridColumn.setCellValueFactory(new PropertyValueFactory<>("ownerid"));
 
-        TableColumn<LostLuggage, Integer> labelnrColumn = new TableColumn<>("labelnr");
+        TableColumn<FoundLuggage, Integer> labelnrColumn = new TableColumn<>("labelnr");
         labelnrColumn.setCellValueFactory(new PropertyValueFactory<>("labelnr"));
 
-        TableColumn<LostLuggage, Integer> flightnrColumn = new TableColumn<>("flightnumber");
+        TableColumn<FoundLuggage, Integer> flightnrColumn = new TableColumn<>("flightnumber");
         flightnrColumn.setCellValueFactory(new PropertyValueFactory<>("flightnr"));
 
-        TableColumn<LostLuggage, String> airportColumn = new TableColumn<>("airport name");
+        TableColumn<FoundLuggage, String> airportColumn = new TableColumn<>("airport name");
         airportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
 
-        TableColumn<LostLuggage, String> itemnameColumn = new TableColumn<>("item name");
+        TableColumn<FoundLuggage, String> itemnameColumn = new TableColumn<>("item name");
         itemnameColumn.setCellValueFactory(new PropertyValueFactory<>("itemname"));
 
-        TableColumn<LostLuggage, String> colorsColumn = new TableColumn<>("colors");
+        TableColumn<FoundLuggage, String> colorsColumn = new TableColumn<>("colors");
         colorsColumn.setCellValueFactory(new PropertyValueFactory<>("colors"));
 
-        TableColumn<LostLuggage, String> descriptionColumn = new TableColumn<>("description");
+        TableColumn<FoundLuggage, String> descriptionColumn = new TableColumn<>("description");
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
+
+        TableColumn<FoundLuggage, String> dateFoundColumn = new TableColumn<>("date found");
+        dateFoundColumn.setCellValueFactory(new PropertyValueFactory<>("dateFound"));
 
         try {
 
@@ -304,29 +363,28 @@ public class BagageCatalogue {
             ResultSet TableData = statement.executeQuery(query);
 
             // this while loop gets data in the ovservable list
-            data = FXCollections.observableArrayList();
+            dataFound = FXCollections.observableArrayList();
             while (TableData.next()) {
                 //Iterate Row
 
-                data.add(new LostLuggage(TableData.getInt("caseid"), TableData.getInt("ownerid"),
-                    TableData.getInt("labelnr"),
-                    TableData.getInt("flightnr"), TableData.getString("airport"),
-                    TableData.getString("itemname"),
-                    TableData.getString("colors"), TableData.getString("description")));
+                dataFound.add(new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
+                    TableData.getInt(4), TableData.getString(5), TableData.getString(6),
+                    TableData.getString(7), TableData.getString(8), TableData.getString(9)));
 
             }
 
             //System.out.println(data);
-            catalogue.setItems(data);
-            catalogue.getColumns().addAll(caseidColumn, owneridColumn, labelnrColumn,
-                flightnrColumn, airportColumn, itemnameColumn, colorsColumn, descriptionColumn);
+            catalogueFound.getItems().clear();
+            catalogueFound.getColumns().clear();
+
+            catalogueFound.setItems(dataFound);
+            catalogueFound.getColumns().addAll(caseidColumn, owneridColumn, labelnrColumn,
+                flightnrColumn, airportColumn, itemnameColumn, colorsColumn,
+                descriptionColumn, dateFoundColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }
 
     }
-    
-
-    
 
 }
