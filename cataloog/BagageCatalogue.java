@@ -206,10 +206,9 @@ public class BagageCatalogue {
                         basisPane.addnewpane(Editform);
                     } else {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("foutmelding");
-                        alert.setHeaderText("Wijzig luchthaven");
-                        alert.setContentText("Selecteer eerst een luchthaven in de"
-                            + " lijst om te wijzigen");
+                        alert.setTitle("error");
+                        alert.setHeaderText("edit case");
+                        alert.setContentText("Select a case to edit");
 
                         alert.showAndWait();
                     }

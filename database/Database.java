@@ -30,7 +30,7 @@ public class Database {
     public Database() {
         username = "fys";
         password = "ESCXZoaIlK07pwUS";
-        hostname = "it95.nl:3306";
+        hostname = "localhost:3306";
         database = "corendon";
 
         createConnection();

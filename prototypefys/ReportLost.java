@@ -2,15 +2,14 @@ package prototypefys;
 
 import database.Database;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.chart.PieChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -112,8 +111,8 @@ public class ReportLost {
 
         Label airport = new Label("Airport:");
         grid.add(airport, 10, 19, 10, 1);
-        TextField airtportT = new TextField();
-        grid.add(airtportT, 20, 19);
+        TextField airportT = new TextField();
+        grid.add(airportT, 20, 19);
 
         Label labelNumber = new Label("Label number:");
         grid.add(labelNumber, 30, 17, 10, 1);
@@ -214,36 +213,31 @@ public class ReportLost {
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
-                
-                
-                
+
                 int ownerid = getOwnerId();
                 String firstname = naamReizigerT.getText();
-                String insertion = NameInsertion.getText();
+                String insertion = NameInsertionT.getText();
 
                 String Lastname = LastNameT.getText();
                 int phone1 = Integer.parseInt(phone1T.getText());
                 int phone2 = Integer.parseInt(phone2T.getText());
-                String email = emailL.getText();
-                String notes = addOwnerNotes.getText();
+                String email = emailT.getText();
+                String notes = addOwnerNotesT.getText();
                 int caseid = getCaseId();
                 int labelnr = Integer.parseInt(labelNumberT.getText());
                 int flightnr = Integer.parseInt(flightT.getText());
-                String airportName = airport.getText();
+                String airportName = airportT.getText();
 
                 String itemname = itemTypeT.getText();
                 String Brand = itemBrandT.getText();
                 String color = itemColorT.getText();
                 String description = addNotesT.getText();
                 String dateLost = dateT.getText();
-                
-                
-                insertIntoDatabase(ownerid, firstname,  insertion,
-         Lastname,  phone1,  phone2,  email,  notes,
-         caseid,  labelnr,  flightnr,  airportName,
-         itemname,  Brand,  color,  description,  dateLost);
-                
+
+                insertIntoDatabase(ownerid, firstname, insertion,
+                    Lastname, phone1, phone2, email, notes,
+                    caseid, labelnr, flightnr, airportName,
+                    itemname, Brand, color, description, dateLost);
 
             }
         });
@@ -306,19 +300,50 @@ public class ReportLost {
             // a connection is made
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
-            statement.executeQuery("insert into luggageowner"
-                + " (ownerid, firstname, insertion, lastname, phone1, phone2, email, notes) "
-                + "values( " + ownerid + ", " + firstname + ", " + insertion
-                + ", " + Lastname + ", " + phone1 + ", " + phone2 + ", " + email
-                + ", " + notes + "); insert into lostluggage (caseid, ownerid, labelnr, flightnr, "
-                + "airport, itemname, brand, colors, "
-                + "description, `date lost`) values(" + caseid + ", " + ownerid
-                + ", " + labelnr + ", " + flightnr + ", " + airportName
-                + ", " + itemname + ", " + Brand + ", " + color + ", " + description
-                + ", " + dateLost);
+
+            String databaseQuery = ("insert into luggageowner (ownerid, firstname, insertion, lastname, phone1, phone2, email, notes)"
+                + " values(" + ownerid + ", '" + firstname + "', ' " + insertion + "', ' "
+                + Lastname + "' , " + phone1 + ", " + phone2 + " ,  '" + email + "', ' " + notes + " ');");
+                
+                
+                
+                String query2 = (" insert into lostluggage (caseid, ownerid, labelnr,"
+                + " flightr, airport, itemname, brand, colors, description, `date lost`) "
+                + " values( " + caseid + " , " + ownerid + " , " + labelnr + ", " 
+                + flightnr + " , '" + airportName + "' , ' " + itemname 
+                + " ' , ' " + Brand + " ' , ' " + color + "', ' " 
+                + description + "' , ' " + dateLost + "');");
+
+                System.out.println(databaseQuery);
+                
+                
+//                
+//                PreparedStatement preparedStmt = 
+//                    ReportGenerationConnect.prepareStatement(databaseQuery);
+            statement.executeUpdate(databaseQuery);
+            statement.executeUpdate(query2);
+                
+//                ("insert into luggageowner"
+//                + " (ownerid, firstname, insertion, lastname, phone1, phone2, email, notes) "
+//                + "values( " + ownerid + ", " + firstname + ", " + insertion
+//                + ", " + Lastname + ", " + phone1 + ", " + phone2 + ", " + email
+//                + ", " + notes + "); insert into lostluggage (caseid, ownerid, labelnr, flightr, "
+//                + "airport, itemname, brand, colors, "
+//                + "description, `date lost`) values(" + caseid + ", " + ownerid
+//                + ", " + labelnr + ", " + flightnr + ", " + airportName
+//                + ", " + itemname + ", " + Brand + ", " + color + ", " + description
+//                + ", " + dateLost);
+
+    
+              //  preparedStmt.execute();
+                
+//                ReportGenerationConnect.commit();
+//                
+         ReportGenerationConnect.close();
 
         } catch (Exception ex) {
             System.out.println("failed to inser data in to the database ");
+            System.err.println(ex.getMessage());
         }
 
     }
