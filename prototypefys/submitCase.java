@@ -1,5 +1,11 @@
 package prototypefys;
 
+import database.Database;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -22,6 +28,8 @@ public class submitCase {
 
     private static HomeScreen nieuwscherm = new HomeScreen();
     private static HBox homescreen = nieuwscherm.maakhomescreen();
+
+    private Database db = new Database();
 
     submitCase() {
 
@@ -62,7 +70,7 @@ public class submitCase {
 
         GridPane.setConstraints(btn2, 2, 15);
 
-        GridPane.setConstraints(btnS, 40, 30);
+        GridPane.setConstraints(btnS, 40, 31);
 
         grid.setStyle("-fx-background-color: white");
 
@@ -101,15 +109,15 @@ public class submitCase {
         TextField timeT = new TextField();
         grid.add(timeT, 20, 18);
 
-        Label airport= new Label("Airport:");
+        Label airport = new Label("Airport:");
         grid.add(airport, 10, 19, 10, 1);
-        TextField airportT= new TextField();
+        TextField airportT = new TextField();
         grid.add(airportT, 20, 19);
 
-        Label labelN= new Label("Label number:");
+        Label labelN = new Label("Label number:");
         grid.add(labelN, 30, 17, 10, 1);
-        TextField labelNT = new TextField();
-        grid.add(labelNT, 40, 17);
+        TextField labelT = new TextField();
+        grid.add(labelT, 40, 17);
 
         Label flightN = new Label("Flight number:");
         grid.add(flightN, 30, 18, 10, 1);
@@ -120,6 +128,11 @@ public class submitCase {
         grid.add(destination, 30, 19, 10, 1);
         TextField destinationT = new TextField();
         grid.add(destinationT, 40, 19);
+
+        Label ownerName = new Label("Name traveler:");
+        grid.add(ownerName, 30, 20, 10, 1);
+        TextField ownerNameT = new TextField();
+        grid.add(ownerNameT, 40, 20);
 
         Label type = new Label("Type:");
         grid.add(type, 30, 23, 10, 1);
@@ -136,46 +149,43 @@ public class submitCase {
         TextField itemColorT = new TextField();
         grid.add(itemColorT, 40, 25);
 
-        Label ownerName = new Label("Name:");
-        grid.add(ownerName, 10, 23, 10, 1);
-        TextField ownerNameT = new TextField();
-        grid.add(ownerNameT, 20, 23);
-
-        Label ownerAdd = new Label("Address:");
-        grid.add(ownerAdd, 10, 24, 10, 1);
-        TextField ownerAddT = new TextField();
-        grid.add(ownerAddT, 20, 24);
-
-        Label ownerCity = new Label("City:");
-        grid.add(ownerCity, 10, 25, 10, 1);
-        TextField ownerCityT = new TextField();
-        grid.add(ownerCityT, 20, 25);
-
-        Label ownerZip = new Label("Zipcode:");
-        grid.add(ownerZip, 10, 26, 10, 1);
-        TextField ownerZipT = new TextField();
-        grid.add(ownerZipT, 20, 26);
-
-        Label ownerCountry = new Label("Country:");
-        grid.add(ownerCountry, 10, 27, 10, 1);
-        TextField ownerCountryT = new TextField();
-        grid.add(ownerCountryT, 20, 27);
-
-        Label telNumber = new Label("Telephone number:");
-        grid.add(telNumber, 10, 28, 10, 1);
-        TextField telNumberT = new TextField();
-        grid.add(telNumberT, 20, 28);
-
-        Label eMail = new Label("E-mail:");
-        grid.add(eMail, 10, 29, 10, 1);
-        TextField eMailT = new TextField();
-        grid.add(eMailT, 20, 29);
-
+//        Label ownerAdd = new Label("Address:");
+//        grid.add(ownerAdd, 10, 24, 10, 1);
+//        TextField ownerAddT = new TextField();
+//        grid.add(ownerAddT, 20, 24);
+//
+//        Label ownerCity = new Label("City:");
+//        grid.add(ownerCity, 10, 25, 10, 1);
+//        TextField ownerCityT = new TextField();
+//        grid.add(ownerCityT, 20, 25);
+//
+//        Label ownerZip = new Label("Zipcode:");
+//        grid.add(ownerZip, 10, 26, 10, 1);
+//        TextField ownerZipT = new TextField();
+//        grid.add(ownerZipT, 20, 26);
+//
+//        Label ownerCountry = new Label("Country:");
+//        grid.add(ownerCountry, 10, 27, 10, 1);
+//        TextField ownerCountryT = new TextField();
+//        grid.add(ownerCountryT, 20, 27);
+//
+//        Label telNumber = new Label("Telephone number:");
+//        grid.add(telNumber, 10, 28, 10, 1);
+//        TextField telNumberT = new TextField();
+//        grid.add(telNumberT, 20, 28);
+//
+//        Label eMail = new Label("E-mail:");
+//        grid.add(eMail, 10, 29, 10, 1);
+//        TextField eMailT = new TextField();
+//        grid.add(eMailT, 20, 29);
         Label addNotes = new Label("Additional notes:");
         grid.add(addNotes, 30, 26, 10, 1);
         TextField addNotesT = new TextField();
         grid.add(addNotesT, 40, 26);
-        
+
+        Label CaseId = new Label("The case id is: " + getCaseId());
+        grid.add(CaseId, 40, 27, 2, 1);
+        CaseId.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 
         ImageView Calendar = new ImageView("/resources/Calendar-icon.png");
         Calendar.setFitHeight(30);
@@ -192,7 +202,84 @@ public class submitCase {
         // Toevoegen van buttons
         grid.getChildren().addAll(btn, btn2, btnS);
 
+        btnS.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                
+                
+                int caseid = getCaseId();
+                int labelnr = Integer.parseInt(labelT.getText());
+                int flightnr = Integer.parseInt(flightT.getText());
+                String airportName = airportT.getText();
+
+                String itemname = typeT.getText();
+                String Brand = itemBrandT.getText();
+                String color = itemColorT.getText();
+                String description = addNotesT.getText();
+                String dateFound = dateT.getText();
+                String destination = destinationT.getText();
+                
+                
+                insertIntoDatabase( caseid,  labelnr,  flightnr,
+         airportName,  destination,  itemname,  Brand,
+         color,  description,  dateFound);
+            }
+        });
+
         return grid;
+
+    }
+
+    public int getCaseId() {
+
+        int newCaseId = 0;
+
+        try {
+
+            Connection ReportGenerationConnect = db.getConnection();
+            Statement statement = ReportGenerationConnect.createStatement();
+            ResultSet TableData = statement.executeQuery("select max(caseid) from foundluggage");
+
+            while (TableData.next()) {
+                newCaseId = TableData.getInt(1) + 1;
+
+            }
+
+        } catch (Exception ex) {
+            System.out.println("exception 2 ");
+        }
+
+        return newCaseId;
+    }
+
+    public void insertIntoDatabase(int caseid, int labelnr, int flightnr,
+        String airportName, String destination, String itemname, String Brand,
+        String color, String description, String dateFound) {
+
+        try {
+
+            // a connection is made
+            Connection ReportGenerationConnect = db.getConnection();
+            Statement statement = ReportGenerationConnect.createStatement();
+
+            String databaseQuery = (" insert into foundluggage (caseid, labelnr,"
+                + " flightnr, airport, destination, itemname, brand, colors, description, dateFound) "
+                + " values( " + caseid + " , " + labelnr + " , " + flightnr + ", "
+                + " '" + airportName + "' , '" + destination + "' , ' " + itemname
+                + " ' , ' " + Brand + " ' , ' " + color + "', ' "
+                + description + "' , ' " + dateFound + "');");
+
+            System.out.println(databaseQuery);
+
+            statement.executeUpdate(databaseQuery);
+             ReportGenerationConnect
+            .close();
+
+        } catch (Exception ex) {
+            System.out.println("failed to insert data in to the database ");
+            System.err.println(ex.getMessage());
+        }
 
     }
 
