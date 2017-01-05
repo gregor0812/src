@@ -13,6 +13,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import prototypefys.manageEmployees.employeetable;
 
 /**
  *
@@ -27,10 +28,11 @@ public class adminScherm {
     private static DisplayEmployeeLog employeelog = new DisplayEmployeeLog();
     private static GridPane employeeScherm = employeelog.employeelog();
     
+    private static final Rootpane basisPane = new Rootpane();
+
+     
     
-    
-    
-    adminScherm(){
+    public adminScherm(){
         
     }   
     
@@ -59,8 +61,9 @@ public class adminScherm {
             @Override
             public void handle(ActionEvent event) {
                 
-                basis.getChildren().clear();
-                basis.getChildren().add(EmployeeData);
+               employeetable makeTable = new employeetable();
+                GridPane  table = makeTable.MaakEmployeeTable();
+                rootpane.addnewpane(table);
             }
             });
             
