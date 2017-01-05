@@ -330,29 +330,10 @@ public class ReportLost {
 
                 System.out.println(databaseQuery);
                 
-                
-//                
-//                PreparedStatement preparedStmt = 
-//                    ReportGenerationConnect.prepareStatement(databaseQuery);
             statement.executeUpdate(databaseQuery);
             statement.executeUpdate(query2);
                 
-//                ("insert into luggageowner"
-//                + " (ownerid, firstname, insertion, lastname, phone1, phone2, email, notes) "
-//                + "values( " + ownerid + ", " + firstname + ", " + insertion
-//                + ", " + Lastname + ", " + phone1 + ", " + phone2 + ", " + email
-//                + ", " + notes + "); insert into lostluggage (caseid, ownerid, labelnr, flightr, "
-//                + "airport, itemname, brand, colors, "
-//                + "description, `date lost`) values(" + caseid + ", " + ownerid
-//                + ", " + labelnr + ", " + flightnr + ", " + airportName
-//                + ", " + itemname + ", " + Brand + ", " + color + ", " + description
-//                + ", " + dateLost);
 
-    
-              //  preparedStmt.execute();
-                
-//                ReportGenerationConnect.commit();
-//                
          ReportGenerationConnect.close();
 
         } catch (Exception ex) {

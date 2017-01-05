@@ -330,9 +330,6 @@ public class BagageCatalogue {
         TableColumn<FoundLuggage, Integer> caseidColumn = new TableColumn<>("caseid");
         caseidColumn.setCellValueFactory(new PropertyValueFactory<>("caseid"));
 
-        TableColumn<FoundLuggage, Integer> owneridColumn = new TableColumn<>("ownerid");
-        owneridColumn.setCellValueFactory(new PropertyValueFactory<>("ownerid"));
-
         TableColumn<FoundLuggage, Integer> labelnrColumn = new TableColumn<>("labelnr");
         labelnrColumn.setCellValueFactory(new PropertyValueFactory<>("labelnr"));
 
@@ -341,9 +338,16 @@ public class BagageCatalogue {
 
         TableColumn<FoundLuggage, String> airportColumn = new TableColumn<>("airport name");
         airportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
+        
+        TableColumn<FoundLuggage, String> destinationColumn = new TableColumn<>("destination");
+        destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
+        
 
         TableColumn<FoundLuggage, String> itemnameColumn = new TableColumn<>("item name");
         itemnameColumn.setCellValueFactory(new PropertyValueFactory<>("itemname"));
+        
+        TableColumn<FoundLuggage, String> brandColumn = new TableColumn<>("brand");
+        brandColumn.setCellValueFactory(new PropertyValueFactory<>("brand"));
 
         TableColumn<FoundLuggage, String> colorsColumn = new TableColumn<>("colors");
         colorsColumn.setCellValueFactory(new PropertyValueFactory<>("colors"));
@@ -367,8 +371,9 @@ public class BagageCatalogue {
                 //Iterate Row
 
                 dataFound.add(new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
-                    TableData.getInt(4), TableData.getString(5), TableData.getString(6),
-                    TableData.getString(7), TableData.getString(8), TableData.getString(9)));
+                    TableData.getString(4), TableData.getString(5), TableData.getString(6),
+                    TableData.getString(7), TableData.getString(8), 
+                    TableData.getString(8), TableData.getString(10)));
 
             }
 
@@ -377,9 +382,9 @@ public class BagageCatalogue {
             catalogueFound.getColumns().clear();
 
             catalogueFound.setItems(dataFound);
-            catalogueFound.getColumns().addAll(caseidColumn, owneridColumn, labelnrColumn,
-                flightnrColumn, airportColumn, itemnameColumn, colorsColumn,
-                descriptionColumn, dateFoundColumn);
+            catalogueFound.getColumns().addAll(caseidColumn, labelnrColumn,
+                flightnrColumn, airportColumn, destinationColumn, itemnameColumn,
+                brandColumn ,colorsColumn, descriptionColumn, dateFoundColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }

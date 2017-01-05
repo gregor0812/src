@@ -17,25 +17,29 @@ import javafx.beans.property.StringProperty;
 public class FoundLuggage {
     
    private IntegerProperty caseid;
-    private IntegerProperty ownerid;
     private IntegerProperty labelnr;
     private IntegerProperty flightnr;
     private StringProperty airport;
+    private StringProperty destination;
     private StringProperty itemname;
+    private StringProperty brand;
     private StringProperty colors;
     private StringProperty description;
     private StringProperty dateFound;
     
     
     
-    public FoundLuggage(int caseid, int ownerid, int labelnr, int flightnr,
-        String airport, String itemname, String colors, String description, String dateFound) {
+    public FoundLuggage(int caseid, int labelnr, int flightnr,
+        String airport,String destination, String itemname, String brand, String colors,
+        String description, String dateFound) {
+        
         this.caseid =  new SimpleIntegerProperty(caseid);
-        this.ownerid = new SimpleIntegerProperty(ownerid);
         this.labelnr = new SimpleIntegerProperty(labelnr);
         this.flightnr = new SimpleIntegerProperty(flightnr);
         this.airport = new SimpleStringProperty(airport);
+        this.destination = new SimpleStringProperty(destination);
         this.itemname = new SimpleStringProperty(itemname);
+        this.brand = new SimpleStringProperty(brand);
         this.colors = new SimpleStringProperty(colors);
         this.description = new SimpleStringProperty(description);
         this.dateFound = new SimpleStringProperty(dateFound);
@@ -49,13 +53,7 @@ public class FoundLuggage {
         this.caseid.set(caseid);
     }
 
-    public int getOwnerid() {
-        return ownerid.get();
-    }
-
-    public void setOwnerid(int ownerid) {
-        this.ownerid.set(ownerid);
-    }
+    
 
     public int getLabelnr() {
         return labelnr.get();
@@ -80,7 +78,15 @@ public class FoundLuggage {
     public void setAirport(String airport) {
         this.airport.set(airport);
     }
-
+    
+    public String getDestination() {
+        return destination.get();   
+    }
+    
+    public void setDestination(String destination){
+        this.destination.set(destination);
+    }
+    
     public String getItemname() {
         return itemname.get();
     }
@@ -88,6 +94,15 @@ public class FoundLuggage {
     public void setItemname(String itemname) {
         this.itemname.set(itemname);
     }
+    
+    public String getBrand() {
+        return brand.get();
+    }
+
+    public void setBrand(String brand) {
+        this.brand.set(brand);
+    }
+    
 
     public String getColors() {
         return colors.get();
