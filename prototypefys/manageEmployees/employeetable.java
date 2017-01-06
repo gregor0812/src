@@ -9,13 +9,16 @@ import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -69,7 +72,8 @@ public class employeetable {
 
         TableColumn<Employee, String> employeenumberColumn = new TableColumn<>("employee number");
         employeenumberColumn.setCellValueFactory(new PropertyValueFactory<>("employeenumber"));
-
+        employeenumberColumn.setMinWidth(100);
+        
         TableColumn<Employee, String> usernameColumn = new TableColumn<>("username");
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
 
@@ -142,16 +146,51 @@ public class employeetable {
         addEmployee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
-                rootpane.addnewpane(addUser());
-                
-                
+                rootpane.addnewpane(addUser());                                
             }
         });
+        
+        Button removeEmployee = new Button("remove employee");
+        removeEmployee.setPrefSize(180, 20);
+        removeEmployee.setStyle("-fx-base:darkred;-fx-border-color:black");
+        removeEmployee.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+               
+                Employee employee = employeeView.getSelectionModel().getSelectedItem();
+                if (employee != null) {
+                    Alert alert = new Alert(AlertType.CONFIRMATION);
+                    alert.setTitle("Confirmation Dialog");
+                    alert.setHeaderText("deleting employee");
+                    alert.setContentText("Are you sure that you want "
+                        + "to delete this employee?");
 
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == ButtonType.OK){
+                    removeUser(employee.getEmployeenumber());
+                    rootpane.addnewpane(MaakEmployeeTable());
+                    } else {
+                    
+                    }
+                    
+                    
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("error");
+                    alert.setHeaderText("remove employee");
+                    alert.setContentText("Select a employee to remove");
+
+                    alert.showAndWait();
+                }
+
+                                                
+            }
+        });
+        
         root.add(employeeView, 0, 0);
         VBox buttonContainer = new VBox(10);
-        buttonContainer.getChildren().addAll(backbuton, editTable, addEmployee);
+        buttonContainer.getChildren().addAll(backbuton, editTable, addEmployee, 
+            removeEmployee);
         root.add(buttonContainer, 1, 0);
         return root;
     }
@@ -361,7 +400,7 @@ public class employeetable {
         grid.add(insetionLabel, 10, 20, 10, 1);
         TextField InsertionText = new TextField();
         grid.add(InsertionText, 20, 20);
-        InsertionText.setEditable(false);
+        
 
         Label lastnameLabel = new Label("Lastname:");
         grid.add(lastnameLabel, 10, 21, 10, 1);
@@ -456,5 +495,29 @@ public class employeetable {
         }
 
     }
+    
+    public void removeUser(int employeenumber) {
+
+        try {
+
+            // a connection is made
+            Connection employeetableConnect = db.getConnection();
+            Statement statement = employeetableConnect.createStatement();
+
+            String databaseQuery = ("DELETE FROM `corendon`.`employee` WHERE"
+                + " `employeenumber`=" + employeenumber + ";");
+
+            System.out.println(databaseQuery);
+
+            statement.executeUpdate(databaseQuery);
+            
+
+        } catch (Exception ex) {
+            System.out.println("failed to insert data in to the database ");
+            System.err.println(ex.getMessage());
+        }
+
+    }
+    
     
 }
