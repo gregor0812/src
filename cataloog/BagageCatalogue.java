@@ -112,8 +112,8 @@ public class BagageCatalogue {
 
         ObservableList<String> options
             = FXCollections.observableArrayList(
-                "CaseID",
-                "airport name",
+                "caseid",
+                "airport",
                 "owner id",
                 "labelnr",
                 "flightnumber",

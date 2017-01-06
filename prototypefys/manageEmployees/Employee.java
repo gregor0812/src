@@ -5,6 +5,7 @@
  */
 package prototypefys.manageEmployees;
 
+import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -14,6 +15,8 @@ import javafx.beans.property.StringProperty;
  * @author Koen Hengsdijk
  */
 public class Employee {
+    
+    private IntegerProperty employeenumber;
     private StringProperty username;
     private StringProperty password;
     private StringProperty firstname;
@@ -21,8 +24,9 @@ public class Employee {
     private StringProperty lastname;
     private StringProperty role;
 
-    public Employee(String username, String password, String firstname, 
+    public Employee(int employeenumber, String username, String password, String firstname, 
         String insertion, String lastname, String role) {
+        this.employeenumber = new SimpleIntegerProperty(employeenumber);
         this.username = new SimpleStringProperty(username);
         this.password = new SimpleStringProperty(password);
         this.firstname = new SimpleStringProperty(firstname);
@@ -30,7 +34,15 @@ public class Employee {
         this.lastname = new SimpleStringProperty(lastname);
         this.role = new SimpleStringProperty(role);
     }
+    
+    public int getEmployeenumber() {
+        return employeenumber.get();
+    }
 
+    public void setEmployeenumber(int employeenumber) {
+        this.employeenumber.set(employeenumber);
+    }
+    
     public String getUsername() {
         return username.get();
     }
