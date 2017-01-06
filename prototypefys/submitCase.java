@@ -86,9 +86,7 @@ public class submitCase {
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 16, 15, 1);
 
-        Label personal = new Label("Personal Data");
-        personal.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        grid.add(personal, 10, 22, 15, 1);
+        
 
         Label label = new Label("Label Information");
         label.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -209,8 +207,24 @@ public class submitCase {
                 
                 
                 int caseid = getCaseId();
-                int labelnr = Integer.parseInt(labelT.getText());
-                int flightnr = Integer.parseInt(flightT.getText());
+                
+                
+                 Integer labelnr = null;
+                Integer flightnr = null;
+                if(labelT.getText().isEmpty()){
+                    labelnr = 0;
+                }
+                else{
+                labelnr = Integer.parseInt(labelT.getText());    
+                }
+                
+                if(flightT.getText().isEmpty()){
+                     flightnr = 0;
+                }
+                else{
+                    flightnr = Integer.parseInt(flightT.getText());
+                }
+                
                 String airportName = airportT.getText();
 
                 String itemname = typeT.getText();
@@ -253,7 +267,7 @@ public class submitCase {
         return newCaseId;
     }
 
-    public void insertIntoDatabase(int caseid, int labelnr, int flightnr,
+    public void insertIntoDatabase(int caseid, Integer labelnr, Integer flightnr,
         String airportName, String destination, String itemname, String Brand,
         String color, String description, String dateFound) {
 

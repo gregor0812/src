@@ -114,10 +114,10 @@ public class BagageCatalogue {
             = FXCollections.observableArrayList(
                 "caseid",
                 "airport",
-                "owner id",
+                "ownerid",
                 "labelnr",
                 "flightnumber",
-                "item name",
+                "itemname",
                 "color"
             );
         final ComboBox comboBox = new ComboBox(options);
@@ -135,7 +135,7 @@ public class BagageCatalogue {
                     catalogue.getColumns().clear();
 
                     LostLuggageTable("SELECT * FROM lostluggage "
-                        + "WHERE " + output + " = " + "'" + zoekConditie + "'");
+                        + "WHERE `" + output + "` = " + "'" + zoekConditie + "'");
                 } else {
                     catalogue.getItems().clear();
                     catalogue.getColumns().clear();
@@ -371,7 +371,7 @@ public class BagageCatalogue {
                 //Iterate Row
 
                 dataFound.add(new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
-                    TableData.getString(4), TableData.getString(5), TableData.getString(6),
+                    TableData.getString(5), TableData.getString(4), TableData.getString(6),
                     TableData.getString(7), TableData.getString(8), 
                     TableData.getString(8), TableData.getString(10)));
 
