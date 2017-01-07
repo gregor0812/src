@@ -265,8 +265,7 @@ public class BagageCatalogue {
     }
 
     public void LostLuggageTable(String query) {
-        catalogue.setEditable(true);
-
+        
         // de table colums are made here
         TableColumn<LostLuggage, Integer> caseidColumn = new TableColumn<>("caseid");
         caseidColumn.setCellValueFactory(new PropertyValueFactory<>("caseid"));
@@ -294,7 +293,10 @@ public class BagageCatalogue {
 
         TableColumn<LostLuggage, String> descriptionColumn = new TableColumn<>("description");
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-
+        
+        TableColumn<LostLuggage, String> statusColumn = new TableColumn<>("status");
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        
         try {
 
             // a connection is made
@@ -309,7 +311,7 @@ public class BagageCatalogue {
 
                 data.add(new LostLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
                     TableData.getInt(4), TableData.getString(5), TableData.getString(6),
-                    TableData.getString(7), TableData.getString(8), TableData.getString(9)));
+                    TableData.getString(7), TableData.getString(8), TableData.getString(9), TableData.getString(11)));
 
             }
 
@@ -319,7 +321,7 @@ public class BagageCatalogue {
             //System.out.println(data);
             catalogue.setItems(data);
             catalogue.getColumns().addAll(caseidColumn, owneridColumn, labelnrColumn,
-                flightnrColumn, airportColumn, itemnameColumn, brandColumn, colorsColumn, descriptionColumn);
+                flightnrColumn, airportColumn, itemnameColumn, brandColumn, colorsColumn, descriptionColumn, statusColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }
@@ -360,6 +362,9 @@ public class BagageCatalogue {
 
         TableColumn<FoundLuggage, String> dateFoundColumn = new TableColumn<>("date found");
         dateFoundColumn.setCellValueFactory(new PropertyValueFactory<>("dateFound"));
+        
+        TableColumn<FoundLuggage, String> statusColumn = new TableColumn<>("status");
+        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
         try {
 
@@ -376,7 +381,7 @@ public class BagageCatalogue {
                 dataFound.add(new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
                     TableData.getString(5), TableData.getString(4), TableData.getString(6),
                     TableData.getString(7), TableData.getString(8), 
-                    TableData.getString(8), TableData.getString(10)));
+                    TableData.getString(8), TableData.getString(10), TableData.getString(11)));
 
             }
 
@@ -387,7 +392,7 @@ public class BagageCatalogue {
             catalogueFound.setItems(dataFound);
             catalogueFound.getColumns().addAll(caseidColumn, labelnrColumn,
                 flightnrColumn, airportColumn, destinationColumn, itemnameColumn,
-                brandColumn ,colorsColumn, descriptionColumn, dateFoundColumn);
+                brandColumn ,colorsColumn, descriptionColumn, dateFoundColumn, statusColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }

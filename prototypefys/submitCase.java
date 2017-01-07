@@ -308,8 +308,7 @@ public class submitCase {
                 System.err.println(ex.getMessage());
             }
 
-            ReportGenerationConnect
-                .close();
+            
 
         } catch (Exception ex) {
             System.out.println("failed to insert data in to the database ");
