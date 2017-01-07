@@ -72,7 +72,7 @@ public class ReportLost {
 
         GridPane.setConstraints(btn2, 2, 15);
 
-        GridPane.setConstraints(btnS, 39, 30, 2, 1);
+        GridPane.setConstraints(btnS, 39, 30, 2, 2);
         Label caseid = new Label();
         caseid.setText("The case id is: " + getCaseId());
         caseid.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
@@ -102,7 +102,7 @@ public class ReportLost {
 
         Label luggage = new Label("Luggage information");
         luggage.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        grid.add(luggage, 10, 23, 15, 1);
+        grid.add(luggage, 30, 23, 15, 1);
 
         Label date = new Label("Date:");
         grid.add(date, 10, 17, 10, 1);
@@ -134,68 +134,86 @@ public class ReportLost {
 
         Label OwnerInfo = new Label("Owner information: ");
         OwnerInfo.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        grid.add(OwnerInfo, 30, 20, 12, 1);
+        grid.add(OwnerInfo, 10, 20, 12, 1);
 
         Label naamReiziger = new Label("first Name:");
-        grid.add(naamReiziger, 30, 21, 10, 1);
+        grid.add(naamReiziger, 10, 21, 10, 1);
         TextField naamReizigerT = new TextField();
-        grid.add(naamReizigerT, 40, 21);
+        grid.add(naamReizigerT, 20, 21);
 
         Label NameInsertion = new Label("insertion:");
-        grid.add(NameInsertion, 30, 22, 10, 1);
+        grid.add(NameInsertion, 10, 22, 10, 1);
         TextField NameInsertionT = new TextField();
-        grid.add(NameInsertionT, 40, 22);
+        grid.add(NameInsertionT, 20, 22);
 
         Label lastName = new Label("last name:");
-        grid.add(lastName, 30, 23, 10, 1);
+        grid.add(lastName, 10, 23, 10, 1);
         TextField LastNameT = new TextField();
-        grid.add(LastNameT, 40, 23);
+        grid.add(LastNameT, 20, 23);
 
         Label phone1 = new Label("phone number 1:");
-        grid.add(phone1, 30, 24, 10, 1);
+        grid.add(phone1, 10, 24, 10, 1);
         TextField phone1T = new TextField();
-        grid.add(phone1T, 40, 24);
+        grid.add(phone1T, 20, 24);
 
         Label phone2L = new Label("phone number 2:");
-        grid.add(phone2L, 30, 25, 10, 1);
+        grid.add(phone2L, 10, 25, 10, 1);
         TextField phone2T = new TextField();
-        grid.add(phone2T, 40, 25);
+        grid.add(phone2T, 20, 25);
 
         Label emailL = new Label("email: ");
-        grid.add(emailL, 30, 26, 10, 1);
+        grid.add(emailL, 10, 26, 10, 1);
         TextField emailT = new TextField();
-        grid.add(emailT, 40, 26);
+        grid.add(emailT, 20, 26);
 
         Label addOwnerNotes = new Label("Additional notes:");
-        grid.add(addOwnerNotes, 30, 27, 10, 1);
+        grid.add(addOwnerNotes, 10, 27, 10, 1);
         TextField addOwnerNotesT = new TextField();
-        grid.add(addOwnerNotesT, 40, 27, 1, 2);
+        grid.add(addOwnerNotesT, 20, 27, 1, 1);
 
-        
+        Label ownerAdd = new Label("Address:");
+        grid.add(ownerAdd, 10, 28, 10, 1);
+        TextField ownerAddT = new TextField();
+        grid.add(ownerAddT, 20, 28);
+
+        Label ownerCity = new Label("City:");
+        grid.add(ownerCity, 10, 29, 10, 1);
+        TextField ownerCityT = new TextField();
+        grid.add(ownerCityT, 20, 29);
+
+        Label ownerZip = new Label("Zipcode:");
+        grid.add(ownerZip, 10, 30, 10, 1);
+        TextField ownerZipT = new TextField();
+        grid.add(ownerZipT, 20, 30);
+
+        Label ownerCountry = new Label("Country:");
+        grid.add(ownerCountry, 10, 31, 10, 1);
+        TextField ownerCountryT = new TextField();
+        grid.add(ownerCountryT, 20, 31);
 
         Label itemType = new Label("Type:");
-        grid.add(itemType, 10, 24, 10, 1);
+        grid.add(itemType, 30, 24, 10, 1);
         TextField itemTypeT = new TextField();
-        grid.add(itemTypeT, 20, 24);
+        grid.add(itemTypeT, 40, 24);
 
         Label itemBrand = new Label("Brand:");
-        grid.add(itemBrand, 10, 25, 10, 1);
+        grid.add(itemBrand, 30, 25, 10, 1);
         TextField itemBrandT = new TextField();
-        grid.add(itemBrandT, 20, 25);
+        grid.add(itemBrandT, 40, 25);
 
         Label itemColor = new Label("Color:");
-        grid.add(itemColor, 10, 26, 10, 1);
+        grid.add(itemColor, 30, 26, 10, 1);
         TextField itemColorT = new TextField();
-        grid.add(itemColorT, 20, 26);
+        grid.add(itemColorT, 40, 26);
 
 //        Label lostandfound = new Label("Lost-and-found ID");
 //        grid.add(lostandfound, 10, 20, 10, 1);
 //        TextField lostandfoundT = new TextField();
 //        grid.add(lostandfoundT, 20, 20);
         Label addNotes = new Label("Additional notes:");
-        grid.add(addNotes, 10, 27, 10, 1);
+        grid.add(addNotes, 30, 27, 10, 1);
         TextField addNotesT = new TextField();
-        grid.add(addNotesT, 20, 27);
+        grid.add(addNotesT, 40, 27);
 
         ImageView Calendar = new ImageView("/resources/Calendar-icon.png");
         Calendar.setFitHeight(30);
@@ -246,12 +264,17 @@ public class ReportLost {
                 String color = itemColorT.getText();
                 String description = addNotesT.getText();
                 String dateLost = dateT.getText();
-               
-           
+                
+                String address = ownerAddT.getText();
+                String city = ownerCityT.getText();
+                String zipcode = ownerZipT.getText();
+                String country = ownerCountryT.getText();
+                
                 insertIntoDatabase(ownerid, firstname, insertion,
                     Lastname, phone1, phone2, email, notes,
                     caseid, labelnr, flightnr, airportName,
-                    itemname, Brand, color, description, dateLost);
+                    itemname, Brand, color, description, dateLost, address,
+                    city, zipcode, country);
                 
                 
 
@@ -309,7 +332,8 @@ public class ReportLost {
     public void insertIntoDatabase(int ownerid, String firstname, String insertion,
         String Lastname, int phone1, Integer phone2, String email, String notes,
         int caseid, int labelnr, int flightnr, String airportName,
-        String itemname, String Brand, String color, String description, String dateLost) {
+        String itemname, String Brand, String color, String description, String dateLost, 
+        String address, String city, String zipcode, String country) {
 
         try {
 
@@ -318,22 +342,26 @@ public class ReportLost {
             Statement statement = ReportGenerationConnect.createStatement();
 
             String databaseQuery = ("insert into luggageowner (ownerid, firstname, insertion, lastname, phone1, phone2, email, notes)"
-                + " values(" + ownerid + ", '" + firstname + "', ' " + insertion + "', ' "
-                + Lastname + "' , " + phone1 + ", " + phone2 + " ,  '" + email + "', ' " + notes + " ');");
+                + " values(" + ownerid + ", '" + firstname + "', '" + insertion + "', '"
+                + Lastname + "' , " + phone1 + ", " + phone2 + " ,  '" + email + "', '" + notes + "');");
                 
-                
+                String addressQuery = ("insert into address values (" + ownerid
+                    + ",  '" + address + "' ,  '" + zipcode + "'"
+                    + ",  '" + city + "' ,  '" + country + "')");
                 
                 String query2 = (" insert into lostluggage (caseid, ownerid, labelnr,"
                 + " flightr, airport, itemname, brand, colors, description, `date lost`) "
                 + " values( " + caseid + " , " + ownerid + " , " + labelnr + ", " 
-                + flightnr + " , '" + airportName + "' , ' " + itemname 
-                + " ' , ' " + Brand + " ' , ' " + color + "', ' " 
-                + description + "' , ' " + dateLost + "');");
+                + flightnr + " , '" + airportName + "' , '" + itemname 
+                + "' , '" + Brand + "' , '" + color + "', '" 
+                + description + "' , '" + dateLost + "');");
 
                 System.out.println(databaseQuery);
                 
             statement.executeUpdate(databaseQuery);
             statement.executeUpdate(query2);
+            statement.executeUpdate(addressQuery);
+            
             try {
                 
                 Statement statement2 = ReportGenerationConnect.createStatement();

@@ -133,6 +133,11 @@ public class BagageCatalogue {
 
                 String output = (String) comboBox.getValue();
                 String zoekConditie = (String) tekst.getText();
+                if("color".equals(output)){
+                    output = "colors";
+                }
+                
+                
                 if (lostOrFound) {
                     catalogue.getItems().clear();
                     catalogue.getColumns().clear();
@@ -324,6 +329,7 @@ public class BagageCatalogue {
                 flightnrColumn, airportColumn, itemnameColumn, brandColumn, colorsColumn, descriptionColumn, statusColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
+            System.out.println(ex);
         }
 
     }
