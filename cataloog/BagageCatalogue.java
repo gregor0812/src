@@ -289,7 +289,7 @@ public class BagageCatalogue {
         TableColumn<LostLuggage, String> brandColumn = new TableColumn<>("brand");
         brandColumn.setCellValueFactory(new PropertyValueFactory<>("brand"));
 
-        TableColumn<LostLuggage, String> colorsColumn = new TableColumn<>("colors");
+        TableColumn<LostLuggage, String> colorsColumn = new TableColumn<>("colour");
         colorsColumn.setCellValueFactory(new PropertyValueFactory<>("colors"));
 
         TableColumn<LostLuggage, String> descriptionColumn = new TableColumn<>("description");

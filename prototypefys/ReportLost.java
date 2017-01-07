@@ -5,6 +5,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -332,6 +334,32 @@ public class ReportLost {
                 
             statement.executeUpdate(databaseQuery);
             statement.executeUpdate(query2);
+            try {
+                
+                Statement statement2 = ReportGenerationConnect.createStatement();
+                ResultSet knownlabelnr = statement2.executeQuery("select labelnr from foundluggage " +
+                "where labelnr != 0");
+                List rowValues = new ArrayList();
+                while (knownlabelnr.next()) {
+                    rowValues.add(knownlabelnr.getInt(1));
+                }
+                
+               if(rowValues.contains(labelnr)){
+                   Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("congrats");
+                        alert.setHeaderText("you got a match");
+                        alert.setContentText("YOU GOT A MATCH WANKER");
+                        
+                           alert.showAndWait(); 
+               }
+                
+                
+                
+                System.out.println(rowValues);
+            } catch (Exception ex) {
+                System.out.println("failed to check for matches");
+                System.err.println(ex.getMessage());
+            }
                 
 
          ReportGenerationConnect.close();
