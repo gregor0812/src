@@ -4,11 +4,12 @@ import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.StringProperty;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -85,8 +86,6 @@ public class submitCase {
         Label Case = new Label("Found");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 16, 15, 1);
-
-        
 
         Label label = new Label("Label Information");
         label.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
@@ -204,27 +203,22 @@ public class submitCase {
             @Override
             public void handle(ActionEvent event) {
 
-                
-                
                 int caseid = getCaseId();
-                
-                
-                 Integer labelnr = null;
+
+                Integer labelnr = null;
                 Integer flightnr = null;
-                if(labelT.getText().isEmpty()){
+                if (labelT.getText().isEmpty()) {
                     labelnr = 0;
+                } else {
+                    labelnr = Integer.parseInt(labelT.getText());
                 }
-                else{
-                labelnr = Integer.parseInt(labelT.getText());    
-                }
-                
-                if(flightT.getText().isEmpty()){
-                     flightnr = 0;
-                }
-                else{
+
+                if (flightT.getText().isEmpty()) {
+                    flightnr = 0;
+                } else {
                     flightnr = Integer.parseInt(flightT.getText());
                 }
-                
+
                 String airportName = airportT.getText();
 
                 String itemname = typeT.getText();
@@ -233,11 +227,10 @@ public class submitCase {
                 String description = addNotesT.getText();
                 String dateFound = dateT.getText();
                 String destination = destinationT.getText();
-                
-                
-                insertIntoDatabase( caseid,  labelnr,  flightnr,
-         airportName,  destination,  itemname,  Brand,
-         color,  description,  dateFound);
+
+                insertIntoDatabase(caseid, labelnr, flightnr,
+                    airportName, destination, itemname, Brand,
+                    color, description, dateFound);
             }
         });
 
@@ -287,8 +280,36 @@ public class submitCase {
             System.out.println(databaseQuery);
 
             statement.executeUpdate(databaseQuery);
-             ReportGenerationConnect
-            .close();
+
+            // een resultset met verloren labelnummers
+            try {
+                
+                Statement statement2 = ReportGenerationConnect.createStatement();
+                ResultSet knownlabelnr = statement2.executeQuery("select labelnr from lostluggage");
+                List rowValues = new ArrayList();
+                while (knownlabelnr.next()) {
+                    rowValues.add(knownlabelnr.getInt(1));
+                }
+                
+               if(rowValues.contains(labelnr)){
+                   Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("congrats");
+                        alert.setHeaderText("you got a match");
+                        alert.setContentText("YOU GOT A MATCH WANKER");
+                        
+                           alert.showAndWait(); 
+               }
+                
+                
+                
+                System.out.println(rowValues);
+            } catch (Exception ex) {
+                System.out.println("failed to check for matches");
+                System.err.println(ex.getMessage());
+            }
+
+            ReportGenerationConnect
+                .close();
 
         } catch (Exception ex) {
             System.out.println("failed to insert data in to the database ");

@@ -46,7 +46,7 @@ public class PrototypeFys extends Application {
 //        HomeScreen homescherm = new HomeScreen();
 //        HBox scherm5 = homescherm.maakhomescreen();
     
-    Scene scene = new Scene(scherm, 1000, 800);
+    Scene scene = new Scene(scherm, 1100, 900);
 //    Scene scene2 = new Scene(scherm5, 900, 800);    
     
         primaryStage.setTitle("loginscherm test");

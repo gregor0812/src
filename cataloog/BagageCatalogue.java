@@ -62,7 +62,7 @@ public class BagageCatalogue {
         StackPane TablePane = new StackPane();
 
         GridPane root = new GridPane();
-
+        root.setAlignment(Pos.TOP_CENTER);
         root.getColumnConstraints().add(new ColumnConstraints(200));
         root.setPadding(new Insets(30, 30, 30, 30));
 
@@ -101,8 +101,11 @@ public class BagageCatalogue {
         // the standard tableview is added here     
         LostLuggageTable("Select * FROM lostluggage");
         //root.add(catalogue, 2, 3, 2, 3);
+        
         catalogue.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
+        
+        
+        
         FoundLuggageTable("Select * FROM foundluggage");
         catalogueFound.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         TablePane.getChildren().addAll(catalogue, catalogueFound);
@@ -286,7 +289,7 @@ public class BagageCatalogue {
         TableColumn<LostLuggage, String> brandColumn = new TableColumn<>("brand");
         brandColumn.setCellValueFactory(new PropertyValueFactory<>("brand"));
 
-        TableColumn<LostLuggage, String> colorsColumn = new TableColumn<>("colors");
+        TableColumn<LostLuggage, String> colorsColumn = new TableColumn<>("colour");
         colorsColumn.setCellValueFactory(new PropertyValueFactory<>("colors"));
 
         TableColumn<LostLuggage, String> descriptionColumn = new TableColumn<>("description");
