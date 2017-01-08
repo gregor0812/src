@@ -256,7 +256,7 @@ public class ReportGeneration {
             Statement statement = ReportGenerationConnect.createStatement();
             ResultSet TableData = statement.executeQuery(query);
 
-            series1.setName("kutbarchart");
+            series1.setName("airportname");
             while (TableData.next()) {
 
                 series1.getData().add(new XYChart.Data(TableData.getString(1), TableData.getInt(2)));

@@ -480,8 +480,8 @@ public class employeetable {
             Statement statement = employeetableConnect.createStatement();
 
             String databaseQuery = ("insert into employee" +
-            " values (" + employeenumber + ", ' " + username + "', ' " + password 
-                + "', ' " + firstname + "', '" + insertion + "', ' " + lastname 
+            " values (" + employeenumber + ", '" + username + "', '" + password 
+                + "', '" + firstname + "', '" + insertion + "', '" + lastname 
                 + "', '" + role + "')");
 
             System.out.println(databaseQuery);

@@ -257,6 +257,7 @@ public class ReportLost {
                 int caseid = getCaseId();
                 int labelnr = Integer.parseInt(labelNumberT.getText());
                 int flightnr = Integer.parseInt(flightT.getText());
+                String destination = destinationT.getText();
                 String airportName = airportT.getText();
 
                 String itemname = itemTypeT.getText();
@@ -272,7 +273,7 @@ public class ReportLost {
                 
                 insertIntoDatabase(ownerid, firstname, insertion,
                     Lastname, phone1, phone2, email, notes,
-                    caseid, labelnr, flightnr, airportName,
+                    caseid, labelnr, flightnr,destination, airportName,
                     itemname, Brand, color, description, dateLost, address,
                     city, zipcode, country);
                 
@@ -293,7 +294,7 @@ public class ReportLost {
 
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
-            ResultSet TableData = statement.executeQuery("select max(caseid) from lostluggage");
+            ResultSet TableData = statement.executeQuery("select max(lostID) from lostluggage");
 
             while (TableData.next()) {
                 newCaseId = TableData.getInt(1) + 1;
@@ -331,7 +332,7 @@ public class ReportLost {
 
     public void insertIntoDatabase(int ownerid, String firstname, String insertion,
         String Lastname, int phone1, Integer phone2, String email, String notes,
-        int caseid, int labelnr, int flightnr, String airportName,
+        int caseid, int labelnr, int flightnr, String destination, String airportName,
         String itemname, String Brand, String color, String description, String dateLost, 
         String address, String city, String zipcode, String country) {
 
@@ -350,11 +351,11 @@ public class ReportLost {
                     + ",  '" + city + "' ,  '" + country + "')");
                 
                 String query2 = (" insert into lostluggage (caseid, ownerid, labelnr,"
-                + " flightr, airport, itemname, brand, colors, description, `date lost`) "
+                + " flightr, destination, airport, itemname, brand, colors, description, `date lost`, status) "
                 + " values( " + caseid + " , " + ownerid + " , " + labelnr + ", " 
-                + flightnr + " , '" + airportName + "' , '" + itemname 
+                + flightnr + " , '" + destination + "', '" + airportName + "' , '" + itemname 
                 + "' , '" + Brand + "' , '" + color + "', '" 
-                + description + "' , '" + dateLost + "');");
+                + description + "' , '" + dateLost + "', 'open');");
 
                 System.out.println(databaseQuery);
                 
@@ -372,11 +373,24 @@ public class ReportLost {
                     rowValues.add(knownlabelnr.getInt(1));
                 }
                 
+                Statement statement3 = ReportGenerationConnect.createStatement();
+                
                if(rowValues.contains(labelnr)){
+                   
+                   String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
+                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+                   
+                   statement3.executeUpdate(updatestatus1);
+                   
+                   String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
+                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+                   
+                   statement3.executeUpdate(updatestatus2);
+                   
                    Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("congrats");
                         alert.setHeaderText("you got a match");
-                        alert.setContentText("YOU GOT A MATCH WANKER");
+                        alert.setContentText("a match has been found!");
                         
                            alert.showAndWait(); 
                }
