@@ -20,25 +20,30 @@ public class LostLuggage {
     private IntegerProperty ownerid;
     private IntegerProperty labelnr;
     private IntegerProperty flightnr;
+    private StringProperty destination;
     private StringProperty airport;
     private StringProperty itemname;
     private StringProperty brand;
     private StringProperty colors;
     private StringProperty description;
+    private StringProperty dateLost;
     private StringProperty status;
     
     
-    public LostLuggage(int caseid, int ownerid, int labelnr, int flightnr,
-        String airport, String itemname, String brand, String colors, String description, String status) {
+    public LostLuggage(int caseid, int ownerid, int labelnr, int flightnr, String destination,
+        String airport, String itemname, String brand, String colors, 
+        String description, String dateLost, String status) {
         this.caseid =  new SimpleIntegerProperty(caseid);
         this.ownerid = new SimpleIntegerProperty(ownerid);
         this.labelnr = new SimpleIntegerProperty(labelnr);
         this.flightnr = new SimpleIntegerProperty(flightnr);
+        this.destination = new SimpleStringProperty(destination);
         this.airport = new SimpleStringProperty(airport);
         this.itemname = new SimpleStringProperty(itemname);
         this.brand = new SimpleStringProperty(brand);
         this.colors = new SimpleStringProperty(colors);
         this.description = new SimpleStringProperty(description);
+        this.dateLost = new SimpleStringProperty(dateLost);
         this.status = new SimpleStringProperty(status);
     }
 
@@ -72,6 +77,14 @@ public class LostLuggage {
 
     public void setFlightnr(int flightnr) {
         this.flightnr.set(flightnr);
+    }
+    
+    public String getDestination() {
+        return destination.get();   
+    }
+    
+    public void setDestination(String destination){
+        this.destination.set(destination);
     }
 
     public String getAirport() {
@@ -112,6 +125,14 @@ public class LostLuggage {
 
     public void setDescription(String description) {
         this.description.set(description);
+    }
+    
+    public String getDateLost() {
+        return dateLost.get();
+    }
+
+    public void setDateLost(String dateLost) {
+        this.dateLost.set(dateLost);
     }
     
     public String getStatus() {

@@ -246,7 +246,7 @@ public class submitCase {
 
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
-            ResultSet TableData = statement.executeQuery("select max(caseid) from foundluggage");
+            ResultSet TableData = statement.executeQuery("select max(foundID) from foundluggage");
 
             while (TableData.next()) {
                 newCaseId = TableData.getInt(1) + 1;
@@ -270,12 +270,12 @@ public class submitCase {
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
 
-            String databaseQuery = (" insert into foundluggage (caseid, labelnr,"
-                + " flightnr, airport, destination, itemname, brand, colors, description, dateFound) "
+            String databaseQuery = (" insert into foundluggage (foundID, labelnr,"
+                + " flightnr, airport, destination, itemname, brand, colors, description, dateFound, status) "
                 + " values( " + caseid + " , " + labelnr + " , " + flightnr + ", "
                 + " '" + airportName + "' , '" + destination + "' , ' " + itemname
                 + " ' , ' " + Brand + " ' , ' " + color + "', ' "
-                + description + "' , ' " + dateFound + "');");
+                + description + "' , ' " + dateFound + "', 'open');");
 
             System.out.println(databaseQuery);
 
@@ -291,13 +291,25 @@ public class submitCase {
                     rowValues.add(knownlabelnr.getInt(1));
                 }
                 
+                Statement statement3 = ReportGenerationConnect.createStatement();
+                
                if(rowValues.contains(labelnr)){
+                   
+                    String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
+                    + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+                   
+                    statement3.executeUpdate(updatestatus1);
+                    
+                   String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
+                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+                   
+                   statement3.executeUpdate(updatestatus2);
+                   
                    Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("congrats");
                         alert.setHeaderText("you got a match");
-                        alert.setContentText("YOU GOT A MATCH WANKER");
-                        
-                           alert.showAndWait(); 
+                        alert.setContentText("a match has been found!");
+                        alert.showAndWait(); 
                }
                 
                 

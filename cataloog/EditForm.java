@@ -5,9 +5,16 @@
  */
 package cataloog;
 
+import database.Database;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -25,6 +32,7 @@ import prototypefys.Rootpane;
 public class EditForm {
 
     private Rootpane rootpane = new Rootpane();
+    private Database db = new Database();
 
     EditForm() {
 
@@ -56,15 +64,19 @@ public class EditForm {
         btnS.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnS.setFont(Font.font("Verdana", 12));
 
+        Label caseid = new Label();
+        caseid.setText("The case id is: " + person.getCaseid());
+        caseid.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
+
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
 
         GridPane.setConstraints(btnmainmenu, 1, 15);
-
+        grid.add(caseid, 40, 30, 1, 1);
         // GridPane.setConstraints(btn2, 2, 15);
-        GridPane.setConstraints(btnS, 40, 28);
+        GridPane.setConstraints(btnS, 40, 28, 2, 2);
 
         grid.setStyle("-fx-background-color: white");
 
@@ -74,12 +86,12 @@ public class EditForm {
 
                 BagageCatalogue scherm2 = new BagageCatalogue();
                 GridPane cataloog = scherm2.MaakCatalogue();
-
                 rootpane.addnewpane(cataloog);
+               
             }
         });
 
-        Label Case = new Label("Found");
+        Label Case = new Label("lost");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 16, 15, 1);
 
@@ -89,69 +101,116 @@ public class EditForm {
 
         Label luggage = new Label("Luggage information");
         luggage.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        grid.add(luggage, 10, 23, 15, 1);
+        grid.add(luggage, 30, 23, 15, 1);
 
         Label date = new Label("Date:");
         grid.add(date, 10, 17, 10, 1);
-        TextField dateT = new TextField();
+        TextField dateT = new TextField(person.getDateLost());
         grid.add(dateT, 20, 17);
-        dateT.setPromptText("dd/mm/yyyy");
-
-        Label time = new Label("Time:");
-        grid.add(time, 10, 18, 10, 1);
-        TextField timeT = new TextField();
-        grid.add(timeT, 20, 18);
+        dateT.setPromptText("yyyy-mm-dd");
 
         Label airport = new Label("Airport:");
-        grid.add(airport, 10, 19, 10, 1);
-        TextField airtportT = new TextField(person.getAirport());
-        grid.add(airtportT, 20, 19);
+        grid.add(airport, 10, 18, 10, 1);
+        TextField airportT = new TextField(person.getAirport());
+        grid.add(airportT, 20, 18);
 
         Label labelNumber = new Label("Label number:");
         grid.add(labelNumber, 30, 17, 10, 1);
         TextField labelNumberT = new TextField(Integer.toString(person.getLabelnr()));
         grid.add(labelNumberT, 40, 17);
-        labelNumberT.setEditable(false);
 
         Label flight = new Label("Flight number:");
         grid.add(flight, 30, 18, 10, 1);
-        TextField flightT = new TextField();
+        TextField flightT = new TextField(Integer.toString(person.getFlightnr()));
         grid.add(flightT, 40, 18);
 
         Label destination = new Label("Destination:");
         grid.add(destination, 30, 19, 10, 1);
-        TextField destinationT = new TextField();
+        TextField destinationT = new TextField(person.getDestination());
         grid.add(destinationT, 40, 19);
 
-        Label naamReiziger = new Label("Name traveler:");
-        grid.add(naamReiziger, 30, 20, 10, 1);
-        TextField naamReizigerT = new TextField();
-        grid.add(naamReizigerT, 40, 20);
+        Label OwnerInfo = new Label("Owner information: ");
+        OwnerInfo.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
+        grid.add(OwnerInfo, 10, 20, 12, 1);
+
+        Label naamReiziger = new Label("first Name:");
+        grid.add(naamReiziger, 10, 21, 10, 1);
+        TextField naamReizigerT = new TextField(getOwnerinfo(person.getOwnerid(), 2));
+        grid.add(naamReizigerT, 20, 21);
+
+        Label NameInsertion = new Label("insertion:");
+        grid.add(NameInsertion, 10, 22, 10, 1);
+        TextField NameInsertionT = new TextField(getOwnerinfo(person.getOwnerid(), 3));
+        grid.add(NameInsertionT, 20, 22);
+
+        Label lastName = new Label("last name:");
+        grid.add(lastName, 10, 23, 10, 1);
+        TextField LastNameT = new TextField(getOwnerinfo(person.getOwnerid(), 4));
+        grid.add(LastNameT, 20, 23);
+
+        Label phone1 = new Label("phone number 1:");
+        grid.add(phone1, 10, 24, 10, 1);
+        TextField phone1T = new TextField(getOwnerinfo(person.getOwnerid(), 5));
+        grid.add(phone1T, 20, 24);
+
+        Label phone2L = new Label("phone number 2:");
+        grid.add(phone2L, 10, 25, 10, 1);
+        TextField phone2T = new TextField(getOwnerinfo(person.getOwnerid(), 6));
+        grid.add(phone2T, 20, 25);
+
+        Label emailL = new Label("email: ");
+        grid.add(emailL, 10, 26, 10, 1);
+        TextField emailT = new TextField(getOwnerinfo(person.getOwnerid(), 7));
+        grid.add(emailT, 20, 26);
+
+        Label addOwnerNotes = new Label("Additional notes:");
+        grid.add(addOwnerNotes, 10, 27, 10, 1);
+        TextField addOwnerNotesT = new TextField(getOwnerinfo(person.getOwnerid(), 8));
+        grid.add(addOwnerNotesT, 20, 27, 1, 1);
+
+        Label ownerAdd = new Label("Address:");
+        grid.add(ownerAdd, 10, 28, 10, 1);
+        TextField ownerAddT = new TextField(getAddressInfo(person.getOwnerid(), 2));
+        grid.add(ownerAddT, 20, 28);
+
+        Label ownerCity = new Label("City:");
+        grid.add(ownerCity, 10, 29, 10, 1);
+        TextField ownerCityT = new TextField(getAddressInfo(person.getOwnerid(), 4));
+        grid.add(ownerCityT, 20, 29);
+
+        Label ownerZip = new Label("Zipcode:");
+        grid.add(ownerZip, 10, 30, 10, 1);
+        TextField ownerZipT = new TextField(getAddressInfo(person.getOwnerid(), 3));
+        grid.add(ownerZipT, 20, 30);
+
+        Label ownerCountry = new Label("Country:");
+        grid.add(ownerCountry, 10, 31, 10, 1);
+        TextField ownerCountryT = new TextField(getAddressInfo(person.getOwnerid(), 5));
+        grid.add(ownerCountryT, 20, 31);
 
         Label itemType = new Label("Type:");
-        grid.add(itemType, 10, 24, 10, 1);
+        grid.add(itemType, 30, 24, 10, 1);
         TextField itemTypeT = new TextField(person.getItemname());
-        grid.add(itemTypeT, 20, 24);
+        grid.add(itemTypeT, 40, 24);
 
         Label itemBrand = new Label("Brand:");
-        grid.add(itemBrand, 10, 25, 10, 1);
-        TextField itemBrandT = new TextField();
-        grid.add(itemBrandT, 20, 25);
+        grid.add(itemBrand, 30, 25, 10, 1);
+        TextField itemBrandT = new TextField(person.getBrand());
+        grid.add(itemBrandT, 40, 25);
 
         Label itemColor = new Label("Color:");
-        grid.add(itemColor, 10, 26, 10, 1);
+        grid.add(itemColor, 30, 26, 10, 1);
         TextField itemColorT = new TextField(person.getColors());
-        grid.add(itemColorT, 20, 26);
+        grid.add(itemColorT, 40, 26);
 
-        Label lostandfound = new Label("case ID");
-        grid.add(lostandfound, 10, 20, 10, 1);
-        TextField lostandfoundT = new TextField(Integer.toString(person.getCaseid()));
-        grid.add(lostandfoundT, 20, 20);
-
+//        Label lostandfound = new Label("Lost-and-found ID");
+//        grid.add(lostandfound, 10, 20, 10, 1);
+//        TextField lostandfoundT = new TextField();
+//        grid.add(lostandfoundT, 20, 20);
         Label addNotes = new Label("Additional notes:");
-        grid.add(addNotes, 10, 27, 10, 1);
-        TextField addNotesT = new TextField();
-        grid.add(addNotesT, 20, 27);
+        grid.add(addNotes, 30, 27, 10, 1);
+        TextField addNotesT = new TextField(person.getDescription());
+        grid.add(addNotesT, 40, 27);
 
         ImageView Calendar = new ImageView("/resources/Calendar-icon.png");
         Calendar.setFitHeight(30);
@@ -167,10 +226,205 @@ public class EditForm {
 
         // Toevoegen van buttons
         grid.getChildren().addAll(btnmainmenu, btnS);
+        
+        btnS.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                
+                int ownerid = person.getOwnerid();
+                String firstname = naamReizigerT.getText();
+              
+                
+                String insertion = NameInsertionT.getText();
+
+                String Lastname = LastNameT.getText();
+                int phone1 = Integer.parseInt(phone1T.getText());
+                                
+                // because phone number 2 is optional the value turn into 
+                // null if nothing is entered
+                Integer phone2 = null;
+                if (phone2T.getText().isEmpty()){
+                    phone2 = null;
+                }
+                else{
+                phone2 = Integer.parseInt(phone2T.getText());
+                }
+                
+                 String email = emailT.getText();
+                String notes = addOwnerNotesT.getText();
+                int caseid = person.getCaseid();
+                int labelnr = Integer.parseInt(labelNumberT.getText());
+                int flightnr = Integer.parseInt(flightT.getText());
+                String destination = destinationT.getText();
+                String airportName = airportT.getText();
+
+                String itemname = itemTypeT.getText();
+                String Brand = itemBrandT.getText();
+                String color = itemColorT.getText();
+                String description = addNotesT.getText();
+                String dateLost = dateT.getText();
+                
+                String address = ownerAddT.getText();
+                String city = ownerCityT.getText();
+                String zipcode = ownerZipT.getText();
+                String country = ownerCountryT.getText();
+                
+                
+                
+                insertEditIntoDatabase(ownerid, firstname, insertion,
+                    Lastname, phone1, phone2, email, notes,
+                    caseid, labelnr, flightnr,destination, airportName,
+                    itemname, Brand, color, description, dateLost, address,
+                    city, zipcode, country);
+                
+            }
+        });
+        
 
         return grid;
 
     }
+
+    public String getOwnerinfo(int ownerid, int infoNumber) {
+
+        String info = "";
+
+        try {
+
+            Connection userinfoConnection = db.getConnection();
+            Statement statement = userinfoConnection.createStatement();
+
+            ResultSet ownerinfo = statement.executeQuery("select * from luggageowner "
+                + "where ownerid = " + ownerid + "");
+
+            while (ownerinfo.next()) {
+                info = ownerinfo.getString(infoNumber);
+            }
+
+        } catch (Exception ex) {
+            System.out.println("failed to get user information");
+            System.err.println(ex.getMessage());
+        }
+
+        return info;
+    }
+    
+    public String getAddressInfo(int ownerid, int infoNumber) {
+
+        String info = "";
+
+        try {
+
+            Connection userinfoConnection = db.getConnection();
+            Statement statement = userinfoConnection.createStatement();
+
+            ResultSet ownerinfo = statement.executeQuery("select * from address "
+                + "where ownerid = " + ownerid + "");
+
+            while (ownerinfo.next()) {
+                info = ownerinfo.getString(infoNumber);
+            }
+
+        } catch (Exception ex) {
+            System.out.println("failed to get user information");
+            System.err.println(ex.getMessage());
+        }
+
+        return info;
+    }
+    
+    
+    
+    
+    
+    
+    public void insertEditIntoDatabase(int ownerid, String firstname, String insertion,
+        String Lastname, int phone1, Integer phone2, String email, String notes,
+        int caseid, int labelnr, int flightnr, String destination, String airportName,
+        String itemname, String Brand, String color, String description, String dateLost, 
+        String address, String city, String zipcode, String country) {
+
+        try {
+
+            // a connection is made
+            Connection ReportGenerationConnect = db.getConnection();
+            Statement statement = ReportGenerationConnect.createStatement();
+
+            String databaseQuery = ("UPDATE `corendon`.`luggageowner` SET "
+                + "`firstname`='" + firstname + "', `insertion`='" + insertion +
+                "', `lastname`='" + Lastname + "',"
+                + " `phone1`='" + phone1 + "', `phone2`='" + phone2 + "', "
+                + "`email`='" + email + "',"
+                + " `notes`='" + notes + "' WHERE `ownerid`='" + ownerid + "';");
+                
+                String addressQuery = ("update address SET address = '" + address + "' , "
+                    + "SET zipcode = '" + zipcode  
+                    + "' ,  SET city = '" + city + "' ,  SET country = '" + country + "'"
+                    + " WHERE lostID = " + caseid + ";");
+                
+                String query2 = (" UPDATE `corendon`.`lostluggage` SET `labelnr`='" + labelnr + ""
+                    + "', `flightr`=" + flightnr + ", " +
+                "`destination`='" + destination + "', `airport`='" + airportName +
+                    "', `itemname`='" + itemname + "', " +
+            "`brand`='" + Brand + "', `colors`='" + color + "', `description`='" + description + "'," +
+            " `date lost`='" + dateLost + "' WHERE `lostID`=" + caseid + ";");
+
+                System.out.println(databaseQuery);
+                
+            statement.executeUpdate(databaseQuery);
+            statement.executeUpdate(query2);
+            statement.executeUpdate(addressQuery);
+            
+            try {
+                
+                Statement statement2 = ReportGenerationConnect.createStatement();
+                ResultSet knownlabelnr = statement2.executeQuery("select labelnr from foundluggage " +
+                "where labelnr != 0");
+                List rowValues = new ArrayList();
+                while (knownlabelnr.next()) {
+                    rowValues.add(knownlabelnr.getInt(1));
+                }
+                
+                Statement statement3 = ReportGenerationConnect.createStatement();
+                
+               if(rowValues.contains(labelnr)){
+                   
+                   String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
+                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+                   
+                   statement3.executeUpdate(updatestatus1);
+                   
+                   String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
+                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+                   
+                   statement3.executeUpdate(updatestatus2);
+                   
+                   Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("congrats");
+                        alert.setHeaderText("you got a match");
+                        alert.setContentText("YOU GOT A MATCH WANKER");
+                        
+                           alert.showAndWait(); 
+               }
+                
+                
+                
+                System.out.println(rowValues);
+            } catch (Exception ex) {
+                System.out.println("failed to check for matches");
+                System.err.println(ex.getMessage());
+            }
+                
+
+         ReportGenerationConnect.close();
+
+        } catch (Exception ex) {
+            System.out.println("failed to inser data in to the database ");
+            System.err.println(ex.getMessage());
+        }
+
+    }
+    
 
     public GridPane MakeLostReport(FoundLuggage person) {
 
@@ -216,7 +470,7 @@ public class EditForm {
             public void handle(ActionEvent event) {
                 BagageCatalogue scherm2 = new BagageCatalogue();
                 GridPane cataloog = scherm2.MaakCatalogue();
-                
+
                 rootpane.addnewpane(cataloog);
             }
         });
@@ -289,7 +543,7 @@ public class EditForm {
         TextField addNotesT = new TextField(person.getDescription());
         grid.add(addNotesT, 40, 26);
 
-        Label CaseId = new Label("The case id is: " + person.getCaseid() );
+        Label CaseId = new Label("The case id is: " + person.getCaseid());
         grid.add(CaseId, 40, 27, 2, 1);
         CaseId.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 

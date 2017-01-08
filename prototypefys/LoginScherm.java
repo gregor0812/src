@@ -40,6 +40,8 @@ public class LoginScherm {
     private HomeScreen nieuwscherm = new HomeScreen();
     private HBox homescreen = nieuwscherm.maakhomescreen();
     
+    private homeScreenEmployee employeeScherm = new homeScreenEmployee();
+    private HBox HomeEmployee= employeeScherm.maakhomescreen();
     
     Rootpane rootpane = new Rootpane();
 
@@ -99,8 +101,8 @@ public class LoginScherm {
                 String password = passwordText.getText();
                 
                 
-                //LoginCheck(username, password);
-                rootpane.addnewpane(homescreen);
+                LoginCheck(username, password);
+               // rootpane.addnewpane(homescreen);
             }
         });
         
@@ -121,6 +123,7 @@ public class LoginScherm {
        
         Statement statement = firstConnection.createStatement();
         Statement statement2 = firstConnection.createStatement();
+        Statement statement3 = firstConnection.createStatement();
         System.out.println("database connected");
         
         ResultSet knownUsers
@@ -149,12 +152,34 @@ public class LoginScherm {
       
        boolean GoodPassword = false;
        
+       // checks the role
+       String role= "";
+       
+       ResultSet roleSet = statement3.executeQuery("select role from employee " +
+        "where password = '" +  password + "'");
+       while(roleSet.next()){
+        role = roleSet.getString(1);
+       }
+       
+       
        for (int i = 0; i < ListOfKnownUsers.length; i++){
            if(EnteredUser.equals(ListOfKnownUsers[i])){
+               
+                if("admin".equals(role)){          
                
                 rootpane.addnewpane(homescreen);
                 GoodPassword = true;
                 break;
+                }
+                else{
+                    
+                rootpane.addnewpane(HomeEmployee);
+                GoodPassword = true;
+                break;
+                    
+                }
+                
+                
            }
            
            
@@ -175,6 +200,7 @@ public class LoginScherm {
            
         } catch (Exception ex){
             System.out.println("exception 2 ");
+            System.out.println(ex);
         }
                     
        

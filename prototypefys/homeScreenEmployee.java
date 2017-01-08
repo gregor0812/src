@@ -21,7 +21,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-public class HomeScreen {
+public class homeScreenEmployee {
     
     Rootpane rootpane = new Rootpane();
 
@@ -29,7 +29,7 @@ public class HomeScreen {
  
 
     
-    public HomeScreen(){
+    public homeScreenEmployee(){
         
     }
     
@@ -97,18 +97,7 @@ public class HomeScreen {
           
 
             
-            Button bt_ADM = new Button("Admin");
-            bt_ADM.setStyle("-fx-base:darkred;-fx-border-color:black"); 
-            bt_ADM.setPrefSize(120, 50);
-            bt_ADM.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                  
-                adminScherm scherm6 = new adminScherm();
-                StackPane adminScherm = scherm6.maakAdminScherm();
-                rootpane.addnewpane(adminScherm);
-            }
-            });
+            
                         
             Button bt_LOG = new Button("Logout ");
             bt_LOG.setStyle("-fx-base:darkred;-fx-border-color:black");  
@@ -138,7 +127,7 @@ public class HomeScreen {
             bt_RLB.setPrefSize(180, 20);
            // bt_OPT.setPrefSize(180, 20);
             bt_STA.setPrefSize(180, 20);
-            bt_ADM.setPrefSize(180, 20);
+           
             bt_LOG.setPrefSize(180, 20);
 
             
@@ -148,7 +137,7 @@ public class HomeScreen {
             vbox1.getChildren().add(bt_RLB);
            // vbox1.getChildren().add(bt_OPT);
             vbox1.getChildren().add(bt_STA);
-            vbox1.getChildren().add(bt_ADM);
+         
             vbox1.getChildren().add(bt_LOG);
 
             bt_STA.setOnAction(new EventHandler<ActionEvent>() {

@@ -74,8 +74,8 @@ public class BagageCatalogue {
         Zoekscherm.setMaxSize(150, 100);
         Zoekscherm.setStyle("-fx-base:darkred;-fx-border-color:darkred");
         Zoekscherm.setAlignment(Pos.CENTER);
-        Zoekscherm.setPrefSize(250, 250);
-        Zoekscherm.setMaxSize(250, 250);
+        Zoekscherm.setPrefSize(250, 280);
+        Zoekscherm.setMaxSize(250, 280);
 
         root.setStyle("-fx-background-color: white");
 
@@ -101,11 +101,9 @@ public class BagageCatalogue {
         // the standard tableview is added here     
         LostLuggageTable("Select * FROM lostluggage");
         //root.add(catalogue, 2, 3, 2, 3);
-        
+
         catalogue.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-        
-        
-        
+
         FoundLuggageTable("Select * FROM foundluggage");
         catalogueFound.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         TablePane.getChildren().addAll(catalogue, catalogueFound);
@@ -133,6 +131,10 @@ public class BagageCatalogue {
 
                 String output = (String) comboBox.getValue();
                 String zoekConditie = (String) tekst.getText();
+                if ("color".equals(output)) {
+                    output = "colors";
+                }
+
                 if (lostOrFound) {
                     catalogue.getItems().clear();
                     catalogue.getColumns().clear();
@@ -174,6 +176,52 @@ public class BagageCatalogue {
                 LostLuggageTable("Select * FROM lostluggage");
                 // LostLuggageTable("Select * FROM lostluggage");
                 lostOrFound = true;
+            }
+        });
+
+        Button deleteCase = new Button("delete case");
+        deleteCase.setMinSize(150, 20);
+        deleteCase.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                if (lostOrFound) {
+
+                    try {
+
+                        Integer person = catalogue.getSelectionModel().getSelectedItem().getCaseid();
+
+                        DeleteCase(person);
+                        LostLuggageTable("Select * FROM foundluggage");
+
+                    } catch (Exception ex) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("error");
+                        alert.setHeaderText("delete case");
+                        alert.setContentText("Select a case to delete");
+
+                        alert.showAndWait();
+                    }
+
+                } else {
+
+                    try {
+
+                        Integer person = catalogueFound.getSelectionModel().getSelectedItem().getCaseid();
+
+                        DeleteCase(person);
+                        FoundLuggageTable("Select * FROM foundluggage");
+                        
+                        
+                    } catch (Exception ex) {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("error");
+                        alert.setHeaderText("delete case");
+                        alert.setContentText("Select a case to delete");
+
+                        alert.showAndWait();
+                        }
+                }
             }
         });
 
@@ -229,8 +277,7 @@ public class BagageCatalogue {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("foutmelding");
                         alert.setHeaderText("Wijzig luchthaven");
-                        alert.setContentText("Selecteer eerst een luchthaven in de"
-                            + " lijst om te wijzigen");
+                        alert.setContentText("Select a case to edit");
 
                         alert.showAndWait();
                     }
@@ -246,13 +293,14 @@ public class BagageCatalogue {
         hbox.getChildren().addAll(buttonCurrent, buttonProjected);
 
         HBox tabelKnoppen = new HBox();
-        tabelKnoppen.getChildren().addAll(zoekTabel, showFound, showLost);
+        tabelKnoppen.getChildren().addAll(zoekTabel, showFound, showLost, deleteCase);
         tabelKnoppen.setSpacing(10);
         Zoekscherm.add(tekst, 1, 1);
         Zoekscherm.add(comboBox, 1, 0);
         Zoekscherm.add(buttonViewCase, 1, 3);
         Zoekscherm.add(showFound, 1, 4);
         Zoekscherm.add(showLost, 1, 5);
+        Zoekscherm.add(deleteCase, 1, 6);
         Zoekscherm.add(tabelKnoppen, 1, 2);
         root.add(EmptyPane, 0, 1);
         root.add(Zoekscherm, 0, 3);
@@ -265,9 +313,9 @@ public class BagageCatalogue {
     }
 
     public void LostLuggageTable(String query) {
-        
+
         // de table colums are made here
-        TableColumn<LostLuggage, Integer> caseidColumn = new TableColumn<>("caseid");
+        TableColumn<LostLuggage, Integer> caseidColumn = new TableColumn<>("lostID");
         caseidColumn.setCellValueFactory(new PropertyValueFactory<>("caseid"));
 
         TableColumn<LostLuggage, Integer> owneridColumn = new TableColumn<>("ownerid");
@@ -278,6 +326,9 @@ public class BagageCatalogue {
 
         TableColumn<LostLuggage, Integer> flightnrColumn = new TableColumn<>("flightnumber");
         flightnrColumn.setCellValueFactory(new PropertyValueFactory<>("flightnr"));
+
+        TableColumn<LostLuggage, String> destinationColumn = new TableColumn<>("destination");
+        destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
 
         TableColumn<LostLuggage, String> airportColumn = new TableColumn<>("airport name");
         airportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
@@ -293,10 +344,13 @@ public class BagageCatalogue {
 
         TableColumn<LostLuggage, String> descriptionColumn = new TableColumn<>("description");
         descriptionColumn.setCellValueFactory(new PropertyValueFactory<>("description"));
-        
+
+        TableColumn<LostLuggage, String> dateLostColumn = new TableColumn<>("date lost");
+        dateLostColumn.setCellValueFactory(new PropertyValueFactory<>("dateLost"));
+
         TableColumn<LostLuggage, String> statusColumn = new TableColumn<>("status");
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        
+
         try {
 
             // a connection is made
@@ -311,7 +365,9 @@ public class BagageCatalogue {
 
                 data.add(new LostLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
                     TableData.getInt(4), TableData.getString(5), TableData.getString(6),
-                    TableData.getString(7), TableData.getString(8), TableData.getString(9), TableData.getString(11)));
+                    TableData.getString(7), TableData.getString(8),
+                    TableData.getString(9), TableData.getString(10), TableData.getString(11),
+                    TableData.getString(12)));
 
             }
 
@@ -321,9 +377,11 @@ public class BagageCatalogue {
             //System.out.println(data);
             catalogue.setItems(data);
             catalogue.getColumns().addAll(caseidColumn, owneridColumn, labelnrColumn,
-                flightnrColumn, airportColumn, itemnameColumn, brandColumn, colorsColumn, descriptionColumn, statusColumn);
+                destinationColumn, flightnrColumn, airportColumn, itemnameColumn, brandColumn,
+                colorsColumn, descriptionColumn, dateLostColumn, statusColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
+            System.out.println(ex);
         }
 
     }
@@ -332,7 +390,7 @@ public class BagageCatalogue {
         catalogueFound.setEditable(true);
 
         // de table colums are made here
-        TableColumn<FoundLuggage, Integer> caseidColumn = new TableColumn<>("caseid");
+        TableColumn<FoundLuggage, Integer> caseidColumn = new TableColumn<>("foundID");
         caseidColumn.setCellValueFactory(new PropertyValueFactory<>("caseid"));
 
         TableColumn<FoundLuggage, Integer> labelnrColumn = new TableColumn<>("labelnr");
@@ -343,14 +401,13 @@ public class BagageCatalogue {
 
         TableColumn<FoundLuggage, String> airportColumn = new TableColumn<>("airport name");
         airportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
-        
+
         TableColumn<FoundLuggage, String> destinationColumn = new TableColumn<>("destination");
         destinationColumn.setCellValueFactory(new PropertyValueFactory<>("destination"));
-        
 
         TableColumn<FoundLuggage, String> itemnameColumn = new TableColumn<>("item name");
         itemnameColumn.setCellValueFactory(new PropertyValueFactory<>("itemname"));
-        
+
         TableColumn<FoundLuggage, String> brandColumn = new TableColumn<>("brand");
         brandColumn.setCellValueFactory(new PropertyValueFactory<>("brand"));
 
@@ -362,7 +419,7 @@ public class BagageCatalogue {
 
         TableColumn<FoundLuggage, String> dateFoundColumn = new TableColumn<>("date found");
         dateFoundColumn.setCellValueFactory(new PropertyValueFactory<>("dateFound"));
-        
+
         TableColumn<FoundLuggage, String> statusColumn = new TableColumn<>("status");
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
@@ -380,7 +437,7 @@ public class BagageCatalogue {
 
                 dataFound.add(new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
                     TableData.getString(5), TableData.getString(4), TableData.getString(6),
-                    TableData.getString(7), TableData.getString(8), 
+                    TableData.getString(7), TableData.getString(8),
                     TableData.getString(8), TableData.getString(10), TableData.getString(11)));
 
             }
@@ -392,11 +449,31 @@ public class BagageCatalogue {
             catalogueFound.setItems(dataFound);
             catalogueFound.getColumns().addAll(caseidColumn, labelnrColumn,
                 flightnrColumn, airportColumn, destinationColumn, itemnameColumn,
-                brandColumn ,colorsColumn, descriptionColumn, dateFoundColumn, statusColumn);
+                brandColumn, colorsColumn, descriptionColumn, dateFoundColumn, statusColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }
 
     }
+    
+    public void DeleteCase(int id) {
+
+        
+
+        try {
+
+            Connection ReportGenerationConnect = db.getConnection();
+            Statement statement = ReportGenerationConnect.createStatement();
+           statement.executeUpdate("DELETE FROM `corendon`.`lostluggage` WHERE `lostID`='" + id +"';");
+
+            
+
+        } catch (Exception ex) {
+            System.out.println("failed to delete case ");
+        }
+
+       
+    }
+    
 
 }
