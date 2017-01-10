@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 import javafx.scene.layout.GridPane;
@@ -55,6 +56,11 @@ public class HomeScreen {
 //                rootpane.addnewpane(viewcase);
 //            }
 //            });
+
+            ImageView Corendon = new ImageView("/resources/CorendonAirlines.png");
+            Corendon.setFitHeight(100);
+            Corendon.setFitWidth(300);
+            rootpane.add(Corendon, 0, 0, 2, 1);
 
             Button bt_VBC = new Button("View Baggage Catalogue ");
             bt_VBC.setStyle("-fx-base:darkred;-fx-border-color:black");
@@ -130,7 +136,7 @@ public class HomeScreen {
             bt_STA.setPrefSize(120, 50);
            
             
-            hbox.setStyle("-fx-background-color: #16302e");
+            hbox.setStyle("-fx-background-color: #ff9b30");
             
  //           bt_VEC.setPrefSize(180, 20);
             bt_VBC.setPrefSize(180, 20);
