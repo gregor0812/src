@@ -57,10 +57,7 @@ public class HomeScreen {
 //            }
 //            });
 
-            ImageView Corendon = new ImageView("/resources/CorendonAirlines.png");
-            Corendon.setFitHeight(100);
-            Corendon.setFitWidth(300);
-            rootpane.add(Corendon, 0, 0, 2, 1);
+
 
             Button bt_VBC = new Button("View Baggage Catalogue ");
             bt_VBC.setStyle("-fx-base:darkred;-fx-border-color:black");
