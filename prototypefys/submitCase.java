@@ -126,10 +126,14 @@ public class submitCase {
         TextField destinationT = new TextField();
         grid.add(destinationT, 40, 19);
 
-        Label ownerName = new Label("Name traveler:");
-        grid.add(ownerName, 30, 20, 10, 1);
-        TextField ownerNameT = new TextField();
-        grid.add(ownerNameT, 40, 20);
+        Label ownerFirstName = new Label("First name:");
+        grid.add(ownerFirstName, 30, 20, 10, 1);
+        TextField ownerFirstNameT = new TextField();
+        grid.add(ownerFirstNameT, 40, 20);
+        
+        Label ownerInsertion = new Label("Insertions:");
+        grid.add(ownerInsertion, 30, 21, 10, 1);
+        
 
         Label type = new Label("Type:");
         grid.add(type, 30, 23, 10, 1);
@@ -146,35 +150,6 @@ public class submitCase {
         TextField itemColorT = new TextField();
         grid.add(itemColorT, 40, 25);
 
-//        Label ownerAdd = new Label("Address:");
-//        grid.add(ownerAdd, 10, 24, 10, 1);
-//        TextField ownerAddT = new TextField();
-//        grid.add(ownerAddT, 20, 24);
-//
-//        Label ownerCity = new Label("City:");
-//        grid.add(ownerCity, 10, 25, 10, 1);
-//        TextField ownerCityT = new TextField();
-//        grid.add(ownerCityT, 20, 25);
-//
-//        Label ownerZip = new Label("Zipcode:");
-//        grid.add(ownerZip, 10, 26, 10, 1);
-//        TextField ownerZipT = new TextField();
-//        grid.add(ownerZipT, 20, 26);
-//
-//        Label ownerCountry = new Label("Country:");
-//        grid.add(ownerCountry, 10, 27, 10, 1);
-//        TextField ownerCountryT = new TextField();
-//        grid.add(ownerCountryT, 20, 27);
-//
-//        Label telNumber = new Label("Telephone number:");
-//        grid.add(telNumber, 10, 28, 10, 1);
-//        TextField telNumberT = new TextField();
-//        grid.add(telNumberT, 20, 28);
-//
-//        Label eMail = new Label("E-mail:");
-//        grid.add(eMail, 10, 29, 10, 1);
-//        TextField eMailT = new TextField();
-//        grid.add(eMailT, 20, 29);
         Label addNotes = new Label("Additional notes:");
         grid.add(addNotes, 30, 26, 10, 1);
         TextField addNotesT = new TextField();
