@@ -16,7 +16,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -196,7 +195,7 @@ public class LoginScherm {
        alert.setHeaderText("Wrong password");
        alert.setContentText("Wrong password/username");
        alert.showAndWait();
-       rootpane.addnewpane(MaakEmployeeTable());
+       
        
        }   
         
@@ -210,10 +209,6 @@ public class LoginScherm {
               
            
    }
-
-    private Pane MaakEmployeeTable() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
    
 }

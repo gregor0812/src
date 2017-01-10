@@ -165,7 +165,7 @@ public class BagageCatalogue {
             }
         });
 
-        Button showLost = new Button("show lost luggage");
+        Button showLost = new Button("Show lost luggage");
         showLost.setMinSize(150, 20);
         showLost.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -179,7 +179,7 @@ public class BagageCatalogue {
             }
         });
 
-        Button deleteCase = new Button("delete case");
+        Button deleteCase = new Button("Delete case");
         deleteCase.setMinSize(150, 20);
         deleteCase.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -216,7 +216,7 @@ public class BagageCatalogue {
                     } catch (Exception ex) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("error");
-                        alert.setHeaderText("delete case");
+                        alert.setHeaderText("Delete case");
                         alert.setContentText("Select a case to delete");
 
                         alert.showAndWait();
