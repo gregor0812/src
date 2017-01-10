@@ -64,7 +64,7 @@ public class LoginScherm {
         
         Text username = new Text("Username:");
         root.add(username, 0, 1);
-        username.setFill(Color.WHITE);
+        username.setFill(Color.BLACK);
         TextField userText = new TextField();
         userText.setPrefColumnCount(1);
         userText.setPrefWidth(100);
@@ -72,7 +72,7 @@ public class LoginScherm {
 
         Text password = new Text("Password:");
         root.add(password, 0, 2);
-        password.setFill(Color.WHITE);
+        password.setFill(Color.BLACK);
         PasswordField passwordText = new PasswordField();
         passwordText.setPrefColumnCount(1);
         passwordText.setPrefWidth(10);
@@ -84,7 +84,7 @@ public class LoginScherm {
         login.setText("Login");
         login.setStyle("-fx-background-color: #009b91;-fx-text-fill:#eaaf00");
 
-        root.setStyle("-fx-background-color: #ff9b30");
+        root.setStyle("-fx-background-color: #ffffff");
         
         
         

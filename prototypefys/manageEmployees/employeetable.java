@@ -91,6 +91,9 @@ public class employeetable {
 
         TableColumn<Employee, String> roleColumn = new TableColumn<>("role");
         roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
+        
+        TableColumn<Employee, String> emailColumn = new TableColumn<>("email");
+        emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
 
         try {
             // a connection is made
@@ -105,12 +108,12 @@ public class employeetable {
             while (TableData.next()) {
                 //Iterate Row
                 data.add(new Employee(TableData.getInt(1), TableData.getString(2), TableData.getString(3), TableData.getString(4),
-                    TableData.getString(5), TableData.getString(6), TableData.getString(7)));
+                    TableData.getString(5), TableData.getString(6), TableData.getString(7), TableData.getString(8)));
             }
             employeeView.setItems(data);
             employeeView.getColumns().addAll(employeenumberColumn, usernameColumn,
                 passwordColumn, firstnameColumn,
-                insertionColumn, lastnameColumn, roleColumn);
+                insertionColumn, lastnameColumn, roleColumn, emailColumn);
 
         } catch (Exception ex) {
             System.out.println("failed to load employee table ");
@@ -268,6 +271,11 @@ public class employeetable {
         grid.add(roleLabel, 10, 22, 10, 1);
         TextField roleText = new TextField(employee.getRole());
         grid.add(roleText, 20, 22);
+        
+        Label emailLabel = new Label("Email:");
+        grid.add(emailLabel, 10, 23, 10, 1);
+        TextField emailText = new TextField(employee.getRole());
+        grid.add(emailText, 20, 23);        
 
         ImageView Corendon = new ImageView("/resources/corendon.jpg");
         Corendon.setFitHeight(100);
@@ -289,7 +297,7 @@ public class employeetable {
                 String insertion = InsertionText.getText();
                 String lastname = lastnameText.getText();
                 String role = roleText.getText();
-                
+                String email = emailText.getText();
                 
                 
                 updateUser(employeenumber, username, password, firstname,
@@ -411,6 +419,11 @@ public class employeetable {
         grid.add(roleLabel, 10, 22, 10, 1);
         TextField roleText = new TextField();
         grid.add(roleText, 20, 22);
+        
+        Label emailLabel = new Label("Email:");
+        grid.add(emailLabel, 10, 23, 10, 1);
+        TextField emailText = new TextField();
+        grid.add(emailText, 20, 23);
 
         ImageView Corendon = new ImageView("/resources/corendon.jpg");
         Corendon.setFitHeight(100);
@@ -432,6 +445,7 @@ public class employeetable {
                 String insertion = InsertionText.getText();
                 String lastname = lastnameText.getText();
                 String role = roleText.getText();
+                String email = emailText.getText();
                 
                 Alert alert = new Alert(Alert.AlertType.WARNING);
                 alert.setTitle("User added");
@@ -440,7 +454,7 @@ public class employeetable {
                 alert.showAndWait();
                 
                 addUser(employeenumber, username, password, firstname,
-                    insertion, lastname, role);
+                    insertion, lastname, role, email);
 
             }
         });
@@ -475,7 +489,7 @@ public class employeetable {
     
     
     public void addUser(int employeenumber, String username, String password, String firstname,
-        String insertion, String lastname, String role) {
+        String insertion, String lastname, String role, String email) {
 
         try {
 
@@ -486,7 +500,7 @@ public class employeetable {
             String databaseQuery = ("insert into employee" +
             " values (" + employeenumber + ", '" + username + "', '" + password 
                 + "', '" + firstname + "', '" + insertion + "', '" + lastname 
-                + "', '" + role + "')");
+                + "', '" + role + "', '" + email + "')");
 
             System.out.println(databaseQuery);
 

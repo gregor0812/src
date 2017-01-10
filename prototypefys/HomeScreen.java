@@ -133,7 +133,7 @@ public class HomeScreen {
             bt_STA.setPrefSize(120, 50);
            
             
-            hbox.setStyle("-fx-background-color: #ff9b30");
+            hbox.setStyle("-fx-background-color: #ffffff");
             
  //           bt_VEC.setPrefSize(180, 20);
             bt_VBC.setPrefSize(180, 20);
