@@ -350,7 +350,7 @@ public class ReportLost {
                     + ",  '" + address + "' ,  '" + zipcode + "'"
                     + ",  '" + city + "' ,  '" + country + "')");
                 
-                String query2 = (" insert into lostluggage (caseid, ownerid, labelnr,"
+                String query2 = (" insert into lostluggage (lostID, ownerid, labelnr,"
                 + " flightr, destination, airport, itemname, brand, colors, description, `date lost`, status) "
                 + " values( " + caseid + " , " + ownerid + " , " + labelnr + ", " 
                 + flightnr + " , '" + destination + "', '" + airportName + "' , '" + itemname 

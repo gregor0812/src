@@ -359,8 +359,7 @@ public class EditForm {
                 
                 String addressQuery = ("update address SET address = '" + address + "' , "
                     + "SET zipcode = '" + zipcode  
-                    + "' ,  SET city = '" + city + "' ,  SET country = '" + country + "'"
-                    + " WHERE lostID = " + caseid + ";");
+                    + "' ,SET city = '" + city + "',SET country = '" + country + "' WHERE lostID = " + caseid + ";");
                 
                 String query2 = (" UPDATE `corendon`.`lostluggage` SET `labelnr`='" + labelnr + ""
                     + "', `flightr`=" + flightnr + ", " +
