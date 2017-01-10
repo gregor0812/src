@@ -433,7 +433,11 @@ public class employeetable {
                 String lastname = lastnameText.getText();
                 String role = roleText.getText();
                 
-                
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("User added");
+                alert.setHeaderText("User added");
+                alert.setContentText("Used is added");
+                alert.showAndWait();
                 
                 addUser(employeenumber, username, password, firstname,
                     insertion, lastname, role);
