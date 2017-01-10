@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
  
-<Configuration status="TRACE" monitorinterva="30">
+<Configuration status="ERROR" monitorinterva="30">
  
 <Appenders>
  
@@ -26,7 +26,7 @@
 </Appenders>
  
 <Loggers>
-<Root level="trace">
+<Root level="ERROR">
 <AppenderRef ref="Console" />
 <AppenderRef ref="RollingFile" />
 <AppenderRef ref="databaseAppender" />
