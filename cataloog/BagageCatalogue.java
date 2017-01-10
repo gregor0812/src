@@ -140,12 +140,12 @@ public class BagageCatalogue {
                     catalogue.getColumns().clear();
 
                     LostLuggageTable("SELECT * FROM lostluggage "
-                        + "WHERE `" + output + "` = " + "'" + zoekConditie + "'");
+                        + "WHERE `" + output + "` LIKE " + "'%" + zoekConditie + "%'");
                 } else {
                     catalogue.getItems().clear();
                     catalogue.getColumns().clear();
                     FoundLuggageTable("SELECT * FROM foundluggage "
-                        + "WHERE " + output + " = " + "'" + zoekConditie + "'");
+                        + "WHERE " + output + " LIKE " + "'%" + zoekConditie + "%'");
                 }
 
             }
