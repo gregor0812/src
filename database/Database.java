@@ -28,8 +28,8 @@ public class Database {
      * Construcot to create a database with the default values
      */
     public Database() {
-        username = "root";
-        password = "Gregor0812!";
+        username = "fys";
+        password = "ESCXZoaIlK07pwUS";
         hostname = "localhost:3306";
         database = "corendon";
 
