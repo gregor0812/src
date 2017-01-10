@@ -14,6 +14,9 @@ import javafx.scene.layout.Pane;
 
 import javafx.stage.Stage;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 
 /**
  * jasdhakjsdjkas
@@ -21,7 +24,7 @@ import javafx.stage.Stage;
  */
 public class PrototypeFys extends Application {
     
-    
+ private static final Logger logger = LogManager.getLogger();   
     @Override
     public void start(Stage primaryStage) {
       
@@ -31,6 +34,7 @@ public class PrototypeFys extends Application {
         Rootpane rootpane = new Rootpane();
         rootpane.addnewpane(startscherm);
         Pane scherm = rootpane.getRootPane();
+        logger.fatal("Test error please ignore");
         
         
         

@@ -92,7 +92,7 @@ public class ReportLost {
             }
         });
 
-        Label Case = new Label("lost");
+        Label Case = new Label("Lost");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 16, 15, 1);
 
@@ -136,32 +136,32 @@ public class ReportLost {
         OwnerInfo.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(OwnerInfo, 10, 20, 12, 1);
 
-        Label naamReiziger = new Label("first Name:");
+        Label naamReiziger = new Label("First Name:");
         grid.add(naamReiziger, 10, 21, 10, 1);
         TextField naamReizigerT = new TextField();
         grid.add(naamReizigerT, 20, 21);
 
-        Label NameInsertion = new Label("insertion:");
+        Label NameInsertion = new Label("Insertion:");
         grid.add(NameInsertion, 10, 22, 10, 1);
         TextField NameInsertionT = new TextField();
         grid.add(NameInsertionT, 20, 22);
 
-        Label lastName = new Label("last name:");
+        Label lastName = new Label("Last name:");
         grid.add(lastName, 10, 23, 10, 1);
         TextField LastNameT = new TextField();
         grid.add(LastNameT, 20, 23);
 
-        Label phone1 = new Label("phone number 1:");
+        Label phone1 = new Label("Phone number 1:");
         grid.add(phone1, 10, 24, 10, 1);
         TextField phone1T = new TextField();
         grid.add(phone1T, 20, 24);
 
-        Label phone2L = new Label("phone number 2:");
+        Label phone2L = new Label("Phone number 2:");
         grid.add(phone2L, 10, 25, 10, 1);
         TextField phone2T = new TextField();
         grid.add(phone2T, 20, 25);
 
-        Label emailL = new Label("email: ");
+        Label emailL = new Label("Email: ");
         grid.add(emailL, 10, 26, 10, 1);
         TextField emailT = new TextField();
         grid.add(emailT, 20, 26);
@@ -350,7 +350,7 @@ public class ReportLost {
                     + ",  '" + address + "' ,  '" + zipcode + "'"
                     + ",  '" + city + "' ,  '" + country + "')");
                 
-                String query2 = (" insert into lostluggage (caseid, ownerid, labelnr,"
+                String query2 = (" insert into lostluggage (lostID, ownerid, labelnr,"
                 + " flightr, destination, airport, itemname, brand, colors, description, `date lost`, status) "
                 + " values( " + caseid + " , " + ownerid + " , " + labelnr + ", " 
                 + flightnr + " , '" + destination + "', '" + airportName + "' , '" + itemname 
@@ -388,7 +388,7 @@ public class ReportLost {
                    statement3.executeUpdate(updatestatus2);
                    
                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("congrats");
+                        alert.setTitle("Congratulations");
                         alert.setHeaderText("you got a match");
                         alert.setContentText("a match has been found!");
                         
@@ -399,7 +399,7 @@ public class ReportLost {
                 
                 System.out.println(rowValues);
             } catch (Exception ex) {
-                System.out.println("failed to check for matches");
+                System.out.println("Failed to check for matches");
                 System.err.println(ex.getMessage());
             }
                 
@@ -407,7 +407,7 @@ public class ReportLost {
          ReportGenerationConnect.close();
 
         } catch (Exception ex) {
-            System.out.println("failed to inser data in to the database ");
+            System.out.println("Failed to insert data into the database ");
             System.err.println(ex.getMessage());
         }
 

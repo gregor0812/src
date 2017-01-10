@@ -17,7 +17,7 @@ import prototypefys.manageEmployees.employeetable;
 
 /**
  *
- * @author Daniel
+ * @author Daniel Uterwijk
  */
 public class adminScherm {
     
@@ -48,7 +48,7 @@ public class adminScherm {
         VBox vbox1 = new VBox(20);
         vbox1.setAlignment(Pos.CENTER);
         
-                adminstart.setStyle("-fx-background-color: #16302e");
+                adminstart.setStyle("-fx-background-color: #ff9b30");
         
         // make a empoyee view screen
         GridPane EmployeeData = new GridPane();

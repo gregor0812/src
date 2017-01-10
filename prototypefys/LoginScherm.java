@@ -84,7 +84,7 @@ public class LoginScherm {
         login.setText("Login");
         login.setStyle("-fx-background-color: #009b91;-fx-text-fill:#eaaf00");
 
-        root.setStyle("-fx-background-color: #16302e");
+        root.setStyle("-fx-background-color: #ff9b30");
         
         
         
@@ -195,6 +195,8 @@ public class LoginScherm {
        alert.setHeaderText("Wrong password");
        alert.setContentText("Wrong password/username");
        alert.showAndWait();
+       
+       
        }   
         
            

@@ -31,10 +31,6 @@ import prototypefys.Rootpane;
  */
 public class BagageCatalogue {
 
-    /**
-     * Onzin comment
-     *
-     */
     private static final Rootpane basisPane = new Rootpane();
 
     private static final HomeScreen thuisScherm = new HomeScreen();
@@ -140,12 +136,12 @@ public class BagageCatalogue {
                     catalogue.getColumns().clear();
 
                     LostLuggageTable("SELECT * FROM lostluggage "
-                        + "WHERE `" + output + "` = " + "'" + zoekConditie + "'");
+                        + "WHERE `" + output + "` LIKE " + "'%" + zoekConditie + "%'");
                 } else {
                     catalogue.getItems().clear();
                     catalogue.getColumns().clear();
                     FoundLuggageTable("SELECT * FROM foundluggage "
-                        + "WHERE " + output + " = " + "'" + zoekConditie + "'");
+                        + "WHERE " + output + " LIKE " + "'%" + zoekConditie + "%'");
                 }
 
             }
@@ -165,7 +161,7 @@ public class BagageCatalogue {
             }
         });
 
-        Button showLost = new Button("show lost luggage");
+        Button showLost = new Button("Show lost luggage");
         showLost.setMinSize(150, 20);
         showLost.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -179,7 +175,7 @@ public class BagageCatalogue {
             }
         });
 
-        Button deleteCase = new Button("delete case");
+        Button deleteCase = new Button("Delete case");
         deleteCase.setMinSize(150, 20);
         deleteCase.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -190,9 +186,10 @@ public class BagageCatalogue {
                     try {
 
                         Integer person = catalogue.getSelectionModel().getSelectedItem().getCaseid();
-
-                        DeleteCase(person);
-                        LostLuggageTable("Select * FROM foundluggage");
+                        String lost = "lostluggage";
+                        String ID = "lostID";
+                        DeleteCase(person, lost, ID);
+                        LostLuggageTable("Select * FROM lostluggage");
 
                     } catch (Exception ex) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -208,15 +205,16 @@ public class BagageCatalogue {
                     try {
 
                         Integer person = catalogueFound.getSelectionModel().getSelectedItem().getCaseid();
-
-                        DeleteCase(person);
+                        String found = "foundluggage";
+                        String ID = "foundID";
+                        DeleteCase(person, found, ID);
                         FoundLuggageTable("Select * FROM foundluggage");
                         
                         
                     } catch (Exception ex) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("error");
-                        alert.setHeaderText("delete case");
+                        alert.setHeaderText("Delete case");
                         alert.setContentText("Select a case to delete");
 
                         alert.showAndWait();
@@ -224,7 +222,8 @@ public class BagageCatalogue {
                 }
             }
         });
-
+        
+        // this button will return to the main meny
         Button buttonCurrent = new Button("Main Menu");
         //buttonCurrent.setPrefSize(90, 50);
         buttonCurrent.setStyle("-fx-base:darkred;-fx-border-color:white");
@@ -237,6 +236,7 @@ public class BagageCatalogue {
         });
         buttonCurrent.setPrefSize(100, 20);
 
+        // this button will edit the case
         Button buttonViewCase = new Button("Edit Case");
         buttonViewCase.setMinSize(150, 20);
         buttonViewCase.setStyle("-fx-base:darkred;-fx-border-color:white");
@@ -244,8 +244,7 @@ public class BagageCatalogue {
             @Override
             public void handle(ActionEvent event) {
 
-//                int selectedIndex
-//                        = catalogue.getSelectionModel().getSelectedIndex();
+            // the boolean will determine wether the lost or found luggage is selected
                 if (lostOrFound) {
 
                     LostLuggage person = catalogue.getSelectionModel().getSelectedItem();
@@ -456,7 +455,7 @@ public class BagageCatalogue {
 
     }
     
-    public void DeleteCase(int id) {
+    public void DeleteCase(int id, String table, String whichID) {
 
         
 
@@ -464,12 +463,14 @@ public class BagageCatalogue {
 
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
-           statement.executeUpdate("DELETE FROM `corendon`.`lostluggage` WHERE `lostID`='" + id +"';");
+           statement.executeUpdate("DELETE FROM `corendon`. " + table +" WHERE " + whichID 
+               + " ='" + id +"';");
 
             
 
         } catch (Exception ex) {
             System.out.println("failed to delete case ");
+            System.out.println(ex);
         }
 
        

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+ 
+<Configuration status="ERROR" monitorinterva="30">
+ 
+<Appenders>
+ 
+<Console name="Console" target="SYSTEM_OUT">
+<PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
+</Console>
+ 
+<RollingFile name="testingRollingFile" append="true" fileName="logs/basefile.log" filePattern="logs/file %i.log">
+<PatternLayout pattern="%d{UNIX_MILLIS} %logger %message%n" />
+<SizeBasedTriggeringPolicy size="2 KB" />
+</RollingFile>
+
+  <JDBC name="corendon" tableName="logs">
+            <ConnectionFactory class="database.ConnectionFactory"
+                method="getDatabaseConnection" />
+            <!-- <Column name="id" literal="LOGGING.APPLICATION_LOG_SEQUENCE.NEXTVAL" /> -->
+   <Column name="EVENT_DATE" isEventTimestamp="true" />
+   <Column name="LEVEL" pattern="%level" />
+   <Column name="LOGGER" pattern="%logger" />
+   <Column name="MESSAGE" pattern="%message" />
+   <Column name="THROWABLE" pattern="%ex{full}" />
+        </JDBC>
+ 
+</Appenders>
+ 
+<Loggers>
+<Root level="ERROR">
+<AppenderRef ref="Console" />
+<AppenderRef ref="RollingFile" />
+<AppenderRef ref="databaseAppender" />
+</Root>
+</Loggers>
+ 
+</Configuration>
