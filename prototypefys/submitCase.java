@@ -41,40 +41,39 @@ public class submitCase {
         Button btn;
         Button btn2;
         Button btnS;
-
-        HBox Menu = new HBox();
+        
+        
         // ------------------------------
+        // this is the main menu button
         btn = new Button(); // button 1
         btn.setText("Main Menu");
         btn.setPrefSize(160, 50);
         btn.setStyle("-fx-base:darkred;-fx-border-color:white");
         btn.setFont(Font.font("Verdana", 12));
         // ------------------------------
-        btn2 = new Button(); // button 2
-        btn2.setText("Options");
-        btn2.setPrefSize(160, 50);
-        btn2.setStyle("-fx-base:darkred;-fx-border-color:white");
-        btn2.setFont(Font.font("Verdana", 12));
+        
+       ;
         //--------------------------------
+        // this button will submit the case
         btnS = new Button(); // button Submit
         btnS.setText("Submit Case");
         btnS.setPrefSize(160, 50);
         btnS.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnS.setFont(Font.font("Verdana", 12));
-
+        
+        // this pane will contain all the button and labels
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
-
+        
+        // the submit button and main menu button are given standard positions
         GridPane.setConstraints(btn, 1, 15);
-
-        GridPane.setConstraints(btn2, 2, 15);
-
         GridPane.setConstraints(btnS, 40, 31);
 
         grid.setStyle("-fx-background-color: white");
-
+        
+        // the main menu button will return to the main menu through this action
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -82,11 +81,13 @@ public class submitCase {
                 rootpane.addnewpane(homescreen);
             }
         });
-
+        
+        // this is the found label
         Label Case = new Label("Found");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 16, 15, 1);
-
+        
+        
         Label label = new Label("Label Information");
         label.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(label, 30, 16, 15, 1);
@@ -126,10 +127,14 @@ public class submitCase {
         TextField destinationT = new TextField();
         grid.add(destinationT, 40, 19);
 
-        Label ownerName = new Label("Name traveler:");
-        grid.add(ownerName, 30, 20, 10, 1);
-        TextField ownerNameT = new TextField();
-        grid.add(ownerNameT, 40, 20);
+        Label ownerFirstName = new Label("First name:");
+        grid.add(ownerFirstName, 30, 20, 10, 1);
+        TextField ownerFirstNameT = new TextField();
+        grid.add(ownerFirstNameT, 40, 20);
+        
+        Label ownerInsertion = new Label("Insertions:");
+        grid.add(ownerInsertion, 30, 21, 10, 1);
+        
 
         Label type = new Label("Type:");
         grid.add(type, 30, 23, 10, 1);
@@ -146,35 +151,6 @@ public class submitCase {
         TextField itemColorT = new TextField();
         grid.add(itemColorT, 40, 25);
 
-//        Label ownerAdd = new Label("Address:");
-//        grid.add(ownerAdd, 10, 24, 10, 1);
-//        TextField ownerAddT = new TextField();
-//        grid.add(ownerAddT, 20, 24);
-//
-//        Label ownerCity = new Label("City:");
-//        grid.add(ownerCity, 10, 25, 10, 1);
-//        TextField ownerCityT = new TextField();
-//        grid.add(ownerCityT, 20, 25);
-//
-//        Label ownerZip = new Label("Zipcode:");
-//        grid.add(ownerZip, 10, 26, 10, 1);
-//        TextField ownerZipT = new TextField();
-//        grid.add(ownerZipT, 20, 26);
-//
-//        Label ownerCountry = new Label("Country:");
-//        grid.add(ownerCountry, 10, 27, 10, 1);
-//        TextField ownerCountryT = new TextField();
-//        grid.add(ownerCountryT, 20, 27);
-//
-//        Label telNumber = new Label("Telephone number:");
-//        grid.add(telNumber, 10, 28, 10, 1);
-//        TextField telNumberT = new TextField();
-//        grid.add(telNumberT, 20, 28);
-//
-//        Label eMail = new Label("E-mail:");
-//        grid.add(eMail, 10, 29, 10, 1);
-//        TextField eMailT = new TextField();
-//        grid.add(eMailT, 20, 29);
         Label addNotes = new Label("Additional notes:");
         grid.add(addNotes, 30, 26, 10, 1);
         TextField addNotesT = new TextField();
@@ -189,45 +165,60 @@ public class submitCase {
         Calendar.setFitWidth(30);
 
         grid.add(Calendar, 21, 17);
-
+        
+        // an image of the corendon logo is made
         ImageView Corendon = new ImageView("/resources/corendon.jpg");
         Corendon.setFitHeight(100);
         Corendon.setFitWidth(300);
 
+        // the corendon logo is added to the pane
         grid.add(Corendon, 1, 1, 10, 10);
 
         // Toevoegen van buttons
-        grid.getChildren().addAll(btn, btn2, btnS);
-
+        grid.getChildren().addAll(btn, btnS);
+        
+        // the submit case gets an action here
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
+                // the case id will be generated here
                 int caseid = getCaseId();
-
+                
+                // the label nr and flight number have a standard value of null
                 Integer labelnr = null;
                 Integer flightnr = null;
+                
+                // if a value is not entered in the labelnr textfield the value will be 0
                 if (labelT.getText().isEmpty()) {
                     labelnr = 0;
+                 // if a value is entered the labelnr will get the value thats
+                 // entered in the textfield   
                 } else {
                     labelnr = Integer.parseInt(labelT.getText());
                 }
-
+                
+                // if a value is not entered in the labelnr textfield the value will be 0
                 if (flightT.getText().isEmpty()) {
                     flightnr = 0;
+                
+                // if a value is entered the labelnr will get the value thats
+                // entered in the textfield     
                 } else {
                     flightnr = Integer.parseInt(flightT.getText());
                 }
-
+                
+                // the lugggage info will get the value of their respective fields
                 String airportName = airportT.getText();
-
                 String itemname = typeT.getText();
                 String Brand = itemBrandT.getText();
                 String color = itemColorT.getText();
                 String description = addNotesT.getText();
                 String dateFound = dateT.getText();
                 String destination = destinationT.getText();
-
+                
+                // the info will be entered in the the database using the 
+                //insert into database method
                 insertIntoDatabase(caseid, labelnr, flightnr,
                     airportName, destination, itemname, Brand,
                     color, description, dateFound);
@@ -238,38 +229,49 @@ public class submitCase {
 
     }
 
+    // this function will get a new caseid 
     public int getCaseId() {
 
+        // the value will be 0 at first
         int newCaseId = 0;
-
+        
+        
         try {
-
+            // a connection is made
             Connection ReportGenerationConnect = db.getConnection();
+            // a statement is made
             Statement statement = ReportGenerationConnect.createStatement();
+            // a result set is made using a query to get the highest case id
+            // by adding a 1 the caseid will always be unique
             ResultSet TableData = statement.executeQuery("select max(foundID) from foundluggage");
-
+            
+            // the caseid will be extracted from the resultset
             while (TableData.next()) {
                 newCaseId = TableData.getInt(1) + 1;
 
             }
-
+            
+            // if the connection fails the exception will be printed
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }
 
         return newCaseId;
     }
-
+    
+    // this method will insert the luggage info into the database
     public void insertIntoDatabase(int caseid, Integer labelnr, Integer flightnr,
         String airportName, String destination, String itemname, String Brand,
         String color, String description, String dateFound) {
 
+        
         try {
 
             // a connection is made
             Connection ReportGenerationConnect = db.getConnection();
+            // a statement is made
             Statement statement = ReportGenerationConnect.createStatement();
-
+            // 
             String databaseQuery = (" insert into foundluggage (foundID, labelnr,"
                 + " flightnr, airport, destination, itemname, brand, colors, description, dateFound, status) "
                 + " values( " + caseid + " , " + labelnr + " , " + flightnr + ", "
