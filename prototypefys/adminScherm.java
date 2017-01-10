@@ -17,7 +17,7 @@ import prototypefys.manageEmployees.employeetable;
 
 /**
  *
- * @author Daniel
+ * @author Daniel Uterwijk
  */
 public class adminScherm {
     

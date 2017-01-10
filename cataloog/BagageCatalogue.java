@@ -31,10 +31,6 @@ import prototypefys.Rootpane;
  */
 public class BagageCatalogue {
 
-    /**
-     * Onzin comment
-     *
-     */
     private static final Rootpane basisPane = new Rootpane();
 
     private static final HomeScreen thuisScherm = new HomeScreen();
