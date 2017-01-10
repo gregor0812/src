@@ -48,7 +48,7 @@ public class adminScherm {
         VBox vbox1 = new VBox(20);
         vbox1.setAlignment(Pos.CENTER);
         
-                adminstart.setStyle("-fx-background-color: #ff9b30");
+                adminstart.setStyle("-fx-background-color: #ffffff");
         
         // make a empoyee view screen
         GridPane EmployeeData = new GridPane();

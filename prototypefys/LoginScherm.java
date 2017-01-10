@@ -16,6 +16,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -26,7 +27,7 @@ import javafx.scene.text.Text;
 public class LoginScherm {
     
     private Button login = new Button();
-
+    private Button resetPassword = new Button();
     LoginScherm() {
 
     }
@@ -83,14 +84,14 @@ public class LoginScherm {
         Button login = new Button();
         login.setText("Login");
         login.setStyle("-fx-background-color: #009b91;-fx-text-fill:#eaaf00");
+        
+        Button resetPassword = new Button();
+        resetPassword.setText("Reset password");
+        resetPassword.setStyle("-fx-background-color: #ffffff;-fx-text-fill:BLACK");
 
         root.setStyle("-fx-background-color: #ffffff");
+               
         
-        
-        
-        
-
-
 
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -106,8 +107,23 @@ public class LoginScherm {
             }
         });
         
-        root.add(login, 0 , 3);
+        resetPassword.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                
+                System.out.println("X");
+                
+               resetPassword scherm = new resetPassword();
+               StackPane resetPassword = scherm.maakPasswordReset();
+               rootpane.addnewpane(resetPassword);
+               
+            }
+        });
         
+        
+        
+        root.add(login, 0 , 3);
+        root.add(resetPassword, 0 , 4);
         
         
         return root;
