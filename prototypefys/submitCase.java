@@ -202,8 +202,8 @@ public class submitCase {
                 if (flightT.getText().isEmpty()) {
                     flightnr = 0;
                 
-// if a value is entered the labelnr will get the value thats
-                 // entered in the textfield     
+                // if a value is entered the labelnr will get the value thats
+                // entered in the textfield     
                 } else {
                     flightnr = Integer.parseInt(flightT.getText());
                 }
