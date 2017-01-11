@@ -94,13 +94,13 @@ public class submitCase {
 
         Label luggage = new Label("Luggage information");
         luggage.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        grid.add(luggage, 30, 22, 15, 1);
+        grid.add(luggage, 30, 24, 15, 1);
 
         Label date = new Label("Date:");
         grid.add(date, 10, 17, 10, 1);
         TextField dateT = new TextField();
         grid.add(dateT, 20, 17);
-        dateT.setPromptText("dd/mm/yyyy");
+        dateT.setPromptText("yyyy-mm-dd");
 
         Label time = new Label("Time:");
         grid.add(time, 10, 18, 10, 1);
@@ -132,32 +132,38 @@ public class submitCase {
         TextField ownerFirstNameT = new TextField();
         grid.add(ownerFirstNameT, 40, 20);
         
-        Label ownerInsertion = new Label("Insertions:");
+        Label ownerInsertion = new Label("Insertion(s):");
         grid.add(ownerInsertion, 30, 21, 10, 1);
+        TextField ownerInsertionT = new TextField();
+        grid.add(ownerInsertionT, 40, 21);
         
+        Label ownerLastName = new Label("Last name: ");
+        grid.add(ownerLastName, 30, 22, 10, 1);
+        TextField ownerLastNameT = new TextField();
+        grid.add(ownerLastNameT, 40, 22);
 
         Label type = new Label("Type:");
-        grid.add(type, 30, 23, 10, 1);
+        grid.add(type, 30, 25, 10, 1);
         TextField typeT = new TextField();
-        grid.add(typeT, 40, 23);
+        grid.add(typeT, 40, 25);
 
         Label itemBrand = new Label("Brand:");
-        grid.add(itemBrand, 30, 24, 10, 1);
+        grid.add(itemBrand, 30, 26, 10, 1);
         TextField itemBrandT = new TextField();
-        grid.add(itemBrandT, 40, 24);
+        grid.add(itemBrandT, 40, 26);
 
         Label itemColor = new Label("Color:");
-        grid.add(itemColor, 30, 25, 10, 1);
+        grid.add(itemColor, 30, 27, 10, 1);
         TextField itemColorT = new TextField();
-        grid.add(itemColorT, 40, 25);
+        grid.add(itemColorT, 40, 27);
 
         Label addNotes = new Label("Additional notes:");
-        grid.add(addNotes, 30, 26, 10, 1);
+        grid.add(addNotes, 30, 28, 10, 1);
         TextField addNotesT = new TextField();
-        grid.add(addNotesT, 40, 26);
+        grid.add(addNotesT, 40, 28);
 
         Label CaseId = new Label("The case id is: " + getCaseId());
-        grid.add(CaseId, 40, 27, 2, 1);
+        grid.add(CaseId, 40, 29, 2, 1);
         CaseId.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 
         ImageView Calendar = new ImageView("/resources/Calendar-icon.png");
