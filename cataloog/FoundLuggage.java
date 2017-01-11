@@ -16,11 +16,14 @@ import javafx.beans.property.StringProperty;
  */
 public class FoundLuggage {
     
+    // the propertys are all colums of the tableview
    private IntegerProperty caseid;
     private IntegerProperty labelnr;
     private IntegerProperty ownerid;
     private IntegerProperty flightnr;
-    private StringProperty ownerName;
+    private StringProperty firstName;
+    private StringProperty insertion;
+    private StringProperty lastName;
     private StringProperty airport;
     private StringProperty destination;
     private StringProperty itemname;
@@ -31,7 +34,8 @@ public class FoundLuggage {
     private StringProperty status;
     
     
-    public FoundLuggage(int caseid, int labelnr, Integer ownerid, int flightnr, String ownerName,
+    public FoundLuggage(int caseid, int labelnr, Integer ownerid, int flightnr, 
+        String firstName, String insertion, String lastName,
         String airport,String destination, String itemname, String brand, String colors,
         String description, String dateFound, String status) {
         
@@ -39,7 +43,9 @@ public class FoundLuggage {
         this.labelnr = new SimpleIntegerProperty(labelnr);
         this.ownerid = new SimpleIntegerProperty(ownerid);
         this.flightnr = new SimpleIntegerProperty(flightnr);
-        this.ownerName = new SimpleStringProperty(ownerName);
+        this.firstName = new SimpleStringProperty(firstName);
+        this.insertion = new SimpleStringProperty(insertion);
+        this.lastName = new SimpleStringProperty(lastName);
         this.airport = new SimpleStringProperty(airport);
         this.destination = new SimpleStringProperty(destination);
         this.itemname = new SimpleStringProperty(itemname);
@@ -84,12 +90,28 @@ public class FoundLuggage {
         this.flightnr.set(flightnr);
     }
 
-    public String getOwnerName() {
-        return ownerName.get();
+    public String getFirstName() {
+        return firstName.get();
     }
 
-    public void setOwnerName(String ownerName) {
-        this.ownerName.set(ownerName);
+    public void setFirstName(String firstName) {
+        this.firstName.set(firstName);
+    }
+    
+    public String insertion() {
+        return insertion.get();
+    }
+
+    public void setInsertion(String insertion) {
+        this.insertion.set(insertion);
+    }
+    
+    public String getLastName() {
+        return lastName.get();
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName.set(lastName);
     }
     
     
