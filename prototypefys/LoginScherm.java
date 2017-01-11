@@ -56,17 +56,17 @@ public class LoginScherm {
 
         root.add(Corendon, 0, 0, 2, 1);
 
-        Text username = new Text("Username:");
-        root.add(username, 0, 1);
-        username.setFill(Color.BLACK);
+        Text usernameL = new Text("Username:");
+        root.add(usernameL, 0, 1);
+        usernameL.setFill(Color.BLACK);
         TextField userText = new TextField();
         userText.setPrefColumnCount(1);
         userText.setPrefWidth(100);
         root.add(userText, 1, 1);
 
-        Text password = new Text("Password:");
-        root.add(password, 0, 2);
-        password.setFill(Color.BLACK);
+        Text passwordL = new Text("Password:");
+        root.add(passwordL, 0, 2);
+        passwordL.setFill(Color.BLACK);
         PasswordField passwordText = new PasswordField();
         passwordText.setPrefColumnCount(1);
         passwordText.setPrefWidth(10);
@@ -93,12 +93,19 @@ public class LoginScherm {
 //            @Override
 //            public void handle(KeyEvent ke) {
 //                if (ke.getCode().equals(KeyCode.ENTER)) {
-//                    String username = userText.getText();
-//                    String password = passwordText.getText();
-//                    LoginCheck(username, password);
+//                    login.arm();
 //                }
 //            }
 //        });
+        
+         root.setOnKeyPressed(e -> {
+           if (e.getCode().equals(KeyCode.ENTER)) {
+                String username = userText.getText();
+                String password = passwordText.getText();
+                LoginCheck(username, password);
+                }
+            });
+        
 
         root.add(login, 0, 3);
 
