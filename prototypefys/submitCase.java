@@ -3,6 +3,7 @@ package prototypefys;
 import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +42,7 @@ public class submitCase {
         Button btn;
         Button btn2;
         Button btnS;
-        
-        
+
         // ------------------------------
         // this is the main menu button
         btn = new Button(); // button 1
@@ -51,8 +51,8 @@ public class submitCase {
         btn.setStyle("-fx-base:darkred;-fx-border-color:white");
         btn.setFont(Font.font("Verdana", 12));
         // ------------------------------
-        
-       ;
+
+        ;
         //--------------------------------
         // this button will submit the case
         btnS = new Button(); // button Submit
@@ -60,19 +60,19 @@ public class submitCase {
         btnS.setPrefSize(160, 50);
         btnS.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnS.setFont(Font.font("Verdana", 12));
-        
+
         // this pane will contain all the button and labels
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
-        
+
         // the submit button and main menu button are given standard positions
         GridPane.setConstraints(btn, 1, 15);
         GridPane.setConstraints(btnS, 40, 31);
 
         grid.setStyle("-fx-background-color: white");
-        
+
         // the main menu button will return to the main menu through this action
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -81,13 +81,12 @@ public class submitCase {
                 rootpane.addnewpane(homescreen);
             }
         });
-        
+
         // this is the found label
         Label Case = new Label("Found");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 16, 15, 1);
-        
-        
+
         Label label = new Label("Label Information");
         label.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(label, 30, 16, 15, 1);
@@ -131,12 +130,12 @@ public class submitCase {
         grid.add(ownerFirstName, 30, 20, 10, 1);
         TextField ownerFirstNameT = new TextField();
         grid.add(ownerFirstNameT, 40, 20);
-        
+
         Label ownerInsertion = new Label("Insertion(s):");
         grid.add(ownerInsertion, 30, 21, 10, 1);
         TextField ownerInsertionT = new TextField();
         grid.add(ownerInsertionT, 40, 21);
-        
+
         Label ownerLastName = new Label("Last name: ");
         grid.add(ownerLastName, 30, 22, 10, 1);
         TextField ownerLastNameT = new TextField();
@@ -171,7 +170,7 @@ public class submitCase {
         Calendar.setFitWidth(30);
 
         grid.add(Calendar, 21, 17);
-        
+
         // an image of the corendon logo is made
         ImageView Corendon = new ImageView("/resources/corendon.jpg");
         Corendon.setFitHeight(100);
@@ -182,7 +181,7 @@ public class submitCase {
 
         // Toevoegen van buttons
         grid.getChildren().addAll(btn, btnS);
-        
+
         // the submit case gets an action here
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -190,30 +189,30 @@ public class submitCase {
 
                 // the case id will be generated here
                 int caseid = getCaseId();
-                
+
                 // the label nr and flight number have a standard value of null
                 Integer labelnr = null;
                 Integer flightnr = null;
-                
+
                 // if a value is not entered in the labelnr textfield the value will be 0
                 if (labelT.getText().isEmpty()) {
                     labelnr = 0;
-                 // if a value is entered the labelnr will get the value thats
-                 // entered in the textfield   
+                    // if a value is entered the labelnr will get the value thats
+                    // entered in the textfield   
                 } else {
                     labelnr = Integer.parseInt(labelT.getText());
                 }
-                
+
                 // if a value is not entered in the labelnr textfield the value will be 0
                 if (flightT.getText().isEmpty()) {
                     flightnr = 0;
-                
-                // if a value is entered the labelnr will get the value thats
-                // entered in the textfield     
+
+                    // if a value is entered the labelnr will get the value thats
+                    // entered in the textfield     
                 } else {
                     flightnr = Integer.parseInt(flightT.getText());
                 }
-                
+
                 // the lugggage info will get the value of their respective fields
                 String airportName = airportT.getText();
                 String itemname = typeT.getText();
@@ -222,12 +221,12 @@ public class submitCase {
                 String description = addNotesT.getText();
                 String dateFound = dateT.getText();
                 String destination = destinationT.getText();
-                
+
                 // the info will be entered in the the database using the 
                 //insert into database method
                 insertIntoDatabase(caseid, labelnr, flightnr,
-                    airportName, destination, itemname, Brand,
-                    color, description, dateFound);
+                        airportName, destination, itemname, Brand,
+                        color, description, dateFound);
             }
         });
 
@@ -240,8 +239,7 @@ public class submitCase {
 
         // the value will be 0 at first
         int newCaseId = 0;
-        
-        
+
         try {
             // a connection is made
             Connection ReportGenerationConnect = db.getConnection();
@@ -250,13 +248,13 @@ public class submitCase {
             // a result set is made using a query to get the highest case id
             // by adding a 1 the caseid will always be unique
             ResultSet TableData = statement.executeQuery("select max(foundID) from foundluggage");
-            
+
             // the caseid will be extracted from the resultset
             while (TableData.next()) {
                 newCaseId = TableData.getInt(1) + 1;
 
             }
-            
+
             // if the connection fails the exception will be printed
         } catch (Exception ex) {
             System.out.println("exception 2 ");
@@ -264,13 +262,44 @@ public class submitCase {
 
         return newCaseId;
     }
-    
+
+    /**
+     * Get owner id From database if the owner exists
+     * 
+     * @param firstname The firstname of the owner
+     * @param insertion The insertions of the owner
+     * @param lastname The lastname name of the owner
+     * @return The integer that represents the owner
+     */
+    public int getOwnerID(String firstname, String insertion, String lastname) {
+        
+        try {
+            Connection ReportGenerationConnect = db.getConnection();
+            Statement statement = ReportGenerationConnect.createStatement();
+            ResultSet tableData = statement.executeQuery("SELECT ownerid "
+                    + "FROM luggageowner "
+                    + "WHERE firstname='" + firstname + "' "
+                    + "AND insertion='" + insertion + "' "
+                    + "AND lastname='" + lastname + "';");
+            
+            while(tableData.next()) {
+                return tableData.getInt(1);
+            }
+            
+            return 0;
+            
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+            return 0;
+        }
+
+    }
+
     // this method will insert the luggage info into the database
     public void insertIntoDatabase(int caseid, Integer labelnr, Integer flightnr,
-        String airportName, String destination, String itemname, String Brand,
-        String color, String description, String dateFound) {
+            String airportName, String destination, String itemname, String Brand,
+            String color, String description, String dateFound) {
 
-        
         try {
 
             // a connection is made
@@ -279,11 +308,11 @@ public class submitCase {
             Statement statement = ReportGenerationConnect.createStatement();
             // 
             String databaseQuery = (" insert into foundluggage (foundID, labelnr,"
-                + " flightnr, airport, destination, itemname, brand, colors, description, dateFound, status) "
-                + " values( " + caseid + " , " + labelnr + " , " + flightnr + ", "
-                + " '" + airportName + "' , '" + destination + "' , ' " + itemname
-                + " ' , ' " + Brand + " ' , ' " + color + "', ' "
-                + description + "' , ' " + dateFound + "', 'open');");
+                    + " flightnr, airport, destination, itemname, brand, colors, description, dateFound, status) "
+                    + " values( " + caseid + " , " + labelnr + " , " + flightnr + ", "
+                    + " '" + airportName + "' , '" + destination + "' , ' " + itemname
+                    + " ' , ' " + Brand + " ' , ' " + color + "', ' "
+                    + description + "' , ' " + dateFound + "', 'open');");
 
             System.out.println(databaseQuery);
 
@@ -291,44 +320,40 @@ public class submitCase {
 
             // een resultset met verloren labelnummers
             try {
-                
+
                 Statement statement2 = ReportGenerationConnect.createStatement();
                 ResultSet knownlabelnr = statement2.executeQuery("select labelnr from lostluggage");
                 List rowValues = new ArrayList();
                 while (knownlabelnr.next()) {
                     rowValues.add(knownlabelnr.getInt(1));
                 }
-                
+
                 Statement statement3 = ReportGenerationConnect.createStatement();
-                
-               if(rowValues.contains(labelnr)){
-                   
+
+                if (rowValues.contains(labelnr)) {
+
                     String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
-                    + "`status`='matched' WHERE labelnr = " + labelnr + ";";
-                   
+                            + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+
                     statement3.executeUpdate(updatestatus1);
-                    
-                   String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
-                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
-                   
-                   statement3.executeUpdate(updatestatus2);
-                   
-                   Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("congrats");
-                        alert.setHeaderText("you got a match");
-                        alert.setContentText("a match has been found!");
-                        alert.showAndWait(); 
-               }
-                
-                
-                
+
+                    String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
+                            + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+
+                    statement3.executeUpdate(updatestatus2);
+
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("congrats");
+                    alert.setHeaderText("you got a match");
+                    alert.setContentText("a match has been found!");
+                    alert.showAndWait();
+                }
+
                 System.out.println(rowValues);
             } catch (Exception ex) {
                 System.out.println("failed to check for matches");
                 System.err.println(ex.getMessage());
             }
-
-            
 
         } catch (Exception ex) {
             System.out.println("failed to insert data in to the database ");
