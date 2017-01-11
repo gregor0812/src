@@ -18,7 +18,9 @@ public class FoundLuggage {
     
    private IntegerProperty caseid;
     private IntegerProperty labelnr;
+    private IntegerProperty ownerid;
     private IntegerProperty flightnr;
+    private StringProperty ownerName;
     private StringProperty airport;
     private StringProperty destination;
     private StringProperty itemname;
@@ -29,13 +31,15 @@ public class FoundLuggage {
     private StringProperty status;
     
     
-    public FoundLuggage(int caseid, int labelnr, int flightnr,
+    public FoundLuggage(int caseid, int labelnr, Integer ownerid, int flightnr, String ownerName,
         String airport,String destination, String itemname, String brand, String colors,
         String description, String dateFound, String status) {
         
         this.caseid =  new SimpleIntegerProperty(caseid);
         this.labelnr = new SimpleIntegerProperty(labelnr);
+        this.ownerid = new SimpleIntegerProperty(ownerid);
         this.flightnr = new SimpleIntegerProperty(flightnr);
+        this.ownerName = new SimpleStringProperty(ownerName);
         this.airport = new SimpleStringProperty(airport);
         this.destination = new SimpleStringProperty(destination);
         this.itemname = new SimpleStringProperty(itemname);
@@ -64,6 +68,14 @@ public class FoundLuggage {
         this.labelnr.set(labelnr);
     }
 
+    public Integer getOwnerid(){
+        return ownerid.get();
+    }
+    
+    public void setOwnerid(Integer ownerid){
+        this.ownerid.set(ownerid);
+    }
+    
     public int getFlightnr() {
         return flightnr.get();
     }
@@ -72,6 +84,15 @@ public class FoundLuggage {
         this.flightnr.set(flightnr);
     }
 
+    public String getOwnerName() {
+        return ownerName.get();
+    }
+
+    public void setOwnerName(String ownerName) {
+        this.ownerName.set(ownerName);
+    }
+    
+    
     public String getAirport() {
         return airport.get();
     }

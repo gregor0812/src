@@ -38,7 +38,7 @@ public class EditForm {
 
     }
 
-    public GridPane MakeLostReport(LostLuggage person) {
+    public GridPane MakeEdit(LostLuggage person) {
 
         Button btnmainmenu;
         Button btn2;
@@ -358,8 +358,9 @@ public class EditForm {
                 + " `notes`='" + notes + "' WHERE `ownerid`='" + ownerid + "';");
                 
                 String addressQuery = ("update address SET address = '" + address + "' , "
-                    + "SET zipcode = '" + zipcode  
-                    + "' ,SET city = '" + city + "',SET country = '" + country + "' WHERE lostID = " + caseid + ";");
+                    + " zipcode = '" + zipcode  
+                    + "' , city = '" + city + "', country = '" + country +
+                    "' WHERE ownerid = " + ownerid + ";");
                 
                 String query2 = (" UPDATE `corendon`.`lostluggage` SET `labelnr`='" + labelnr + ""
                     + "', `flightr`=" + flightnr + ", " +
@@ -368,7 +369,7 @@ public class EditForm {
             "`brand`='" + Brand + "', `colors`='" + color + "', `description`='" + description + "'," +
             " `date lost`='" + dateLost + "' WHERE `lostID`=" + caseid + ";");
 
-                System.out.println(databaseQuery);
+                System.out.println(addressQuery);
                 
             statement.executeUpdate(databaseQuery);
             statement.executeUpdate(query2);
@@ -425,7 +426,7 @@ public class EditForm {
     }
     
 
-    public GridPane MakeLostReport(FoundLuggage person) {
+    public GridPane MakeEdit(FoundLuggage person) {
 
         Button btn;
         Button btn2;
