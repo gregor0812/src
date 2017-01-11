@@ -69,10 +69,11 @@ public class employeetable {
                 rootpane.addnewpane(adminScherm);
             }
         });
-
+        
+        // the table columns are made here
         TableColumn<Employee, String> employeenumberColumn = new TableColumn<>("employee number");
         employeenumberColumn.setCellValueFactory(new PropertyValueFactory<>("employeenumber"));
-        employeenumberColumn.setMinWidth(100);
+        employeenumberColumn.setMinWidth(90);
         
         TableColumn<Employee, String> usernameColumn = new TableColumn<>("username");
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
@@ -94,11 +95,13 @@ public class employeetable {
         
         TableColumn<Employee, String> emailColumn = new TableColumn<>("email");
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        emailColumn.setMinWidth(100);
 
         try {
-            // a connection is made
+            // a query to select all the info from the database
             String query = "select * from employee";
-
+            
+            // a connection is mad
             Connection catalogueConnect = db.getConnection();
             Statement statement = catalogueConnect.createStatement();
             ResultSet TableData = statement.executeQuery(query);
@@ -106,32 +109,40 @@ public class employeetable {
             // this while loop gets data in the ovservable list
             data = FXCollections.observableArrayList();
             while (TableData.next()) {
-                //Iterate Row
+                //while there is info in the resultset it will be added to the observable list
                 data.add(new Employee(TableData.getInt(1), TableData.getString(2), TableData.getString(3), TableData.getString(4),
                     TableData.getString(5), TableData.getString(6), TableData.getString(7), TableData.getString(8)));
             }
+            
+            // the info is added to the tableview
             employeeView.setItems(data);
+            // the columns are added to the tableview
             employeeView.getColumns().addAll(employeenumberColumn, usernameColumn,
                 passwordColumn, firstnameColumn,
                 insertionColumn, lastnameColumn, roleColumn, emailColumn);
-
+            
+            // the exception will catch and display an error if something goes wrong
         } catch (Exception ex) {
             System.out.println("failed to load employee table ");
             System.out.println(ex);
         }
-
+        
+        // a button to edit the employee info
         Button editTable = new Button("edit employee");
         editTable.setPrefSize(180, 20);
         editTable.setStyle("-fx-base:darkred;-fx-border-color:black");
         editTable.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                // the selected info will be used to make an employee object
                 Employee employee = employeeView.getSelectionModel().getSelectedItem();
-
+                
+                // if a table row is selected a editform will be made
                 if (employee != null) {
-
+                     // the form is added to the screen
                     rootpane.addnewpane(editUser(employee));
                 } else {
+                    // an alert is shown if there is no row selected
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("error");
                     alert.setHeaderText("edit employee");
@@ -139,20 +150,22 @@ public class employeetable {
 
                     alert.showAndWait();
                 }
-
-                rootpane.addnewpane(editUser(employee));
             }
         });
+        // this is a button to add a new employee
         Button addEmployee = new Button("add employee");
         addEmployee.setPrefSize(180, 20);
         addEmployee.setStyle("-fx-base:darkred;-fx-border-color:black");
         addEmployee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                
+                // a form will be added to the screen to make the new employee
                 rootpane.addnewpane(addUser());                                
             }
         });
         
+        // this is a button to remove an employee
         Button removeEmployee = new Button("remove employee");
         removeEmployee.setPrefSize(180, 20);
         removeEmployee.setStyle("-fx-base:darkred;-fx-border-color:black");
@@ -160,8 +173,11 @@ public class employeetable {
             @Override
             public void handle(ActionEvent event) {
                
+                // a employee object will be made using the selected row
                 Employee employee = employeeView.getSelectionModel().getSelectedItem();
                 if (employee != null) {
+                    // a confirmation popup will be shown to confirm if the user
+                    // really wants to delete the employee
                     Alert alert = new Alert(AlertType.CONFIRMATION);
                     alert.setTitle("Confirmation Dialog");
                     alert.setHeaderText("deleting employee");
@@ -171,12 +187,19 @@ public class employeetable {
                     Optional<ButtonType> result = alert.showAndWait();
                     if (result.get() == ButtonType.OK){
                     removeUser(employee.getEmployeenumber());
+                    
+                    Alert confirmed = new Alert(AlertType.INFORMATION);
+                    confirmed.setTitle("Confirmation Dialog");
+                    confirmed.setHeaderText("succes");
+                    confirmed.setContentText("the employee was deleted ");
+                    confirmed.showAndWait();
+                    
                     rootpane.addnewpane(MaakEmployeeTable());
                     } else {
                     
                     }
                     
-                    
+                    // a alert to show the user that they have not selected anything
                 } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("error");
@@ -184,23 +207,28 @@ public class employeetable {
                     alert.setContentText("Select a employee to remove");
 
                     alert.showAndWait();
-                }
-
-                                                
+                }                                        
             }
         });
         
+        // the tableview is added
         root.add(employeeView, 0, 0);
+        // this vbox will contain the control buttons
         VBox buttonContainer = new VBox(10);
+        // the buttons are added
         buttonContainer.getChildren().addAll(backbuton, editTable, addEmployee, 
             removeEmployee);
+        // the vbox is added to the screen
         root.add(buttonContainer, 1, 0);
         return root;
     }
-
+    
+    // this method will generate an edit form using a employee object
     public GridPane editUser(Employee employee) {
-
+        
+        // a button to return to the employeetable
         Button btnmainmenu;
+        // a button to sumbit the changes
         Button btnS;
 
         btnmainmenu = new Button(); // button 1
@@ -215,11 +243,13 @@ public class employeetable {
         btnS.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnS.setFont(Font.font("Verdana", 12));
 
+        // a gridpane to contain all the buttons and fields
         GridPane grid = new GridPane();
         grid.setPadding(new Insets(10, 10, 10, 10));
         grid.setVgap(8);
         grid.setHgap(10);
 
+        
         GridPane.setConstraints(btnmainmenu, 1, 15);
         GridPane.setConstraints(btnS, 20, 25);
         grid.setStyle("-fx-background-color: white");
@@ -289,7 +319,8 @@ public class employeetable {
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                
+                // the employee data is received from the textfields
                 int employeenumber = Integer.parseInt(employeenumberText.getText());
                 String username = userNameText.getText();
                 String password = passwordText.getText();
@@ -299,7 +330,7 @@ public class employeetable {
                 String role = roleText.getText();
                 String email = emailText.getText();
                 
-                
+                // this method will update the employee info
                 updateUser(employeenumber, username, password, firstname,
                     insertion, lastname, role);
 
@@ -318,7 +349,8 @@ public class employeetable {
             // a connection is made
             Connection employeetableConnect = db.getConnection();
             Statement statement = employeetableConnect.createStatement();
-
+            
+            // this query will update the user info using the data entered into the method
             String databaseQuery = ("UPDATE `corendon`.`employee` SET username ="
                 + "'" + username + "', " + "`password`='" + password + "', firstname = "
                 + "'" + firstname + "', insertion = '" + insertion + "', "
@@ -326,7 +358,8 @@ public class employeetable {
                 + "WHERE `employeenumber`= " + employeenumber + "; ");
 
             System.out.println(databaseQuery);
-
+            
+            // the query is executed here
             statement.executeUpdate(databaseQuery);
             
 
