@@ -332,7 +332,7 @@ public class employeetable {
                 
                 // this method will update the employee info
                 updateUser(employeenumber, username, password, firstname,
-                    insertion, lastname, role);
+                    insertion, lastname, role, email);
 
             }
         });
@@ -342,7 +342,7 @@ public class employeetable {
     }
 
     public void updateUser(int employeenumber, String username, String password, String firstname,
-        String insertion, String lastname, String role) {
+        String insertion, String lastname, String role, String email) {
 
         try {
 
@@ -354,8 +354,10 @@ public class employeetable {
             String databaseQuery = ("UPDATE `corendon`.`employee` SET username ="
                 + "'" + username + "', " + "`password`='" + password + "', firstname = "
                 + "'" + firstname + "', insertion = '" + insertion + "', "
-                + "lastname = '" + lastname + "', role = '" + role + "' "
+                + "lastname = '" + lastname + "', role = '" + role + "', email = '" + email + "', "
                 + "WHERE `employeenumber`= " + employeenumber + "; ");
+            
+           // String databaseQuery = ("UPDATE `corendon`.`employee` SET `password`" + generatedPassword + " WHERE `employeenumber`= " + employeenumber + "; ");
 
             System.out.println(databaseQuery);
             
