@@ -247,11 +247,16 @@ public class submitCase {
 
                 if (foundCustomers.getValue() != "New") {
                     String item = foundCustomers.getValue().toString();
+                    StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < item.length(); i++) {
                         if (Character.isDigit(item.charAt(i))) {
-
+                            sb.append(item.charAt(i));
+                        } else {
+                            break;
                         }
                     }
+                    
+                    ownerID = Integer.parseInt(sb.toString());
                 }
 
                 // the lugggage info will get the value of their respective fields
@@ -262,12 +267,16 @@ public class submitCase {
                 String description = addNotesT.getText();
                 String dateFound = dateT.getText();
                 String destination = destinationT.getText();
+                String firstname = ownerFirstNameT.getText();
+                String insertion = ownerInsertionT.getText();
+                String lastname = ownerLastNameT.getText();
 
                 // the info will be entered in the the database using the 
                 //insert into database method
                 insertIntoDatabase(caseid, labelnr, flightnr,
                         airportName, destination, itemname, Brand,
-                        color, description, dateFound);
+                        color, description, dateFound, ownerID, firstname, insertion,
+                        lastname);
             }
         });
 
@@ -411,9 +420,9 @@ public class submitCase {
             try {
 
                 String sql = "INSERT INTO luggageowner (firstname, insertion, "
-                        + "lastname "
+                        + "lastname, phone1) "
                         + "VALUES('" + firstname + "', '" + insertion + "',"
-                        + "'" + lastname + "')";
+                        + "'" + lastname + "', 0)";
 
                 Connection insertNewOwner = db.getConnection();
                 Statement stmt = insertNewOwner.createStatement();
