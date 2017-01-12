@@ -159,8 +159,10 @@ public class submitCase {
             String insertion = ownerInsertionT.getText();
             String lastname = ownerLastNameT.getText();
             
-            if (insertion == "" || insertion == null) {
-                insertion = "*";
+            if ("".equals(insertion) || insertion == null) {
+                
+            } else {
+                insertion = "AND insertion LIKE '%" + insertion + "%'";
             }
             
             try {
@@ -174,7 +176,7 @@ public class submitCase {
                         + "INNER JOIN address A "
                         + "ON L.ownerid=A.ownerid "
                         + "WHERE firstname LIKE '%" + firstname + "%' "
-                        + "AND insertion LIKE '%" + insertion + "%' "
+                        + insertion
                         + "AND lastname LIKE '%" + lastname + "%';");
                 
                 System.err.println(statement.toString());
