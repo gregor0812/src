@@ -94,7 +94,7 @@ public class BagageCatalogue {
 
         root.add(Corendon, 0, 1, 10, 1);
 
-        // the standard tableview is added here     
+        // the standard tableview is added here
         LostLuggageTable("select lostluggage.lostID, lostluggage.ownerid, "
             + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
             + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
@@ -124,7 +124,7 @@ public class BagageCatalogue {
             "aiportname",
             "item name",
             "brand",
-            "colour",
+            "color",
             "description",
             "date lost",
             "status"
@@ -142,7 +142,7 @@ public class BagageCatalogue {
             "destination",
             "item name",
             "brand",
-            "colors",
+            "color",
             "description",
             "date found",
             "status");
@@ -151,7 +151,7 @@ public class BagageCatalogue {
         ComboBox comboBox = new ComboBox(LostOptions);
         comboBox.setMinSize(150, 20);
         comboBox.setStyle("-fx-background-color: white; "
-            + "-fx-base:white;");
+            + "-fx-base:white; -fx-border-color:darkred");
 
         ComboBox comboBoxFound = new ComboBox(FoundOptions);
         comboBoxFound.setMinSize(150, 20);
@@ -175,7 +175,7 @@ public class BagageCatalogue {
                     String output = (String) comboBox.getValue();
                     // the entered search condition will be converted to a string
                     String zoekConditie = (String) tekst.getText();
-                    // if the color option is selected it will be changed here 
+                    // if the color option is selected it will be changed here
                     // because the name in de database is different
                     if ("color".equals(output)) {
                         output = "colors";
@@ -184,7 +184,15 @@ public class BagageCatalogue {
                     catalogue.getItems().clear();
                     catalogue.getColumns().clear();
 
-                    LostLuggageTable("SELECT * FROM lostluggage "
+                    LostLuggageTable(
+                        "select lostluggage.lostID, lostluggage.ownerid, "
+                        + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
+                        + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
+                        + "lostluggage.airport, lostluggage.itemname,"
+                        + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
+                        + "`date lost`, lostluggage.status from lostluggage "
+                        + "inner join luggageowner "
+                        + "on lostluggage.ownerid = luggageowner.ownerid "
                         + "WHERE `" + output + "` LIKE " + "'%" + zoekConditie + "%'");
 
                 } else {
@@ -193,7 +201,7 @@ public class BagageCatalogue {
                     String output = (String) comboBoxFound.getValue();
                     // the entered search condition will be converted to a string
                     String zoekConditie = (String) tekst.getText();
-                    // if the color option is selected it will be changed here 
+                    // if the color option is selected it will be changed here
                     // because the name in de database is different
                     if ("color".equals(output)) {
                         output = "colors";
@@ -233,13 +241,13 @@ public class BagageCatalogue {
                 catalogue.setVisible(true);
                 catalogueFound.setVisible(false);
                 LostLuggageTable("select lostluggage.lostID, lostluggage.ownerid, "
-            + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
-            + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
-            + "lostluggage.airport, lostluggage.itemname,"
-            + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
-            + "`date lost`, lostluggage.status from lostluggage "
-            + "inner join luggageowner"
-            + " on lostluggage.ownerid = luggageowner.ownerid");
+                    + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
+                    + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
+                    + "lostluggage.airport, lostluggage.itemname,"
+                    + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
+                    + "`date lost`, lostluggage.status from lostluggage "
+                    + "inner join luggageowner"
+                    + " on lostluggage.ownerid = luggageowner.ownerid");
                 // LostLuggageTable("Select * FROM lostluggage");
                 lostOrFound = true;
                 comboBoxFound.setVisible(false);
@@ -392,7 +400,7 @@ public class BagageCatalogue {
 
         TableColumn<LostLuggage, Integer> owneridColumn = new TableColumn<>("ownerid");
         owneridColumn.setCellValueFactory(new PropertyValueFactory<>("ownerid"));
-        
+
         TableColumn<LostLuggage, String> firstNameColumn = new TableColumn<>("first name");
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
 
@@ -439,19 +447,19 @@ public class BagageCatalogue {
             Statement statement = catalogueConnect.createStatement();
             System.out.println(query);
             ResultSet TableData = statement.executeQuery(query);
-            
+
             // this while loop gets data in the ovservable list
             data = FXCollections.observableArrayList();
             while (TableData.next()) {
                 //Iterate Row
                 // the data will be added to the arraylist
-                data.add(new LostLuggage(TableData.getInt(1), TableData.getInt(2), 
+                data.add(new LostLuggage(TableData.getInt(1), TableData.getInt(2),
                     TableData.getString(3), TableData.getString(4), TableData.getString(5), TableData.getInt(6),
                     TableData.getInt(7), TableData.getString(8), TableData.getString(9),
                     TableData.getString(10), TableData.getString(11),
                     TableData.getString(12), TableData.getString(11), TableData.getString(12),
                     TableData.getString(13)));
-                
+
             }
             System.out.println(data);
             // the tableview will be emptied
@@ -460,7 +468,7 @@ public class BagageCatalogue {
 
             //System.out.println(data);
             catalogue.setItems(data);
-            catalogue.getColumns().addAll(caseidColumn, owneridColumn, 
+            catalogue.getColumns().addAll(caseidColumn, owneridColumn,
                 firstNameColumn, insertionColumn, lastNameColumn, labelnrColumn,
                 destinationColumn, flightnrColumn, airportColumn, itemnameColumn, brandColumn,
                 colorsColumn, descriptionColumn, dateLostColumn, statusColumn);
