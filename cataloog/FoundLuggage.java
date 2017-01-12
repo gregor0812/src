@@ -16,9 +16,14 @@ import javafx.beans.property.StringProperty;
  */
 public class FoundLuggage {
     
+    // the propertys are all colums of the tableview
    private IntegerProperty caseid;
     private IntegerProperty labelnr;
+    private IntegerProperty ownerid;
     private IntegerProperty flightnr;
+    private StringProperty firstName;
+    private StringProperty insertion;
+    private StringProperty lastName;
     private StringProperty airport;
     private StringProperty destination;
     private StringProperty itemname;
@@ -29,13 +34,18 @@ public class FoundLuggage {
     private StringProperty status;
     
     
-    public FoundLuggage(int caseid, int labelnr, int flightnr,
+    public FoundLuggage(int caseid, int labelnr, Integer ownerid, int flightnr, 
+        String firstName, String insertion, String lastName,
         String airport,String destination, String itemname, String brand, String colors,
         String description, String dateFound, String status) {
         
         this.caseid =  new SimpleIntegerProperty(caseid);
         this.labelnr = new SimpleIntegerProperty(labelnr);
+        this.ownerid = new SimpleIntegerProperty(ownerid);
         this.flightnr = new SimpleIntegerProperty(flightnr);
+        this.firstName = new SimpleStringProperty(firstName);
+        this.insertion = new SimpleStringProperty(insertion);
+        this.lastName = new SimpleStringProperty(lastName);
         this.airport = new SimpleStringProperty(airport);
         this.destination = new SimpleStringProperty(destination);
         this.itemname = new SimpleStringProperty(itemname);
@@ -64,6 +74,14 @@ public class FoundLuggage {
         this.labelnr.set(labelnr);
     }
 
+    public Integer getOwnerid(){
+        return ownerid.get();
+    }
+    
+    public void setOwnerid(Integer ownerid){
+        this.ownerid.set(ownerid);
+    }
+    
     public int getFlightnr() {
         return flightnr.get();
     }
@@ -72,6 +90,31 @@ public class FoundLuggage {
         this.flightnr.set(flightnr);
     }
 
+    public String getFirstName() {
+        return firstName.get();
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName.set(firstName);
+    }
+    
+    public String insertion() {
+        return insertion.get();
+    }
+
+    public void setInsertion(String insertion) {
+        this.insertion.set(insertion);
+    }
+    
+    public String getLastName() {
+        return lastName.get();
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName.set(lastName);
+    }
+    
+    
     public String getAirport() {
         return airport.get();
     }

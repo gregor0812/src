@@ -38,7 +38,7 @@ public class EditForm {
 
     }
 
-    public GridPane MakeLostReport(LostLuggage person) {
+    public GridPane MakeEdit(LostLuggage person) {
 
         Button btnmainmenu;
         Button btn2;
@@ -358,8 +358,9 @@ public class EditForm {
                 + " `notes`='" + notes + "' WHERE `ownerid`='" + ownerid + "';");
                 
                 String addressQuery = ("update address SET address = '" + address + "' , "
-                    + "SET zipcode = '" + zipcode  
-                    + "' ,SET city = '" + city + "',SET country = '" + country + "' WHERE lostID = " + caseid + ";");
+                    + " zipcode = '" + zipcode  
+                    + "' , city = '" + city + "', country = '" + country +
+                    "' WHERE ownerid = " + ownerid + ";");
                 
                 String query2 = (" UPDATE `corendon`.`lostluggage` SET `labelnr`='" + labelnr + ""
                     + "', `flightr`=" + flightnr + ", " +
@@ -368,7 +369,7 @@ public class EditForm {
             "`brand`='" + Brand + "', `colors`='" + color + "', `description`='" + description + "'," +
             " `date lost`='" + dateLost + "' WHERE `lostID`=" + caseid + ";");
 
-                System.out.println(databaseQuery);
+                System.out.println(addressQuery);
                 
             statement.executeUpdate(databaseQuery);
             statement.executeUpdate(query2);
@@ -424,20 +425,20 @@ public class EditForm {
 
     }
     
+// this is an edit form for the found luggage
+    public GridPane MakeEdit(FoundLuggage person) {
 
-    public GridPane MakeLostReport(FoundLuggage person) {
-
-        Button btn;
+        Button backBtn;
         Button btn2;
         Button btnS;
 
         HBox Menu = new HBox();
         // ------------------------------
-        btn = new Button(); // button 1
-        btn.setText("back to catalogue");
-        btn.setPrefSize(160, 50);
-        btn.setStyle("-fx-base:darkred;-fx-border-color:white");
-        btn.setFont(Font.font("Verdana", 12));
+        backBtn = new Button(); // button 1
+        backBtn.setText("back to catalogue");
+        backBtn.setPrefSize(160, 50);
+        backBtn.setStyle("-fx-base:darkred;-fx-border-color:white");
+        backBtn.setFont(Font.font("Verdana", 12));
         // ------------------------------
         btn2 = new Button(); // button 2
         btn2.setText("Options");
@@ -456,7 +457,7 @@ public class EditForm {
         grid.setVgap(8);
         grid.setHgap(10);
 
-        GridPane.setConstraints(btn, 1, 15);
+        GridPane.setConstraints(backBtn, 1, 15);
 
         GridPane.setConstraints(btn2, 2, 15);
 
@@ -464,7 +465,7 @@ public class EditForm {
 
         grid.setStyle("-fx-background-color: white");
 
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        backBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 BagageCatalogue scherm2 = new BagageCatalogue();
@@ -484,7 +485,7 @@ public class EditForm {
 
         Label luggage = new Label("Luggage information");
         luggage.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        grid.add(luggage, 30, 22, 15, 1);
+        grid.add(luggage, 30, 23, 15, 1);
 
         Label date = new Label("Date:");
         grid.add(date, 10, 17, 10, 1);
@@ -517,33 +518,43 @@ public class EditForm {
         TextField destinationT = new TextField(person.getDestination());
         grid.add(destinationT, 40, 19);
 
-        Label ownerName = new Label("Name traveler:");
-        grid.add(ownerName, 30, 20, 10, 1);
-        TextField ownerNameT = new TextField();
-        grid.add(ownerNameT, 40, 20);
+        Label firstNameL = new Label("first name traveler:");
+        grid.add(firstNameL, 30, 20, 10, 1);
+        TextField firstNameT = new TextField(person.getFirstName());
+        grid.add(firstNameT, 40, 20);
+        
+        Label ownerName = new Label("insertion:");
+        grid.add(ownerName, 30, 21, 10, 1);
+        TextField ownerNameT = new TextField(person.insertion());
+        grid.add(ownerNameT, 40, 21);
+        
+        Label lastNameL = new Label("Last name traveler:");
+        grid.add(lastNameL, 30, 22, 10, 1);
+        TextField lastNameT = new TextField(person.getLastName());
+        grid.add(lastNameT, 40, 22);
 
         Label type = new Label("Type:");
-        grid.add(type, 30, 23, 10, 1);
+        grid.add(type, 30, 24, 10, 1);
         TextField typeT = new TextField(person.getItemname());
-        grid.add(typeT, 40, 23);
+        grid.add(typeT, 40, 24);
 
         Label itemBrand = new Label("Brand:");
-        grid.add(itemBrand, 30, 24, 10, 1);
+        grid.add(itemBrand, 30, 25, 10, 1);
         TextField itemBrandT = new TextField(person.getBrand());
-        grid.add(itemBrandT, 40, 24);
+        grid.add(itemBrandT, 40, 25);
 
         Label itemColor = new Label("Color:");
-        grid.add(itemColor, 30, 25, 10, 1);
+        grid.add(itemColor, 30, 26, 10, 1);
         TextField itemColorT = new TextField(person.getColors());
-        grid.add(itemColorT, 40, 25);
+        grid.add(itemColorT, 40, 26);
 
         Label addNotes = new Label("Additional notes:");
-        grid.add(addNotes, 30, 26, 10, 1);
+        grid.add(addNotes, 30, 27, 10, 1);
         TextField addNotesT = new TextField(person.getDescription());
-        grid.add(addNotesT, 40, 26);
+        grid.add(addNotesT, 40, 27);
 
         Label CaseId = new Label("The case id is: " + person.getCaseid());
-        grid.add(CaseId, 40, 27, 2, 1);
+        grid.add(CaseId, 40, 28, 2, 1);
         CaseId.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 
         ImageView Calendar = new ImageView("/resources/Calendar-icon.png");
@@ -559,7 +570,7 @@ public class EditForm {
         grid.add(Corendon, 1, 1, 10, 10);
 
         // Toevoegen van buttons
-        grid.getChildren().addAll(btn, btn2, btnS);
+        grid.getChildren().addAll(backBtn, btn2, btnS);
 
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override

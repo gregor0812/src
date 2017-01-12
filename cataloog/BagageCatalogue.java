@@ -58,7 +58,7 @@ public class BagageCatalogue {
         StackPane TablePane = new StackPane();
 
         GridPane root = new GridPane();
-        root.setAlignment(Pos.TOP_CENTER);
+        root.setAlignment(Pos.TOP_LEFT);
         root.getColumnConstraints().add(new ColumnConstraints(200));
         root.setPadding(new Insets(30, 30, 30, 30));
 
@@ -251,7 +251,7 @@ public class BagageCatalogue {
 
                     if (person != null) {
                        // an editform will be made with the person class and the selected values
-                        GridPane Editform = LostLuggageEdit.MakeLostReport(person);
+                        GridPane Editform = LostLuggageEdit.MakeEdit(person);
                         // the editform is added to the screen
                         basisPane.addnewpane(Editform);
                     } else {
@@ -271,7 +271,7 @@ public class BagageCatalogue {
                     // if no value is selected then a warning will be displayed
                     if (EditFound != null) {
                         // an editform will be made with the person class and the selected values
-                        GridPane Editform = LostLuggageEdit.MakeLostReport(EditFound);
+                        GridPane Editform = LostLuggageEdit.MakeEdit(EditFound);
                          // the editform is added to the screen
                         basisPane.addnewpane(Editform);
                     } else {
@@ -388,17 +388,29 @@ public class BagageCatalogue {
     // this is the table with the found luggage
     public void FoundLuggageTable(String query) {
         catalogueFound.setEditable(true);
-
+        catalogueFound.setMinWidth(1500);
         // de table colums are made here
         TableColumn<FoundLuggage, Integer> caseidColumn = new TableColumn<>("foundID");
         caseidColumn.setCellValueFactory(new PropertyValueFactory<>("caseid"));
 
         TableColumn<FoundLuggage, Integer> labelnrColumn = new TableColumn<>("labelnr");
         labelnrColumn.setCellValueFactory(new PropertyValueFactory<>("labelnr"));
+        
+        TableColumn<FoundLuggage, Integer> owneridColumn = new TableColumn<>("ownerID");
+        owneridColumn.setCellValueFactory(new PropertyValueFactory<>("ownerid"));
 
         TableColumn<FoundLuggage, Integer> flightnrColumn = new TableColumn<>("flightnumber");
         flightnrColumn.setCellValueFactory(new PropertyValueFactory<>("flightnr"));
-
+        
+        TableColumn<FoundLuggage, String> firstNameColumn = new TableColumn<>("first name");
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+        
+        TableColumn<FoundLuggage, String> insertionColumn = new TableColumn<>("insertion");
+        insertionColumn.setCellValueFactory(new PropertyValueFactory<>("insertion"));
+        
+        TableColumn<FoundLuggage, String> lastNameColumn = new TableColumn<>("last name");
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
+        
         TableColumn<FoundLuggage, String> airportColumn = new TableColumn<>("airport name");
         airportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
 
@@ -436,9 +448,11 @@ public class BagageCatalogue {
                 //Iterate Row
                 // the database data is added to the observable list
                 dataFound.add(new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
-                    TableData.getString(5), TableData.getString(4), TableData.getString(6),
+                    TableData.getInt(4), TableData.getString(5), TableData.getString(6),
                     TableData.getString(7), TableData.getString(8),
-                    TableData.getString(8), TableData.getString(10), TableData.getString(11)));
+                    TableData.getString(9), TableData.getString(10), 
+                    TableData.getString(11), TableData.getString(12), 
+                    TableData.getString(13) , TableData.getString(14) , TableData.getString(15)));
 
             }
 
@@ -448,11 +462,12 @@ public class BagageCatalogue {
             // the data is added to the table
             catalogueFound.setItems(dataFound);
             //the columns are added to the table
-            catalogueFound.getColumns().addAll(caseidColumn, labelnrColumn,
-                flightnrColumn, airportColumn, destinationColumn, itemnameColumn,
+            catalogueFound.getColumns().addAll(caseidColumn, labelnrColumn, owneridColumn,
+                flightnrColumn, firstNameColumn, insertionColumn, lastNameColumn, airportColumn, destinationColumn, itemnameColumn,
                 brandColumn, colorsColumn, descriptionColumn, dateFoundColumn, statusColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
+            System.out.println(ex);
         }
 
     }

@@ -369,7 +369,7 @@ public class employeetable {
         }
 
     }
-
+    // this method returns a gridpane with a form to add users
     public GridPane addUser() {
 
         Button btnmainmenu;
@@ -406,7 +406,8 @@ public class employeetable {
         btnmainmenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                
+                // this will add the employeeview table to the screen
                 rootpane.addnewpane(MaakEmployeeTable());
             }
         });
@@ -470,7 +471,8 @@ public class employeetable {
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                
+                // the employee information will be gotten from the textfields
                 int employeenumber = Integer.parseInt(employeenumberText.getText());
                 String username = userNameText.getText();
                 String password = passwordText.getText();
@@ -480,12 +482,9 @@ public class employeetable {
                 String role = roleText.getText();
                 String email = emailText.getText();
                 
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("User added");
-                alert.setHeaderText("User added");
-                alert.setContentText("Used is added");
-                alert.showAndWait();
+               
                 
+                // using the adduser method the employee info is added to the database
                 addUser(employeenumber, username, password, firstname,
                     insertion, lastname, role, email);
 
@@ -538,6 +537,13 @@ public class employeetable {
             System.out.println(databaseQuery);
 
             statement.executeUpdate(databaseQuery);
+            
+             // this alert will confirm that the user is added to the database
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("User added");
+                alert.setHeaderText("User added");
+                alert.setContentText("Used is added");
+                alert.showAndWait();
             
 
         } catch (Exception ex) {

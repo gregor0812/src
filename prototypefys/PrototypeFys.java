@@ -39,25 +39,16 @@ public class PrototypeFys extends Application {
         
         
         
-//        
-//        BagageCatalogue cataloog = new BagageCatalogue(); 
-//        GridPane scherm2 = cataloog.MaakCatalogue();
-//        
-//        submitCase submit = new submitCase();
-//        GridPane scherm4 = submit.MakeSubmitScreen();
-        
-//        // het homescreen wordt gemaakt
-//        HomeScreen homescherm = new HomeScreen();
-//        HBox scherm5 = homescherm.maakhomescreen();
+
     
-    Scene scene = new Scene(scherm, 1100, 900);
-//    Scene scene2 = new Scene(scherm5, 900, 800);    
+    Scene scene = new Scene(scherm, 1400, 800);
+        
     
         primaryStage.setTitle("loginscherm test");
         primaryStage.setScene(scene);
         primaryStage.setResizable(true);
         primaryStage.show();
-        
+        primaryStage.setMaximized(true);
         
     }
     
