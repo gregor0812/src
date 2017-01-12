@@ -98,7 +98,7 @@ public class FoundLuggage {
         this.firstName.set(firstName);
     }
     
-    public String insertion() {
+    public String getInsertion() {
         return insertion.get();
     }
 

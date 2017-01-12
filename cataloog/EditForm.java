@@ -528,7 +528,7 @@ public class EditForm {
 
         Label insertionL = new Label("insertion:");
         grid.add(insertionL, 30, 21, 10, 1);
-        TextField insertionT = new TextField(person.insertion());
+        TextField insertionT = new TextField(person.getInsertion());
         grid.add(insertionT, 40, 21);
 
         Label lastNameL = new Label("Last name traveler:");
