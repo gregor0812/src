@@ -26,6 +26,7 @@ import javafx.scene.text.FontWeight;
 /**
  *
  * @author Koen Hengsdijk
+ *
  */
 public class submitCase {
 
@@ -135,69 +136,36 @@ public class submitCase {
         TextField destinationT = new TextField();
         grid.add(destinationT, 40, 19);
 
+        // Label and textfield for owner firstname
         Label ownerFirstName = new Label("First name:");
         grid.add(ownerFirstName, 30, 20, 10, 1);
         TextField ownerFirstNameT = new TextField();
         grid.add(ownerFirstNameT, 40, 20);
+        ownerFirstNameT.textProperty().addListener((obs) -> {
+            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(), "", "");
+        });
 
+        // Label and textfield for owner insertions
         Label ownerInsertion = new Label("Insertion(s):");
         grid.add(ownerInsertion, 30, 21, 10, 1);
         TextField ownerInsertionT = new TextField();
         grid.add(ownerInsertionT, 40, 21);
+        ownerInsertionT.textProperty().addListener((obs) -> {
+            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
+                    ownerInsertionT.getText(), "");
+        });
 
+        // Label and textfield for owner lastname
         Label ownerLastName = new Label("Last name: ");
         grid.add(ownerLastName, 30, 22, 10, 1);
         TextField ownerLastNameT = new TextField();
         grid.add(ownerLastNameT, 40, 22);
         ownerLastNameT.textProperty().addListener((obs) -> {
-            
-            // Remove alle current items from combobox
-            foundOwnersList.clear();
-
-            // Get all values of the textfields
-            String firstname = ownerFirstNameT.getText();
-            String insertion = ownerInsertionT.getText();
-            String lastname = ownerLastNameT.getText();
-            
-            if (insertion == "" || insertion == null) {
-                insertion = "*";
-            }
-            
-            try {
-                // Run the query to find all owners with the same name
-                Connection ReportGenerationConnect = db.getConnection();
-                Statement statement = ReportGenerationConnect.createStatement();
-                ResultSet rs = statement.executeQuery("SELECT firstname, "
-                        + "insertion, lastname, address, zipcode, city, "
-                        + "country "
-                        + "FROM luggageowner L "
-                        + "INNER JOIN address A "
-                        + "ON L.ownerid=A.ownerid "
-                        + "WHERE firstname LIKE '%" + firstname + "%' "
-                        + "AND insertion LIKE '%" + insertion + "%' "
-                        + "AND lastname LIKE '%" + lastname + "%';");
-                
-                System.err.println(statement.toString());
-                
-                while(rs.next()) {
-                    
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(rs.getString("firstname")).append(" ")
-                            .append(rs.getString("insertion")).append(" ")
-                            .append(rs.getString("lastname")).append(", ")
-                            .append(rs.getString("address")).append(" ")
-                            .append(rs.getString("zipcode")).append(" ")
-                            .append(rs.getString("city")).append(", ")
-                            .append(rs.getString("country"));
-                    
-                    foundOwnersList.add(sb.toString());
-                }
-                
-            } catch (SQLException e) {
-                System.err.println(e.getMessage());
-            }
+            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
+                    ownerInsertionT.getText(), ownerLastNameT.getText());
         });
 
+        // Combobox to display all owners that exist with the same name
         ComboBox foundCustomers = new ComboBox(foundOwnersList);
         foundCustomers.setMinSize(160, 20);
         foundCustomers.setMaxWidth(160);
@@ -335,14 +303,16 @@ public class submitCase {
      */
     public int getOwnerID(String firstname, String insertion, String lastname) {
 
+        String query = "SELECT ownerid "
+                + "FROM luggageowner "
+                + "WHERE firstname='" + firstname + "' "
+                + "AND insertion='" + insertion + "' "
+                + "AND lastname='" + lastname + "';";
+
         try {
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
-            ResultSet tableData = statement.executeQuery("SELECT ownerid "
-                    + "FROM luggageowner "
-                    + "WHERE firstname='" + firstname + "' "
-                    + "AND insertion='" + insertion + "' "
-                    + "AND lastname='" + lastname + "';");
+            ResultSet tableData = statement.executeQuery(query);
 
             while (tableData.next()) {
                 return tableData.getInt(1);
@@ -357,10 +327,63 @@ public class submitCase {
 
     }
 
-    public void listFoundOwners() {
+    /**
+     * List all existing owner with the same name that the user enterd
+     *
+     * @param foundOwnersList The list with all found owners
+     * @param firstname The first name to search for
+     * @param insertion The insertion to search for
+     * @param lastname The lastname to search for
+     */
+    public void listFoundOwners(ObservableList foundOwnersList,
+            String firstname, String insertion, String lastname) {
+        // Remove alle current items from combobox
+        foundOwnersList.clear();
 
+        // Add option to create a new owner to the list
+        foundOwnersList.add("New");
+
+        try {
+
+            // Query to search all existing owners
+            String query = "SELECT firstname, "
+                    + "insertion, lastname, address, zipcode, city, "
+                    + "country "
+                    + "FROM luggageowner L "
+                    + "INNER JOIN address A "
+                    + "ON L.ownerid=A.ownerid "
+                    + "WHERE firstname LIKE '%" + firstname + "%' "
+                    + "AND insertion LIKE '%" + insertion + "%' "
+                    + "AND lastname LIKE '%" + lastname + "%';";
+
+            // Run the query to find all owners with the same name
+            Connection ReportGenerationConnect = db.getConnection();
+            Statement statement = ReportGenerationConnect.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            // Loop trough all results
+            while (rs.next()) {
+
+                // Create StrinBuilder to display all owners
+                StringBuilder sb = new StringBuilder();
+                sb.append(rs.getString("firstname")).append(" ")
+                        .append(rs.getString("insertion")).append(" ")
+                        .append(rs.getString("lastname")).append(", ")
+                        .append(rs.getString("address")).append(" ")
+                        .append(rs.getString("zipcode")).append(" ")
+                        .append(rs.getString("city")).append(", ")
+                        .append(rs.getString("country"));
+
+                // Add owner to the list
+                foundOwnersList.add(sb.toString());
+            }
+
+            // Handle the errors
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
-
+    
     // this method will insert the luggage info into the database
     public void insertIntoDatabase(int caseid, Integer labelnr, Integer flightnr,
             String airportName, String destination, String itemname, String Brand,
