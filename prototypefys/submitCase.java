@@ -141,7 +141,7 @@ public class submitCase {
         grid.add(ownerFirstName, 30, 20, 10, 1);
         TextField ownerFirstNameT = new TextField();
         grid.add(ownerFirstNameT, 40, 20);
-        ownerFirstNameT.textProperty().addListener((obs) -> {
+        ownerFirstNameT.textProperty().addListener((listener) -> {
             listFoundOwners(foundOwnersList, ownerFirstNameT.getText(), "", "");
         });
 
@@ -150,7 +150,7 @@ public class submitCase {
         grid.add(ownerInsertion, 30, 21, 10, 1);
         TextField ownerInsertionT = new TextField();
         grid.add(ownerInsertionT, 40, 21);
-        ownerInsertionT.textProperty().addListener((obs) -> {
+        ownerInsertionT.textProperty().addListener((listener) -> {
             listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
                     ownerInsertionT.getText(), "");
         });
@@ -160,7 +160,7 @@ public class submitCase {
         grid.add(ownerLastName, 30, 22, 10, 1);
         TextField ownerLastNameT = new TextField();
         grid.add(ownerLastNameT, 40, 22);
-        ownerLastNameT.textProperty().addListener((obs) -> {
+        ownerLastNameT.textProperty().addListener((listener) -> {
             listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
                     ownerInsertionT.getText(), ownerLastNameT.getText());
         });
@@ -243,6 +243,22 @@ public class submitCase {
                     flightnr = Integer.parseInt(flightT.getText());
                 }
 
+                int ownerID = -1;
+
+                if (foundCustomers.getValue() != "New") {
+                    String item = foundCustomers.getValue().toString();
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < item.length(); i++) {
+                        if (Character.isDigit(item.charAt(i))) {
+                            sb.append(item.charAt(i));
+                        } else {
+                            break;
+                        }
+                    }
+                    
+                    ownerID = Integer.parseInt(sb.toString());
+                }
+
                 // the lugggage info will get the value of their respective fields
                 String airportName = airportT.getText();
                 String itemname = typeT.getText();
@@ -251,12 +267,16 @@ public class submitCase {
                 String description = addNotesT.getText();
                 String dateFound = dateT.getText();
                 String destination = destinationT.getText();
+                String firstname = ownerFirstNameT.getText();
+                String insertion = ownerInsertionT.getText();
+                String lastname = ownerLastNameT.getText();
 
                 // the info will be entered in the the database using the 
                 //insert into database method
                 insertIntoDatabase(caseid, labelnr, flightnr,
                         airportName, destination, itemname, Brand,
-                        color, description, dateFound);
+                        color, description, dateFound, ownerID, firstname, insertion,
+                        lastname);
             }
         });
 
@@ -307,11 +327,13 @@ public class submitCase {
                 + "FROM luggageowner "
                 + "WHERE firstname='" + firstname + "' "
                 + "AND insertion='" + insertion + "' "
-                + "AND lastname='" + lastname + "';";
+                + "AND lastname='" + lastname + "' "
+                + "ORDER BY ownerid DESC "
+                + "LIMIT 1";
 
         try {
-            Connection ReportGenerationConnect = db.getConnection();
-            Statement statement = ReportGenerationConnect.createStatement();
+            Connection selectOwnerId = db.getConnection();
+            Statement statement = selectOwnerId.createStatement();
             ResultSet tableData = statement.executeQuery(query);
 
             while (tableData.next()) {
@@ -337,7 +359,8 @@ public class submitCase {
      */
     public void listFoundOwners(ObservableList foundOwnersList,
             String firstname, String insertion, String lastname) {
-        // Remove alle current items from combobox
+
+// Remove alle current items from combobox
         foundOwnersList.clear();
 
         // Add option to create a new owner to the list
@@ -357,8 +380,8 @@ public class submitCase {
                     + "AND lastname LIKE '%" + lastname + "%';";
 
             // Run the query to find all owners with the same name
-            Connection ReportGenerationConnect = db.getConnection();
-            Statement statement = ReportGenerationConnect.createStatement();
+            Connection findOwners = db.getConnection();
+            Statement statement = findOwners.createStatement();
             ResultSet rs = statement.executeQuery(query);
 
             // Loop trough all results
@@ -383,11 +406,35 @@ public class submitCase {
             System.err.println(e.getMessage());
         }
     }
-    
+
     // this method will insert the luggage info into the database
     public void insertIntoDatabase(int caseid, Integer labelnr, Integer flightnr,
             String airportName, String destination, String itemname, String Brand,
-            String color, String description, String dateFound) {
+            String color, String description, String dateFound, int ownerId, 
+            String firstname, String insertion, String lastname) {
+
+        
+        
+/* TO-DO!!!    PHONE 1 in database must have default value!!!!! */
+        if (ownerId == -1) {
+            try {
+
+                String sql = "INSERT INTO luggageowner (firstname, insertion, "
+                        + "lastname, phone1) "
+                        + "VALUES('" + firstname + "', '" + insertion + "',"
+                        + "'" + lastname + "', 0)";
+
+                Connection insertNewOwner = db.getConnection();
+                Statement stmt = insertNewOwner.createStatement();
+                
+                stmt.executeUpdate(sql);
+                
+                ownerId = getOwnerID(firstname, insertion, lastname);
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
 
         try {
 
