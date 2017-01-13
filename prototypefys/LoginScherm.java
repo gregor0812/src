@@ -160,13 +160,13 @@ public class LoginScherm {
         
         ResultSet NumberUsers = statement2.executeQuery("select count(*) as total from employee;");
        
-        int kaka = 1;
+        
         if (NumberUsers.next()){
-        kaka = NumberUsers.getInt("total");
+        
         }
         
         String[] ListOfKnownUsers;
-           ListOfKnownUsers = new String[kaka];
+           ListOfKnownUsers = new String[1];
         
            
         for (int i = 0; knownUsers.next(); i++){
