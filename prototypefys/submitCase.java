@@ -5,16 +5,20 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -22,6 +26,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.StringConverter;
 
 /**
  *
@@ -107,9 +112,50 @@ public class submitCase {
 
         Label date = new Label("Date:");
         grid.add(date, 10, 17, 10, 1);
-        TextField dateT = new TextField();
-        grid.add(dateT, 20, 17);
-        dateT.setPromptText("yyyy-mm-dd");
+//        TextField dateT = new TextField();
+//        grid.add(dateT, 20, 17);
+//        dateT.setPromptText("yyyy-mm-dd");
+        
+        // this datepicker will be used to select dates
+        DatePicker datePicker = new DatePicker();
+        datePicker.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                LocalDate date = datePicker.getValue();
+                System.err.println("Selected date: " + date);
+            }
+        });
+
+         // this pattern is the data format used
+        String pattern = "yyyy-MM-dd";
+
+        datePicker.setPromptText(pattern.toLowerCase());
+
+        datePicker.setConverter(new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+          });  
+         
+        grid.add(datePicker, 20, 17);
+        
+        
 
         Label time = new Label("Time:");
         grid.add(time, 10, 18, 10, 1);
@@ -265,7 +311,7 @@ public class submitCase {
                 String Brand = itemBrandT.getText();
                 String color = itemColorT.getText();
                 String description = addNotesT.getText();
-                String dateFound = dateT.getText();
+                String dateFound = datePicker.getValue().toString();
                 String destination = destinationT.getText();
                 String firstname = ownerFirstNameT.getText();
                 String insertion = ownerInsertionT.getText();

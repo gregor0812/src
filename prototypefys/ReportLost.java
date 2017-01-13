@@ -109,8 +109,8 @@ public class ReportLost {
         luggage.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(luggage, 30, 23, 15, 1);
 
-//        Label date = new Label("Date:");
-//        grid.add(date, 10, 17, 10, 1);
+        Label date = new Label("Date:");
+       grid.add(date, 10, 17, 10, 1);
 //        TextField dateT = new TextField();
 //        grid.add(dateT, 20, 17);
 //        dateT.setPromptText("yyyy-mm-dd");
