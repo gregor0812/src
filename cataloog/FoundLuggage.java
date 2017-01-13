@@ -31,13 +31,14 @@ public class FoundLuggage {
     private StringProperty colors;
     private StringProperty description;
     private StringProperty dateFound;
+    private StringProperty timeFound;
     private StringProperty status;
     
     
     public FoundLuggage(int caseid, int labelnr, Integer ownerid, int flightnr, 
         String firstName, String insertion, String lastName,
         String airport,String destination, String itemname, String brand, String colors,
-        String description, String dateFound, String status) {
+        String description, String dateFound, String timeFound, String status) {
         
         this.caseid =  new SimpleIntegerProperty(caseid);
         this.labelnr = new SimpleIntegerProperty(labelnr);
@@ -53,6 +54,7 @@ public class FoundLuggage {
         this.colors = new SimpleStringProperty(colors);
         this.description = new SimpleStringProperty(description);
         this.dateFound = new SimpleStringProperty(dateFound);
+        this.timeFound = new SimpleStringProperty(timeFound);
         this.status = new SimpleStringProperty(status);
     }
 
@@ -170,6 +172,14 @@ public class FoundLuggage {
 
     public void setDateFound(String dateFound) {
         this.dateFound.set(dateFound);
+    }
+    
+    public String getTimeFound() {
+        return timeFound.get();
+    }
+
+    public void setTimeFound(String timeFound) {
+     this.timeFound.set(timeFound);
     }
 
     public String getStatus() {

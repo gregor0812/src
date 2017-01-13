@@ -30,13 +30,14 @@ public class LostLuggage {
     private StringProperty colors;
     private StringProperty description;
     private StringProperty dateLost;
+    private StringProperty timeLost;
     private StringProperty status;
     
     
     public LostLuggage(int caseid, int ownerid, String firstName, 
         String insertion, String lastName, int labelnr, int flightnr, String destination,
         String airport, String itemname, String brand, String colors, 
-        String description, String dateLost, String status) {
+        String description, String dateLost, String timeLost, String status) {
         this.caseid =  new SimpleIntegerProperty(caseid);
         this.ownerid = new SimpleIntegerProperty(ownerid);
         this.firstName = new SimpleStringProperty(firstName);
@@ -51,6 +52,7 @@ public class LostLuggage {
         this.colors = new SimpleStringProperty(colors);
         this.description = new SimpleStringProperty(description);
         this.dateLost = new SimpleStringProperty(dateLost);
+        this.timeLost = new SimpleStringProperty(timeLost);
         this.status = new SimpleStringProperty(status);
     }
 
@@ -166,6 +168,13 @@ public class LostLuggage {
         this.dateLost.set(dateLost);
     }
     
+    public String getTimeLost() {
+        return timeLost.get();
+    }
+
+    public void setTimeLost(String timeLost) {
+     this.timeLost.set(timeLost);
+    }
     public String getStatus() {
         return status.get();
     }

@@ -100,7 +100,7 @@ public class BagageCatalogue {
             + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
             + "lostluggage.airport, lostluggage.itemname,"
             + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
-            + "`date lost`, lostluggage.status from lostluggage "
+            + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
             + "inner join luggageowner "
             + "on lostluggage.ownerid = luggageowner.ownerid");
         //root.add(catalogue, 2, 3, 2, 3);
@@ -130,6 +130,7 @@ public class BagageCatalogue {
             "color",
             "description",
             "date lost",
+            "time lost",
             "status"
         );
 
@@ -148,6 +149,7 @@ public class BagageCatalogue {
             "color",
             "description",
             "date found",
+            "time found",
             "status");
 
         // this combobox is used to select a search condition in the table
@@ -208,6 +210,10 @@ public class BagageCatalogue {
                     if ("date lost".equals(output)) {
                         output = "`date lost`";
                     }
+                    if ("time lost".equals(output)) {
+                        output = "timeLost";
+                    }
+                    
                     
                     // if the color option is selected it will be changed here
                     // because the name in de database is different
@@ -225,7 +231,7 @@ public class BagageCatalogue {
                         + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
                         + "lostluggage.airport, lostluggage.itemname,"
                         + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
-                        + "`date lost`, lostluggage.status from lostluggage "
+                        + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
                         + "inner join luggageowner "
                         + "on lostluggage.ownerid = luggageowner.ownerid "
                         + "WHERE " + output + " LIKE " + "'%" + zoekConditie + "%'");
@@ -269,7 +275,9 @@ public class BagageCatalogue {
                         output = "dateFound";
                     }
                     
-                    
+                    if ("time found".equals(output)) {
+                        output = "timeFound";
+                    }
                     
                     
 
@@ -317,7 +325,7 @@ public class BagageCatalogue {
                     + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
                     + "lostluggage.airport, lostluggage.itemname,"
                     + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
-                    + "`date lost`, lostluggage.status from lostluggage "
+                    + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
                     + "inner join luggageowner"
                     + " on lostluggage.ownerid = luggageowner.ownerid");
                 // LostLuggageTable("Select * FROM lostluggage");
@@ -347,7 +355,7 @@ public class BagageCatalogue {
                     + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
                     + "lostluggage.airport, lostluggage.itemname,"
                     + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
-                    + "`date lost`, lostluggage.status from lostluggage "
+                    + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
                     + "inner join luggageowner"
                     + " on lostluggage.ownerid = luggageowner.ownerid");
 
@@ -515,7 +523,11 @@ public class BagageCatalogue {
 
         TableColumn<LostLuggage, String> dateLostColumn = new TableColumn<>("date lost");
         dateLostColumn.setCellValueFactory(new PropertyValueFactory<>("dateLost"));
+        
+         TableColumn<LostLuggage, String> timeLostColumn = new TableColumn<>("time lost");
+        timeLostColumn.setCellValueFactory(new PropertyValueFactory<>("timeLost"));
 
+        
         TableColumn<LostLuggage, String> statusColumn = new TableColumn<>("status");
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
@@ -537,7 +549,7 @@ public class BagageCatalogue {
                     TableData.getInt(7), TableData.getString(8), TableData.getString(9),
                     TableData.getString(10), TableData.getString(11),
                     TableData.getString(12), TableData.getString(13), TableData.getString(14),
-                    TableData.getString(15)));
+                    TableData.getString(15), TableData.getString(16)));
 
             }
         
@@ -550,7 +562,7 @@ public class BagageCatalogue {
             catalogue.getColumns().addAll(caseidColumn, owneridColumn,
                 firstNameColumn, insertionColumn, lastNameColumn, labelnrColumn,
                 destinationColumn, flightnrColumn, airportColumn, itemnameColumn, brandColumn,
-                colorsColumn, descriptionColumn, dateLostColumn, statusColumn);
+                colorsColumn, descriptionColumn, dateLostColumn, timeLostColumn, statusColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
             System.out.println(ex);
@@ -604,6 +616,9 @@ public class BagageCatalogue {
 
         TableColumn<FoundLuggage, String> dateFoundColumn = new TableColumn<>("date found");
         dateFoundColumn.setCellValueFactory(new PropertyValueFactory<>("dateFound"));
+        
+        TableColumn<FoundLuggage, String> timeFoundColumn = new TableColumn<>("time found");
+        timeFoundColumn.setCellValueFactory(new PropertyValueFactory<>("timeFound"));
 
         TableColumn<FoundLuggage, String> statusColumn = new TableColumn<>("status");
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -625,7 +640,7 @@ public class BagageCatalogue {
                     TableData.getString(7), TableData.getString(9),
                     TableData.getString(8), TableData.getString(10),
                     TableData.getString(11), TableData.getString(12),
-                    TableData.getString(13), TableData.getString(14), TableData.getString(15)));
+                    TableData.getString(13), TableData.getString(14), TableData.getString(15), TableData.getString(16)));
 
             }
            
@@ -639,7 +654,8 @@ public class BagageCatalogue {
             catalogueFound.getColumns().addAll(caseidColumn, labelnrColumn, owneridColumn,
                 flightnrColumn, firstNameColumn, insertionColumn, lastNameColumn, 
                 destinationColumn, airportColumn, itemnameColumn,
-                brandColumn, colorsColumn, descriptionColumn, dateFoundColumn, statusColumn);
+                brandColumn, colorsColumn, descriptionColumn, dateFoundColumn, 
+                timeFoundColumn, statusColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
             System.out.println(ex);
