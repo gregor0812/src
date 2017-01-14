@@ -63,7 +63,7 @@ public class submitCase {
         btn.setFont(Font.font("Verdana", 12));
         // ------------------------------
 
-        ;
+        
         //--------------------------------
         // this button will submit the case
         btnS = new Button(); // button Submit
@@ -114,9 +114,6 @@ public class submitCase {
 
         Label date = new Label("Date:");
         grid.add(date, 10, 17, 10, 1);
-//        TextField dateT = new TextField();
-//        grid.add(dateT, 20, 17);
-//        dateT.setPromptText("yyyy-mm-dd");
 
         // this datepicker will be used to select dates
         DatePicker datePicker = new DatePicker();
@@ -212,7 +209,11 @@ public class submitCase {
         foundCustomers.setMaxWidth(160);
         grid.add(foundCustomers, 40, 23);
         foundCustomers.valueProperty().addListener((listener) -> {
-            System.out.println("Je moeder is zo dik, haar bloedgroep is nutella!");
+            String selectedItem = foundCustomers.getValue().toString();
+            String[] test = selectedItem.replace(",", "").split(" ");
+            ownerFirstNameT.setText(test[1]);
+            ownerInsertionT.setText(test[2]);
+            ownerLastNameT.setText(test[3]);
         });
 
         Label type = new Label("Type:");
@@ -257,104 +258,88 @@ public class submitCase {
         grid.getChildren().addAll(btn, btnS);
 
         // the submit case gets an action here
-        btnS.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-
-                // the case id will be generated here
-                int caseid = getCaseId();
-
-                // the label nr and flight number have a standard value of null
-                Integer labelnr = null;
-                Integer flightnr = null;
-
-                // if a value is not entered in the labelnr textfield the value will be 0
-                if (labelT.getText().isEmpty()) {
-                    labelnr = 0;
-                    // if a value is entered the labelnr will get the value thats
-                    // entered in the textfield   
-                } else {
-                    labelnr = Integer.parseInt(labelT.getText());
-                }
-
-                // if a value is not entered in the labelnr textfield the value will be 0
-                if (flightT.getText().isEmpty()) {
-                    flightnr = 0;
-
-                    // if a value is entered the labelnr will get the value thats
-                    // entered in the textfield     
-                } else {
-                    flightnr = Integer.parseInt(flightT.getText());
-                }
-
-                int ownerID = -1;
-
-                if (foundCustomers.getValue() != "New") {
-                    String item = foundCustomers.getValue().toString();
- /* Verwijder -> */                   System.out.println(item);
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < item.length(); i++) {
-                        if (Character.isDigit(item.charAt(i))) {
-/* Verwijder -> */                            System.out.println("Is DIGIT");
-                            sb.append(item.charAt(i));
-                            ownerID = Integer.parseInt(sb.toString());
- /* Verwijder -> */                            System.out.println("OWNER ID -> " + ownerID);
-                        } else {
-                            break;
-                        }
+        btnS.setOnAction((ActionEvent event) -> {
+            // the case id will be generated here
+            int caseid = getCaseId();
+            
+            // the label nr and flight number have a standard value of null
+            Integer labelnr;
+            Integer flightnr;
+            // if a value is not entered in the labelnr textfield the value will be 0
+            if (labelT.getText().isEmpty()) {
+                labelnr = 0;
+                // if a value is entered the labelnr will get the value thats
+                // entered in the textfield
+            } else {
+                labelnr = Integer.parseInt(labelT.getText());
+            }
+            // if a value is not entered in the labelnr textfield the value will be 0
+            if (flightT.getText().isEmpty()) {
+                flightnr = 0;
+                
+                // if a value is entered the labelnr will get the value thats
+                // entered in the textfield
+            } else {
+                flightnr = Integer.parseInt(flightT.getText());
+            }
+            int ownerID = -1;
+            if (foundCustomers.getValue() != "New") {
+                String item = foundCustomers.getValue().toString();
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < item.length(); i++) {
+                    if (Character.isDigit(item.charAt(i))) {
+                        sb.append(item.charAt(i));
+                        ownerID = Integer.parseInt(sb.toString());
+                    } else {
+                        break;
                     }
-                } else {
-                    ownerID = -1;
                 }
-
-                // the lugggage info will get the value of their respective fields
-                String airportName = airportT.getText();
-                String itemname = typeT.getText();
-                String Brand = itemBrandT.getText();
-                String color = itemColorT.getText();
-                String description = addNotesT.getText();
-                String dateFound = datePicker.getValue().toString();
-                String destination = destinationT.getText();
-                String firstname = ownerFirstNameT.getText();
-                String insertion = ownerInsertionT.getText();
-                String lastname = ownerLastNameT.getText();
-
-                // the info will be entered in the the database using the 
-                //insert into database method
-                if (insertIntoDatabase(caseid, labelnr, flightnr,
-                        airportName, destination, itemname, Brand,
-                        color, description, dateFound, ownerID, firstname, insertion,
-                        lastname) == true) {
-
-                    // Tell user the form has been submitted succesfully
-                    Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
-                    successMessage.setHeaderText("Operation completed successfully");
-                    successMessage.setContentText("All data has been added to the "
-                            + "database");
-                    successMessage.showAndWait();
-
-                    // Clear all form fields
-                    datePicker.setValue(LocalDate.now());
-                    //dateT.setText("");
-                    airportT.setText("");
-                    labelT.setText("");
-                    flightT.setText("");
-                    destinationT.setText("");
-                    ownerFirstNameT.setText("");
-                    ownerInsertionT.setText("");
-                    ownerLastNameT.setText("");
-                    typeT.setText("");
-                    itemBrandT.setText("");
-                    itemColorT.setText("");
-                    addNotesT.setText("");
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Error");
-                    alert.setContentText("An error accured while submitting "
-                            + "the form, please try again later.");
-                    alert.showAndWait();
-                }
-
+            } else {
+                ownerID = -1;
+            }
+            // the lugggage info will get the value of their respective fields
+            String airportName = airportT.getText();
+            String itemname = typeT.getText();
+            String Brand = itemBrandT.getText();
+            String color = itemColorT.getText();
+            String description = addNotesT.getText();
+            String dateFound = datePicker.getValue().toString();
+            String destination1 = destinationT.getText();
+            String firstname = ownerFirstNameT.getText();
+            String insertion = ownerInsertionT.getText();
+            String lastname = ownerLastNameT.getText();
+            // the info will be entered in the the database using the
+            //insert into database method
+            if (insertIntoDatabase(caseid, labelnr, flightnr, airportName,
+                    destination1, itemname, Brand, color, description,
+                    dateFound, ownerID, firstname, insertion, lastname)) {
+                // Tell user the form has been submitted succesfully
+                Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
+                successMessage.setHeaderText("Operation completed successfully");
+                successMessage.setContentText("All data has been added to the "
+                        + "database");
+                successMessage.showAndWait();
+                
+                // Clear all form fields
+                datePicker.setValue(LocalDate.now());
+                //dateT.setText("");
+                airportT.setText("");
+                labelT.setText("");
+                flightT.setText("");
+                destinationT.setText("");
+                ownerFirstNameT.setText("");
+                ownerInsertionT.setText("");
+                ownerLastNameT.setText("");
+                typeT.setText("");
+                itemBrandT.setText("");
+                itemColorT.setText("");
+                addNotesT.setText("");
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Error");
+                alert.setContentText("An error accured while submitting "
+                        + "the form, please try again later.");
+                alert.showAndWait();
             }
         });
 
@@ -543,13 +528,26 @@ public class submitCase {
             Statement statement = matchCheckConnection.createStatement();
             // 
             String databaseQuery = ("INSERT INTO foundluggage ( labelnr, "
-                    + "ownerid, flightnr, airport, destination, itemname, brand, "
-                    + "colors, description, dateFound, timeFound, status) "
-                    + "VALUES( "  + labelnr + " , " + ownerId + " , "
-                    + flightnr + ", " + " '" + airportName + "' , '"
-                    + destination + "' , ' " + itemname + " ' , ' " + Brand
-                    + " ' , ' " + color + "', ' " + description + "' , ' "
-                    + dateFound + "', '" + time + "', 'open');");
+                    + "ownerid, flightnr, ownerName, insertion, lastname, "
+                    + "airport, destination, itemname, brand, colors, " 
+                    + "description, dateFound, timeFound, status) "
+                    + "VALUES( "  
+                    + labelnr + ", "
+                    + ownerId + ", "
+                    + flightnr + ", "
+                    + "'" + firstname + "', "
+                    + "'" + insertion + "', "
+                    + "'" + lastname + "', "
+                    + "'" + airportName + "', "
+                    + "'" + destination + "', "
+                    + "'" + itemname + "', "
+                    + "'" + Brand + "', "
+                    + "'" + color + "', "
+                    + "'" + description + "', "
+                    + "'" + dateFound + "', "
+                    + "'" + time + "', "
+                    + "'open'"
+                    + ");");
 
             // For debugging
             System.out.println(databaseQuery);
