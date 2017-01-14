@@ -133,16 +133,16 @@ public class HomeScreen {
             bt_STA.setPrefSize(120, 50);
            
             
-            hbox.setStyle("-fx-background-color: #ffffff");
+            hbox.setStyle("-fx-background-color: #baf9ff");
             
  //           bt_VEC.setPrefSize(180, 20);
-            bt_VBC.setPrefSize(180, 20);
-            bt_RFB.setPrefSize(180, 20);
-            bt_RLB.setPrefSize(180, 20);
+            bt_VBC.setPrefSize(180, 50);
+            bt_RFB.setPrefSize(180, 50);
+            bt_RLB.setPrefSize(180, 50);
            // bt_OPT.setPrefSize(180, 20);
-            bt_STA.setPrefSize(180, 20);
-            bt_ADM.setPrefSize(180, 20);
-            bt_LOG.setPrefSize(180, 20);
+            bt_STA.setPrefSize(180, 50);
+            bt_ADM.setPrefSize(180, 50);
+            bt_LOG.setPrefSize(180, 50);
 
             
 //            vbox1.getChildren().add(bt_VEC);

@@ -15,6 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -58,8 +59,10 @@ public class employeetable {
         root.setVgap(8);
         root.setHgap(10);
 
-        Button backbuton = new Button("back to adminscreen");
-        backbuton.setPrefSize(180, 20);
+        root.setStyle("-fx-background-color: #baf9ff");
+        
+        Button backbuton = new Button("Back to adminscreen");
+        backbuton.setPrefSize(180, 50);
         backbuton.setStyle("-fx-base:darkred;-fx-border-color:black");
         backbuton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -73,7 +76,7 @@ public class employeetable {
         // the table columns are made here
         TableColumn<Employee, String> employeenumberColumn = new TableColumn<>("employee number");
         employeenumberColumn.setCellValueFactory(new PropertyValueFactory<>("employeenumber"));
-        employeenumberColumn.setMinWidth(90);
+        employeenumberColumn.setMinWidth(100);
         
         TableColumn<Employee, String> usernameColumn = new TableColumn<>("username");
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
@@ -95,7 +98,7 @@ public class employeetable {
         
         TableColumn<Employee, String> emailColumn = new TableColumn<>("email");
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
-        emailColumn.setMinWidth(100);
+        emailColumn.setMinWidth(160);
 
         try {
             // a query to select all the info from the database
@@ -128,8 +131,8 @@ public class employeetable {
         }
         
         // a button to edit the employee info
-        Button editTable = new Button("edit employee");
-        editTable.setPrefSize(180, 20);
+        Button editTable = new Button("Edit employee");
+        editTable.setPrefSize(180, 50);
         editTable.setStyle("-fx-base:darkred;-fx-border-color:black");
         editTable.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -153,8 +156,8 @@ public class employeetable {
             }
         });
         // this is a button to add a new employee
-        Button addEmployee = new Button("add employee");
-        addEmployee.setPrefSize(180, 20);
+        Button addEmployee = new Button("Add employee");
+        addEmployee.setPrefSize(180, 50);
         addEmployee.setStyle("-fx-base:darkred;-fx-border-color:black");
         addEmployee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -166,8 +169,8 @@ public class employeetable {
         });
         
         // this is a button to remove an employee
-        Button removeEmployee = new Button("remove employee");
-        removeEmployee.setPrefSize(180, 20);
+        Button removeEmployee = new Button("Remove employee");
+        removeEmployee.setPrefSize(180, 50);
         removeEmployee.setStyle("-fx-base:darkred;-fx-border-color:black");
         removeEmployee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -212,14 +215,15 @@ public class employeetable {
         });
         
         // the tableview is added
-        root.add(employeeView, 0, 0);
+        root.add(employeeView, 1, 0);
         // this vbox will contain the control buttons
         VBox buttonContainer = new VBox(10);
         // the buttons are added
         buttonContainer.getChildren().addAll(backbuton, editTable, addEmployee, 
             removeEmployee);
         // the vbox is added to the screen
-        root.add(buttonContainer, 1, 0);
+        root.add(buttonContainer, 0, 0);
+        root.setAlignment(Pos.CENTER);
         return root;
     }
     

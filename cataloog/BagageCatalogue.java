@@ -63,7 +63,8 @@ public class BagageCatalogue {
         root.setAlignment(Pos.TOP_LEFT);
         root.getColumnConstraints().add(new ColumnConstraints(200));
         root.setPadding(new Insets(30, 30, 30, 30));
-
+        root.setStyle("-fx-background-color: #baf9ff");
+        
         GridPane Zoekscherm = new GridPane();
         Zoekscherm.setPadding(new Insets(25, 25, 25, 25));
         Zoekscherm.setHgap(10);
@@ -73,7 +74,6 @@ public class BagageCatalogue {
         Zoekscherm.setPrefSize(250, 430);
         Zoekscherm.setMaxSize(250, 430);
 
-        root.setStyle("-fx-background-color: white");
 
         StackPane EmptyPane = new StackPane();
         EmptyPane.setPrefSize(250, 150);
@@ -88,7 +88,7 @@ public class BagageCatalogue {
         hbox.setPadding(new Insets(5, 12, 5, 12));
         hbox.setSpacing(10);
 
-        ImageView Corendon = new ImageView("/resources/corendon.jpg");
+        ImageView Corendon = new ImageView("/resources/CorendonAirlines.png");
         Corendon.setFitHeight(100);
         Corendon.setFitWidth(300);
 
@@ -510,7 +510,7 @@ public class BagageCatalogue {
         // de table colums are made here
         TableColumn<LostLuggage, Integer> caseidColumn = new TableColumn<>("lostID");
         caseidColumn.setCellValueFactory(new PropertyValueFactory<>("caseid"));
-        
+        //caseidColumn.setMaxWidth(100);
         
         TableColumn<LostLuggage, Integer> owneridColumn = new TableColumn<>("ownerid");
         owneridColumn.setCellValueFactory(new PropertyValueFactory<>("ownerid"));

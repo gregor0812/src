@@ -82,13 +82,14 @@ public class LoginScherm {
         
         Button login = new Button();
         login.setText("Login");
-        login.setStyle("-fx-background-color: #009b91;-fx-text-fill:#eaaf00");
+        login.setStyle("-fx-background-color: #ffffff;-fx-text-fill:BLACK");
+        
         
         Button resetPassword = new Button();
         resetPassword.setText("Reset password");
         resetPassword.setStyle("-fx-background-color: #ffffff;-fx-text-fill:BLACK");
 
-        root.setStyle("-fx-background-color: #ffffff");
+        root.setStyle("-fx-background-color: #baf9ff");
                
         
 
@@ -108,19 +109,13 @@ public class LoginScherm {
         
         resetPassword.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {
-                
-                System.out.println("X");
+            public void handle(ActionEvent event) {                
                 
                resetPassword scherm = new resetPassword();
 
                GridPane resetPassword = scherm.maakPasswordReset();
                rootpane.addnewpane(resetPassword);
-
-               //StackPane resetPassword = scherm.maakPasswordReset();
-               //rootpane.addnewpane(resetPassword);
-
-               
+             
             }
         });
         
