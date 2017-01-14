@@ -6,8 +6,13 @@
 package prototypefys;
 
 import cataloog.BagageCatalogue;
+import cataloog.FoundLuggage;
+import cataloog.LostLuggage;
 import database.Database;
 import java.io.File;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -39,7 +44,7 @@ public class matchInformatie {
     private Rootpane rootpane = new Rootpane();
     private Database db = new Database();
     
-    public GridPane matchInfo(){
+    public GridPane matchInfo(LostLuggage lostInfo, FoundLuggage foundInfo){
         
          Button btnmainmenu;
        
@@ -60,7 +65,7 @@ public class matchInformatie {
         btnS.setFont(Font.font("Verdana", 12));
 
         Label caseid = new Label();
-        caseid.setText("The case id is: " );
+        caseid.setText("The case id is: " + lostInfo.getCaseid() );
         caseid.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 
         GridPane grid = new GridPane();
@@ -104,33 +109,33 @@ public class matchInformatie {
 
         Label date = new Label("Date lost:");
         grid.add(date, 10, 17, 10, 1);
-        TextField dateT = new TextField();
+        TextField dateT = new TextField(lostInfo.getDateLost());
         grid.add(dateT, 20, 17);
         dateT.setPromptText("yyyy-mm-dd");
         
         Label timeLostT = new Label("time lost:");
         grid.add(timeLostT, 10, 18);
-        TextField timeLostL = new TextField();
+        TextField timeLostL = new TextField(lostInfo.getTimeLost());
         grid.add(timeLostL, 20, 18);
         
         Label airport = new Label("Airport:");
         grid.add(airport, 10, 19, 10, 1);
-        TextField airportT = new TextField();
+        TextField airportT = new TextField(lostInfo.getAirport());
         grid.add(airportT, 20, 19);
 
         Label labelNumber = new Label("Label number:");
         grid.add(labelNumber, 30, 17, 10, 1);
-        TextField labelNumberT = new TextField();
+        TextField labelNumberT = new TextField(Integer.toString(lostInfo.getLabelnr()));
         grid.add(labelNumberT, 40, 17);
 
         Label flight = new Label("Flight number:");
         grid.add(flight, 30, 18, 10, 1);
-        TextField flightT = new TextField();
+        TextField flightT = new TextField(Integer.toString(lostInfo.getFlightnr()));
         grid.add(flightT, 40, 18);
 
         Label destination = new Label("Destination:");
         grid.add(destination, 30, 19, 10, 1);
-        TextField destinationT = new TextField();
+        TextField destinationT = new TextField(lostInfo.getDestination());
         grid.add(destinationT, 40, 19);
         
         Label FoundInfo = new Label("found information:");
@@ -139,17 +144,17 @@ public class matchInformatie {
         
         Label dateFoundL = new Label("date found:");
         grid.add(dateFoundL, 30, 23);
-        TextField dateFoundT = new TextField();
+        TextField dateFoundT = new TextField(foundInfo.getDateFound());
         grid.add(dateFoundT, 40, 23 );
         
          Label timeFoundL = new Label("time found:");
         grid.add(timeFoundL, 30, 24);
-        TextField timeFoundT = new TextField();
+        TextField timeFoundT = new TextField(foundInfo.getTimeFound());
         grid.add(timeFoundT, 40, 24 );
         
-        Label airportFoundL = new Label("airpot found:");
+        Label airportFoundL = new Label("airport found:");
         grid.add(airportFoundL, 30, 25);
-        TextField airportFoundT = new TextField();
+        TextField airportFoundT = new TextField(foundInfo.getAirport());
         grid.add(airportFoundT, 40, 25);
             
         
@@ -158,84 +163,84 @@ public class matchInformatie {
         OwnerInfo.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(OwnerInfo, 10, 21, 12, 1);
         
-        Text OwnerIdText = new Text("the ownerID is:");
+        Text OwnerIdText = new Text("the ownerID is: " + lostInfo.getOwnerid());
         OwnerIdText.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(OwnerIdText, 10, 22, 10 , 1);
         Label naamReiziger = new Label("first Name:");
         grid.add(naamReiziger, 10, 23, 10, 1);
-        TextField naamReizigerT = new TextField();
+        TextField naamReizigerT = new TextField(lostInfo.getFirstName());
         grid.add(naamReizigerT, 20, 23);
 
         Label NameInsertion = new Label("insertion:");
         grid.add(NameInsertion, 10, 24, 10, 1);
-        TextField NameInsertionT = new TextField();
+        TextField NameInsertionT = new TextField(lostInfo.getInsertion());
         grid.add(NameInsertionT, 20, 24);
 
         Label lastName = new Label("last name:");
         grid.add(lastName, 10, 25, 10, 1);
-        TextField LastNameT = new TextField();
+        TextField LastNameT = new TextField(lostInfo.getLastName());
         grid.add(LastNameT, 20, 25);
 
         Label phone1 = new Label("phone number 1:");
         grid.add(phone1, 10, 26, 10, 1);
-        TextField phone1T = new TextField();
+        TextField phone1T = new TextField(getOwnerinfo(lostInfo.getOwnerid(), 5));
         grid.add(phone1T, 20, 26);
 
         Label phone2L = new Label("phone number 2:");
         grid.add(phone2L, 10, 27, 10, 1);
-        TextField phone2T = new TextField();
+        TextField phone2T = new TextField(getOwnerinfo(lostInfo.getOwnerid(), 6));
         grid.add(phone2T, 20, 27);
 
         Label emailL = new Label("email: ");
         grid.add(emailL, 10, 28, 10, 1);
-        TextField emailT = new TextField();
+        TextField emailT = new TextField(getOwnerinfo(lostInfo.getOwnerid(), 7));
         grid.add(emailT, 20, 28);
 
         Label addOwnerNotes = new Label("Additional notes:");
         grid.add(addOwnerNotes, 10, 29, 10, 1);
-        TextField addOwnerNotesT = new TextField();
+        TextField addOwnerNotesT = new TextField(getOwnerinfo(lostInfo.getOwnerid(), 8));
         grid.add(addOwnerNotesT, 20, 29, 1, 1);
 
         Label ownerAdd = new Label("Address:");
         grid.add(ownerAdd, 10, 30, 10, 1);
-        TextField ownerAddT = new TextField();
+        TextField ownerAddT = new TextField(getAddressInfo(lostInfo.getOwnerid(), 2));
         grid.add(ownerAddT, 20, 30);
 
         Label ownerCity = new Label("City:");
         grid.add(ownerCity, 10, 31, 10, 1);
-        TextField ownerCityT = new TextField();
+        TextField ownerCityT = new TextField(getAddressInfo(lostInfo.getOwnerid(), 4));
         grid.add(ownerCityT, 20, 31);
 
         Label ownerZip = new Label("Zipcode:");
         grid.add(ownerZip, 10, 32, 10, 1);
-        TextField ownerZipT = new TextField();
+        TextField ownerZipT = new TextField(getAddressInfo(lostInfo.getOwnerid(), 3));
         grid.add(ownerZipT, 20, 32);
 
         Label ownerCountry = new Label("Country:");
         grid.add(ownerCountry, 10, 33, 10, 1);
-        TextField ownerCountryT = new TextField();
+        TextField ownerCountryT = new TextField(getAddressInfo(lostInfo.getOwnerid(), 5));
         grid.add(ownerCountryT, 20, 33);
 
         
         Label itemType = new Label("Type:");
         grid.add(itemType, 30, 27, 10, 1);
-        TextField itemTypeT = new TextField();
+        TextField itemTypeT = new TextField(lostInfo.getItemname());
         grid.add(itemTypeT, 40, 27);
 
         Label itemBrand = new Label("Brand:");
         grid.add(itemBrand, 30, 28, 10, 1);
-        TextField itemBrandT = new TextField();
+        TextField itemBrandT = new TextField(lostInfo.getBrand());
         grid.add(itemBrandT, 40, 28);
 
         Label itemColor = new Label("Color:");
         grid.add(itemColor, 30, 29, 10, 1);
-        TextField itemColorT = new TextField();
+        TextField itemColorT = new TextField(lostInfo.getColors());
         grid.add(itemColorT, 40, 29);
 
 
         Label addNotes = new Label("Additional notes:");
         grid.add(addNotes, 30, 30, 10, 1);
-        TextField addNotesT = new TextField();
+        TextField addNotesT = new TextField(lostInfo.getDescription());
         grid.add(addNotesT, 40, 30);
 
         ImageView Calendar = new ImageView("/resources/Calendar-icon.png");
@@ -257,15 +262,7 @@ public class matchInformatie {
             @Override
             public void handle(ActionEvent event) {
                 
-                File file = fileChooser();
-                
-            
-                
-        //String fileRaw = file.getAbsolutePath();
-       
-        //filePath = fileRaw.replace("\\","\\\\");
-        
-                
+                         
                 
                 GenerateSignedPdf pdfmaker = new GenerateSignedPdf();
                 pdfmaker.MakePdf();
@@ -280,28 +277,54 @@ public class matchInformatie {
         
     }
     
-    public File fileChooser() {
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | UnsupportedLookAndFeelException ex) {
-            System.out.println("Error bij het initialeren van de look en feel van de filechooser:\n" + ex);
-        }
-        JPanel frame = new JPanel();
+   
+        
+     public String getOwnerinfo(int ownerid, int infoNumber) {
 
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-        FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                "JPG, PNG & GIF Images", "jpg", "png", "gif");
-        fileChooser.setFileFilter(filter);
-        int result = fileChooser.showOpenDialog(frame);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            File selectedFile = fileChooser.getSelectedFile();
-            return selectedFile;
-            //picture_button.setText(selectedFile.getName());
-            //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-        } else {
-            return null;
+        String info = "";
+
+        try {
+
+            Connection userinfoConnection = db.getConnection();
+            Statement statement = userinfoConnection.createStatement();
+
+            ResultSet ownerinfo = statement.executeQuery("select * from luggageowner "
+                + "where ownerid = " + ownerid + "");
+
+            while (ownerinfo.next()) {
+                info = ownerinfo.getString(infoNumber);
+            }
+
+        } catch (Exception ex) {
+            System.out.println("failed to get user information");
+            System.err.println(ex.getMessage());
         }
+
+        return info;
+    }
+
+    public String getAddressInfo(int ownerid, int infoNumber) {
+
+        String info = "";
+
+        try {
+
+            Connection userinfoConnection = db.getConnection();
+            Statement statement = userinfoConnection.createStatement();
+
+            ResultSet ownerinfo = statement.executeQuery("select * from address "
+                + "where ownerid = " + ownerid + "");
+
+            while (ownerinfo.next()) {
+                info = ownerinfo.getString(infoNumber);
+            }
+
+        } catch (Exception ex) {
+            System.out.println("failed to get user information");
+            System.err.println(ex.getMessage());
+        }
+
+        return info;
     }
     
 }

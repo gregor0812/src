@@ -485,9 +485,9 @@ public class submitCase {
         try {
 
             // a connection is made
-            Connection ReportGenerationConnect = db.getConnection();
+            Connection matchCheckConnection = db.getConnection();
             // a statement is made
-            Statement statement = ReportGenerationConnect.createStatement();
+            Statement statement = matchCheckConnection.createStatement();
             // 
             String databaseQuery = (" insert into foundluggage (foundID, labelnr,"
                     + " flightnr, airport, destination, itemname, brand, colors, description, dateFound, status) "
@@ -503,22 +503,39 @@ public class submitCase {
             // een resultset met verloren labelnummers
             try {
 
-                Statement statement2 = ReportGenerationConnect.createStatement();
+                Statement statement2 = matchCheckConnection.createStatement();
                 ResultSet knownlabelnr = statement2.executeQuery("select labelnr from lostluggage");
                 List rowValues = new ArrayList();
                 while (knownlabelnr.next()) {
                     rowValues.add(knownlabelnr.getInt(1));
                 }
 
-                Statement statement3 = ReportGenerationConnect.createStatement();
+                Statement statement3 = matchCheckConnection.createStatement();
 
                 if (rowValues.contains(labelnr)) {
-
+                    
+                    
+                    Statement owneridStatement = matchCheckConnection.createStatement();
+                    
+                    // this resultset will contain the ownerid of the luggageowner
+                    ResultSet LostLuggageOwnerId
+                    = owneridStatement.executeQuery("select ownerid from lostluggage " +
+                    "where labelnr = " + labelnr + " ;");
+                    
+                    int ownerid = 0;
+                    
+                     while (LostLuggageOwnerId.next()) {
+                        ownerid = LostLuggageOwnerId.getInt(1);
+                      }
+                     
+                    
+                    // this will update the status from the foundluggage
                     String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
-                            + "`status`='matched' WHERE labelnr = " + labelnr + ";";
-
+                            + "`status`='matched', ownerid = " + ownerid + " WHERE labelnr = " + labelnr + ";";
+                    
+                    
                     statement3.executeUpdate(updatestatus1);
-
+                    // this will update the status of the lostluggage
                     String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
                             + "`status`='matched' WHERE labelnr = " + labelnr + ";";
 
@@ -529,6 +546,9 @@ public class submitCase {
                     alert.setHeaderText("you got a match");
                     alert.setContentText("a match has been found!");
                     alert.showAndWait();
+                    
+                    
+                    
                 }
 
                 System.out.println(rowValues);

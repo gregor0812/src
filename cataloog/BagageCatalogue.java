@@ -70,8 +70,8 @@ public class BagageCatalogue {
         Zoekscherm.setVgap(10);
         Zoekscherm.setStyle("-fx-base:darkred;-fx-border-color:darkred");
         Zoekscherm.setAlignment(Pos.CENTER);
-        Zoekscherm.setPrefSize(250, 400);
-        Zoekscherm.setMaxSize(250, 400);
+        Zoekscherm.setPrefSize(250, 430);
+        Zoekscherm.setMaxSize(250, 430);
 
         root.setStyle("-fx-background-color: white");
 
@@ -290,7 +290,7 @@ public class BagageCatalogue {
             }
         });
         
-        Button FoundWithouthLabel = new Button("show found luggage with no label");
+        Button FoundWithouthLabel = new Button("show found luggage \n with no label");
         FoundWithouthLabel.setMinSize(150, 40);
         FoundWithouthLabel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
