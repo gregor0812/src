@@ -316,7 +316,7 @@ public class ReportGeneration {
         });
         
         Button DateSelection = new Button("show selection");
-        DateSelection.setPrefSize(210, 50);
+        DateSelection.setPrefSize(180, 20);
         DateSelection.setStyle("-fx-base:darkred;-fx-border-color:white");
         DateSelection.setFont(Font.font("Verdana", 12));
         DateSelection.setOnAction(new EventHandler<ActionEvent>() 

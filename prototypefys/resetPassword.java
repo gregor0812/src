@@ -15,6 +15,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javax.mail.*;
 import java.util.*;
+import javafx.scene.control.Alert;
 import javax.mail.internet.*;
 
 /**
@@ -74,21 +75,24 @@ public class resetPassword {
                     generatedPassword = (int) (Math.random() * 999999 + 99999);
                     System.out.println(generatedPassword);
 
-                    String databaseQuery = ("UPDATE `corendon`.`employee` SET `password`=" + generatedPassword + " WHERE `email`= '"  + email + "';");
+                    String databaseQuery = ("UPDATE `corendon`.`employee` SET `password`=" + generatedPassword + " WHERE `email`= '" + email + "';");
                     System.out.println(databaseQuery);
                     statement.executeUpdate(databaseQuery);
-                    
-                    
 
                     String RECIPIENT = email;
                     String from = EMAIL_USER_NAME;
                     String pass = EMAIL_PASSWORD;
                     String[] to = {RECIPIENT};
                     String subject = "Corendon password reset.";
-                    String body = "You have succesfully resetted your password, your new password is:  " + generatedPassword + "./n"
-                            + "please store this password in a safe location";
+                    String body = "You have succesfully resetted your password, your new password is: " + generatedPassword + ". "
+                            + "Please store this password in a safe location.";
                     //send mail
                     sendFromGMail(from, pass, to, subject, body);
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Password reset ");                   
+                    alert.setContentText("Password reset has been sent");
+                    alert.showAndWait();
+
                 } catch (Exception ex) {
                     System.out.println("failed to reset password");
                     System.out.println(ex);
