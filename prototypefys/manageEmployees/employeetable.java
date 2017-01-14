@@ -308,7 +308,7 @@ public class employeetable {
         
         Label emailLabel = new Label("Email:");
         grid.add(emailLabel, 10, 23, 10, 1);
-        TextField emailText = new TextField(employee.getRole());
+        TextField emailText = new TextField(employee.getEmail());
         grid.add(emailText, 20, 23);        
 
         ImageView Corendon = new ImageView("/resources/corendon.jpg");
