@@ -183,42 +183,43 @@ public class submitCase {
         grid.add(ownerFirstName, 30, 20, 10, 1);
         TextField ownerFirstNameT = new TextField();
         grid.add(ownerFirstNameT, 40, 20);
-        ownerFirstNameT.textProperty().addListener((listener) -> {
-            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(), "", "");
-        });
 
         // Label and textfield for owner insertions
         Label ownerInsertion = new Label("Insertion(s):");
         grid.add(ownerInsertion, 30, 21, 10, 1);
         TextField ownerInsertionT = new TextField();
         grid.add(ownerInsertionT, 40, 21);
-        ownerInsertionT.textProperty().addListener((listener) -> {
-            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
-                    ownerInsertionT.getText(), "");
-        });
 
         // Label and textfield for owner lastname
         Label ownerLastName = new Label("Last name: ");
         grid.add(ownerLastName, 30, 22, 10, 1);
         TextField ownerLastNameT = new TextField();
         grid.add(ownerLastNameT, 40, 22);
-        ownerLastNameT.textProperty().addListener((listener) -> {
-            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
-                    ownerInsertionT.getText(), ownerLastNameT.getText());
-        });
 
         // Combobox to display all owners that exist with the same name
         ComboBox foundCustomers = new ComboBox(foundOwnersList);
         foundCustomers.setMinSize(160, 20);
         foundCustomers.setMaxWidth(160);
+        foundCustomers.getSelectionModel().selectFirst();
         grid.add(foundCustomers, 40, 23);
+        
+        // Add Event when de combobox os shown
+        foundCustomers.setOnShown(((event) -> {
+            // Fill the combobox with found owners
+            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
+                    ownerInsertionT.getText(), ownerLastNameT.getText());
+        }));
+        
+        // Fill all textfields with data of the selected owner
         foundCustomers.valueProperty().addListener((listener) -> {
-            String selectedItem = foundCustomers.getValue().toString();
-            String[] test = selectedItem.replace(",", "").split(" ");
-            ownerFirstNameT.setText(test[1]);
-            ownerInsertionT.setText(test[2]);
-            ownerLastNameT.setText(test[3]);
-        });
+            if (!"New".equals(foundCustomers.getValue().toString())) {
+                String selectedItem = foundCustomers.getValue().toString();
+                String[] test = selectedItem.replace(",", "").split(" ");
+                ownerFirstNameT.setText(test[1]);
+                ownerInsertionT.setText(test[2]);
+                ownerLastNameT.setText(test[3]);
+            }
+        });        
 
         Label type = new Label("Type:");
         grid.add(type, 30, 25, 10, 1);
@@ -672,7 +673,7 @@ public class submitCase {
                         LostLuggageResult.getString(14),
                         LostLuggageResult.getString(15), LostLuggageResult.getString(16)));
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println("Failed to retrieve matchinfo ");
             System.err.println(ex.getMessage());
         }
@@ -700,7 +701,7 @@ public class submitCase {
                         TableData.getString(15), TableData.getString(16)));
             }
 
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println("Failed to retrieve matchinfo ");
             System.err.println(ex.getMessage());
         }
