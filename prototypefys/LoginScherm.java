@@ -137,10 +137,25 @@ public class LoginScherm {
                     break;
             }
         });
-            
+        
+        Button testMatchView = new Button("testmatchview");
+        testMatchView.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                
+                matchInformatie kaka = new matchInformatie();
+                GridPane ksad = kaka.matchInfo();
+                
+                rootpane.addnewpane(ksad);
+                
+            }
+        });
+        
+        
+        
         root.add(login, 0 , 3);
         root.add(resetPassword, 0 , 4);
-        
+        root.add(testMatchView, 0 , 6);
         
         return root;
     }
@@ -165,13 +180,13 @@ public class LoginScherm {
         
         ResultSet NumberUsers = statement2.executeQuery("select count(*) as total from employee;");
        
-        int kaka = 1;
+        
         if (NumberUsers.next()){
-        kaka = NumberUsers.getInt("total");
+        
         }
         
         String[] ListOfKnownUsers;
-           ListOfKnownUsers = new String[kaka];
+           ListOfKnownUsers = new String[10];
         
            
         for (int i = 0; knownUsers.next(); i++){
@@ -241,6 +256,9 @@ public class LoginScherm {
               
            
    }
+   
+   
+   
     
    
 }
