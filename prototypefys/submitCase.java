@@ -82,7 +82,7 @@ public class submitCase {
         GridPane.setConstraints(btn, 1, 15);
         GridPane.setConstraints(btnS, 40, 31);
 
-        grid.setStyle("-fx-background-color: white");
+        grid.setStyle("-fx-background-color: #baf9ff");
 
         // the main menu button will return to the main menu through this action
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -243,7 +243,7 @@ public class submitCase {
         grid.add(Calendar, 21, 17);
 
         // an image of the corendon logo is made
-        ImageView Corendon = new ImageView("/resources/corendon.jpg");
+        ImageView Corendon = new ImageView("/resources/CorendonAirlines.png");
         Corendon.setFitHeight(100);
         Corendon.setFitWidth(300);
 
