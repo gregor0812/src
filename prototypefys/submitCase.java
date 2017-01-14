@@ -1,5 +1,7 @@
 package prototypefys;
 
+import cataloog.FoundLuggage;
+import cataloog.LostLuggage;
 import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +22,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -63,7 +68,6 @@ public class submitCase {
         btn.setFont(Font.font("Verdana", 12));
         // ------------------------------
 
-        ;
         //--------------------------------
         // this button will submit the case
         btnS = new Button(); // button Submit
@@ -114,9 +118,6 @@ public class submitCase {
 
         Label date = new Label("Date:");
         grid.add(date, 10, 17, 10, 1);
-//        TextField dateT = new TextField();
-//        grid.add(dateT, 20, 17);
-//        dateT.setPromptText("yyyy-mm-dd");
 
         // this datepicker will be used to select dates
         DatePicker datePicker = new DatePicker();
@@ -182,35 +183,43 @@ public class submitCase {
         grid.add(ownerFirstName, 30, 20, 10, 1);
         TextField ownerFirstNameT = new TextField();
         grid.add(ownerFirstNameT, 40, 20);
-        ownerFirstNameT.textProperty().addListener((listener) -> {
-            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(), "", "");
-        });
 
         // Label and textfield for owner insertions
         Label ownerInsertion = new Label("Insertion(s):");
         grid.add(ownerInsertion, 30, 21, 10, 1);
         TextField ownerInsertionT = new TextField();
         grid.add(ownerInsertionT, 40, 21);
-        ownerInsertionT.textProperty().addListener((listener) -> {
-            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
-                    ownerInsertionT.getText(), "");
-        });
 
         // Label and textfield for owner lastname
         Label ownerLastName = new Label("Last name: ");
         grid.add(ownerLastName, 30, 22, 10, 1);
         TextField ownerLastNameT = new TextField();
         grid.add(ownerLastNameT, 40, 22);
-        ownerLastNameT.textProperty().addListener((listener) -> {
-            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
-                    ownerInsertionT.getText(), ownerLastNameT.getText());
-        });
 
         // Combobox to display all owners that exist with the same name
         ComboBox foundCustomers = new ComboBox(foundOwnersList);
         foundCustomers.setMinSize(160, 20);
         foundCustomers.setMaxWidth(160);
+        foundCustomers.getSelectionModel().selectFirst();
         grid.add(foundCustomers, 40, 23);
+        
+        // Add Event when de combobox os shown
+        foundCustomers.setOnShown(((event) -> {
+            // Fill the combobox with found owners
+            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
+                    ownerInsertionT.getText(), ownerLastNameT.getText());
+        }));
+        
+        // Fill all textfields with data of the selected owner
+        foundCustomers.valueProperty().addListener((listener) -> {
+            if (!"New".equals(foundCustomers.getValue().toString())) {
+                String selectedItem = foundCustomers.getValue().toString();
+                String[] test = selectedItem.replace(",", "").split(" ");
+                ownerFirstNameT.setText(test[1]);
+                ownerInsertionT.setText(test[2]);
+                ownerLastNameT.setText(test[3]);
+            }
+        });        
 
         Label type = new Label("Type:");
         grid.add(type, 30, 25, 10, 1);
@@ -254,100 +263,88 @@ public class submitCase {
         grid.getChildren().addAll(btn, btnS);
 
         // the submit case gets an action here
-        btnS.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
+        btnS.setOnAction((ActionEvent event) -> {
+            // the case id will be generated here
+            int caseid = getCaseId();
 
-                // the case id will be generated here
-                int caseid = getCaseId();
+            // the label nr and flight number have a standard value of null
+            Integer labelnr;
+            Integer flightnr;
+            // if a value is not entered in the labelnr textfield the value will be 0
+            if (labelT.getText().isEmpty()) {
+                labelnr = 0;
+                // if a value is entered the labelnr will get the value thats
+                // entered in the textfield
+            } else {
+                labelnr = Integer.parseInt(labelT.getText());
+            }
+            // if a value is not entered in the labelnr textfield the value will be 0
+            if (flightT.getText().isEmpty()) {
+                flightnr = 0;
 
-                // the label nr and flight number have a standard value of null
-                Integer labelnr = null;
-                Integer flightnr = null;
-
-                // if a value is not entered in the labelnr textfield the value will be 0
-                if (labelT.getText().isEmpty()) {
-                    labelnr = 0;
-                    // if a value is entered the labelnr will get the value thats
-                    // entered in the textfield   
-                } else {
-                    labelnr = Integer.parseInt(labelT.getText());
-                }
-
-                // if a value is not entered in the labelnr textfield the value will be 0
-                if (flightT.getText().isEmpty()) {
-                    flightnr = 0;
-
-                    // if a value is entered the labelnr will get the value thats
-                    // entered in the textfield     
-                } else {
-                    flightnr = Integer.parseInt(flightT.getText());
-                }
-
-                int ownerID = -1;
-
-                if (foundCustomers.getValue() != "New") {
-                    String item = foundCustomers.getValue().toString();
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 0; i < item.length(); i++) {
-                        if (Character.isDigit(item.charAt(i))) {
-                            sb.append(item.charAt(i));
-                        } else {
-                            break;
-                        }
+                // if a value is entered the labelnr will get the value thats
+                // entered in the textfield
+            } else {
+                flightnr = Integer.parseInt(flightT.getText());
+            }
+            int ownerID = -1;
+            if (foundCustomers.getValue() != "New") {
+                String item = foundCustomers.getValue().toString();
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < item.length(); i++) {
+                    if (Character.isDigit(item.charAt(i))) {
+                        sb.append(item.charAt(i));
+                        ownerID = Integer.parseInt(sb.toString());
+                    } else {
+                        break;
                     }
-
-                    ownerID = Integer.parseInt(sb.toString());
                 }
+            } else {
+                ownerID = -1;
+            }
+            // the lugggage info will get the value of their respective fields
+            String airportName = airportT.getText();
+            String itemname = typeT.getText();
+            String Brand = itemBrandT.getText();
+            String color = itemColorT.getText();
+            String description = addNotesT.getText();
+            String dateFound = datePicker.getValue().toString();
+            String destination1 = destinationT.getText();
+            String firstname = ownerFirstNameT.getText();
+            String insertion = ownerInsertionT.getText();
+            String lastname = ownerLastNameT.getText();
+            // the info will be entered in the the database using the
+            //insert into database method
+            if (insertIntoDatabase(caseid, labelnr, flightnr, airportName,
+                    destination1, itemname, Brand, color, description,
+                    dateFound, ownerID, firstname, insertion, lastname)) {
+                // Tell user the form has been submitted succesfully
+                Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
+                successMessage.setHeaderText("Operation completed successfully");
+                successMessage.setContentText("All data has been added to the "
+                        + "database");
+                successMessage.showAndWait();
 
-                // the lugggage info will get the value of their respective fields
-                String airportName = airportT.getText();
-                String itemname = typeT.getText();
-                String Brand = itemBrandT.getText();
-                String color = itemColorT.getText();
-                String description = addNotesT.getText();
-                String dateFound = datePicker.getValue().toString();
-                String destination = destinationT.getText();
-                String firstname = ownerFirstNameT.getText();
-                String insertion = ownerInsertionT.getText();
-                String lastname = ownerLastNameT.getText();
-
-                // the info will be entered in the the database using the 
-                //insert into database method
-                if (insertIntoDatabase(caseid, labelnr, flightnr,
-                        airportName, destination, itemname, Brand,
-                        color, description, dateFound, ownerID, firstname, insertion,
-                        lastname) == true) {
-
-                    // Tell user the form has been submitted succesfully
-                    Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
-                    successMessage.setHeaderText("Operation completed successfully");
-                    successMessage.setContentText("All data has been added to the "
-                            + "database");
-                    successMessage.showAndWait();
-
-                    // Clear all form fields
-                    datePicker.setValue(LocalDate.now());
-                    //dateT.setText("");
-                    airportT.setText("");
-                    labelT.setText("");
-                    flightT.setText("");
-                    destinationT.setText("");
-                    ownerFirstNameT.setText("");
-                    ownerInsertionT.setText("");
-                    ownerLastNameT.setText("");
-                    typeT.setText("");
-                    itemBrandT.setText("");
-                    itemColorT.setText("");
-                    addNotesT.setText("");
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setHeaderText("Error");
-                    alert.setContentText("An error accured while submitting "
-                            + "the form, please try again later.");
-                    alert.showAndWait();
-                }
-
+                // Clear all form fields
+                datePicker.setValue(LocalDate.now());
+                //dateT.setText("");
+                airportT.setText("");
+                labelT.setText("");
+                flightT.setText("");
+                destinationT.setText("");
+                ownerFirstNameT.setText("");
+                ownerInsertionT.setText("");
+                ownerLastNameT.setText("");
+                typeT.setText("");
+                itemBrandT.setText("");
+                itemColorT.setText("");
+                addNotesT.setText("");
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeaderText("Error");
+                alert.setContentText("An error accured while submitting "
+                        + "the form, please try again later.");
+                alert.showAndWait();
             }
         });
 
@@ -440,7 +437,7 @@ public class submitCase {
         try {
 
             // Query to search all existing owners
-            String query = "SELECT firstname, "
+            String query = "SELECT L.ownerid, firstname, "
                     + "insertion, lastname, address, zipcode, city, "
                     + "country "
                     + "FROM luggageowner L "
@@ -462,7 +459,8 @@ public class submitCase {
 
                 // Create StrinBuilder to display all owners
                 StringBuilder sb = new StringBuilder();
-                sb.append(rs.getString("firstname")).append(" ")
+                sb.append(rs.getInt("ownerid")).append(" ")
+                        .append(rs.getString("firstname")).append(" ")
                         .append(rs.getString("insertion")).append(" ")
                         .append(rs.getString("lastname")).append(", ")
                         .append(rs.getString("address")).append(" ")
@@ -534,14 +532,27 @@ public class submitCase {
             // a statement is made
             Statement statement = matchCheckConnection.createStatement();
             // 
-            String databaseQuery = ("INSERT INTO foundluggage (foundID, labelnr, "
-                    + "ownerid, flightnr, airport, destination, itemname, brand, "
-                    + "colors, description, dateFound, timeFound, status) "
-                    + "VALUES( " + caseid + " , " + labelnr + " , " + ownerId + " , "
-                    + flightnr + ", " + " '" + airportName + "' , '"
-                    + destination + "' , ' " + itemname + " ' , ' " + Brand
-                    + " ' , ' " + color + "', ' " + description + "' , ' "
-                    + dateFound + "', '" + time + "', 'open');");
+            String databaseQuery = ("INSERT INTO foundluggage ( labelnr, "
+                    + "ownerid, flightnr, ownerName, insertion, lastname, "
+                    + "airport, destination, itemname, brand, colors, "
+                    + "description, dateFound, timeFound, status) "
+                    + "VALUES( "
+                    + labelnr + ", "
+                    + ownerId + ", "
+                    + flightnr + ", "
+                    + "'" + firstname + "', "
+                    + "'" + insertion + "', "
+                    + "'" + lastname + "', "
+                    + "'" + airportName + "', "
+                    + "'" + destination + "', "
+                    + "'" + itemname + "', "
+                    + "'" + Brand + "', "
+                    + "'" + color + "', "
+                    + "'" + description + "', "
+                    + "'" + dateFound + "', "
+                    + "'" + time + "', "
+                    + "'open'"
+                    + ");");
 
             // For debugging
             System.out.println(databaseQuery);
@@ -566,7 +577,7 @@ public class submitCase {
 
                     // this resultset will contain the ownerid of the luggageowner
                     ResultSet LostLuggageOwnerId
-                            = owneridStatement.executeQuery("select ownerid from lostluggage "
+                            = owneridStatement.executeQuery("select ownerid from foundluggage "
                                     + "where labelnr = " + labelnr + " ;");
 
                     int ownerid = 0;
@@ -591,6 +602,35 @@ public class submitCase {
                     alert.setHeaderText("you got a match");
                     alert.setContentText("a match has been found!");
                     alert.showAndWait();
+
+                    ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    ButtonType ViewMatchBtn = new ButtonType("View match");
+                    alert.getButtonTypes().setAll(okButton, ViewMatchBtn);
+
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    if (result.get() == ViewMatchBtn) {
+
+                        String LostLuggageInfo = ("select lostluggage.lostID, lostluggage.ownerid, "
+                                + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
+                                + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
+                                + "lostluggage.airport, lostluggage.itemname,"
+                                + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
+                                + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
+                                + "inner join luggageowner"
+                                + " on lostluggage.ownerid = luggageowner.ownerid "
+                                + "where labelnr = " + labelnr);
+
+                        String FoundLuggageInfo = ("select * from foundluggage "
+                                + "where labelnr = " + labelnr);
+
+                        matchInformatie matchinfo = new matchInformatie();
+                        GridPane infoScherm = matchinfo.matchInfo(lostLuggageMatchInfo(LostLuggageInfo),
+                                foundLuggageMatchInfo(FoundLuggageInfo));
+                        rootpane.addnewpane(infoScherm);
+
+                    }
+
                 }
 
                 System.out.println(rowValues);
@@ -608,6 +648,65 @@ public class submitCase {
 
         return true;
 
+    }
+
+    public LostLuggage lostLuggageMatchInfo(String query) {
+
+        LostLuggage LostInfo = null;
+
+        try {
+
+            Connection matchCheckConnection = db.getConnection();
+            Statement statement = matchCheckConnection.createStatement();
+
+            ResultSet LostLuggageResult = statement.executeQuery(query);
+
+            while (LostLuggageResult.next()) {
+
+                LostInfo = (new LostLuggage(LostLuggageResult.getInt(1), LostLuggageResult.getInt(2),
+                        LostLuggageResult.getString(3), LostLuggageResult.getString(4),
+                        LostLuggageResult.getString(5), LostLuggageResult.getInt(6),
+                        LostLuggageResult.getInt(7), LostLuggageResult.getString(8),
+                        LostLuggageResult.getString(9),
+                        LostLuggageResult.getString(10), LostLuggageResult.getString(11),
+                        LostLuggageResult.getString(12), LostLuggageResult.getString(13),
+                        LostLuggageResult.getString(14),
+                        LostLuggageResult.getString(15), LostLuggageResult.getString(16)));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Failed to retrieve matchinfo ");
+            System.err.println(ex.getMessage());
+        }
+
+        return LostInfo;
+    }
+
+    public FoundLuggage foundLuggageMatchInfo(String query) {
+
+        FoundLuggage FoundInfo = null;
+        try {
+
+            Connection matchCheckConnection = db.getConnection();
+            Statement statement = matchCheckConnection.createStatement();
+
+            ResultSet TableData = statement.executeQuery(query);
+
+            while (TableData.next()) {
+                FoundInfo = (new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
+                        TableData.getInt(4), TableData.getString(5), TableData.getString(6),
+                        TableData.getString(7), TableData.getString(9),
+                        TableData.getString(8), TableData.getString(10),
+                        TableData.getString(11), TableData.getString(12),
+                        TableData.getString(13), TableData.getString(14),
+                        TableData.getString(15), TableData.getString(16)));
+            }
+
+        } catch (SQLException ex) {
+            System.out.println("Failed to retrieve matchinfo ");
+            System.err.println(ex.getMessage());
+        }
+
+        return FoundInfo;
     }
 
 }
