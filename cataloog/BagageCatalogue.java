@@ -94,8 +94,15 @@ public class BagageCatalogue {
 
         root.add(Corendon, 0, 1, 10, 1);
 
-        // the standard tableview is added here     
-        LostLuggageTable("Select * FROM lostluggage");
+        // the standard tableview is added here
+        LostLuggageTable("select lostluggage.lostID, lostluggage.ownerid, "
+            + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
+            + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
+            + "lostluggage.airport, lostluggage.itemname,"
+            + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
+            + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
+            + "inner join luggageowner "
+            + "on lostluggage.ownerid = luggageowner.ownerid");
         //root.add(catalogue, 2, 3, 2, 3);
 
         catalogue.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
@@ -107,57 +114,201 @@ public class BagageCatalogue {
 
         root.add(TablePane, 2, 3, 2, 3);
 
-        ObservableList<String> options
-            = FXCollections.observableArrayList(
-                "caseid",
-                "airport",
-                "ownerid",
-                "labelnr",
-                "flightnumber",
-                "itemname",
-                "color"
-            );
-        final ComboBox comboBox = new ComboBox(options);
+        // this observable list contains search options for a combobo
+        ObservableList<String> LostOptions = FXCollections.observableArrayList(
+            "lostid",
+            "ownerid",
+            "first name",
+            "insertion",
+            "last name",
+            "labelnr",
+            "flightnumber",
+            "destination",
+            "airportname",
+            "item name",
+            "brand",
+            "color",
+            "description",
+            "date lost",
+            "time lost",
+            "status"
+        );
+
+        ObservableList<String> FoundOptions = FXCollections.observableArrayList(
+            "foundID",
+            "labelnr",
+            "ownerID",
+            "flightnumber",
+            "first name",
+            "insertion",
+            "last name",
+            "airport name",
+            "destination",
+            "item name",
+            "brand",
+            "color",
+            "description",
+            "date found",
+            "time found",
+            "status");
+
+        // this combobox is used to select a search condition in the table
+        ComboBox comboBox = new ComboBox(LostOptions);
         comboBox.setMinSize(150, 20);
+        comboBox.setStyle("-fx-background-color: white; "
+            + "-fx-base:white; -fx-border-color:darkred"
+        );
+        comboBox.getSelectionModel().selectFirst();
+
+        ComboBox comboBoxFound = new ComboBox(FoundOptions);
+        comboBoxFound.setMinSize(150, 20);
+        comboBoxFound.setStyle("-fx-background-color: white; "
+            + "-fx-border-color:darkred; -fx-base:white;");
+        comboBoxFound.getSelectionModel().selectFirst();
+
+        StackPane comboContainer = new StackPane();
+        comboContainer.setPrefSize(150, 25);
+        comboContainer.getChildren().addAll(comboBox, comboBoxFound);
+        comboBoxFound.setVisible(false);
+
+        // this button will search through the table
         Button zoekTabel = new Button("Search");
         zoekTabel.setMinSize(70, 20);
         zoekTabel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
-                String output = (String) comboBox.getValue();
-                String zoekConditie = (String) tekst.getText();
-                if ("color".equals(output)) {
-                    output = "colors";
-                }
-
                 if (lostOrFound) {
+                    // the selected value in the combobox will be converted to a string
+                    String output = (String) comboBox.getValue();
+                    // the entered search condition will be converted to a string
+                    String zoekConditie = (String) tekst.getText();
+                    
+                    
+                    if ("ownerid".equals(output)) {
+                        output = "lostluggage.ownerid";
+                    }
+                    
+                    if ("first name".equals(output)) {
+                        output = "firstname";
+                    }
+                    if ("last name".equals(output)) {
+                        output = "lastname";
+                    }
+                    
+                    if ("flightnumber".equals(output)) {
+                        output = "flightr";
+                    }
+                    
+                    if ("airportname".equals(output)) {
+                        output = "airport";
+                    }
+                    
+                    if ("item name".equals(output)) {
+                        output = "itemname";
+                    }
+                    if ("date lost".equals(output)) {
+                        output = "`date lost`";
+                    }
+                    if ("time lost".equals(output)) {
+                        output = "timeLost";
+                    }
+                    
+                    
+                    // if the color option is selected it will be changed here
+                    // because the name in de database is different
+                    if ("color".equals(output)) {
+                        output = "colors";
+                    }
+                    
+
                     catalogue.getItems().clear();
                     catalogue.getColumns().clear();
 
-                    LostLuggageTable("SELECT * FROM lostluggage "
-                        + "WHERE `" + output + "` LIKE " + "'%" + zoekConditie + "%'");
+                    LostLuggageTable(
+                        "select lostluggage.lostID, lostluggage.ownerid, "
+                        + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
+                        + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
+                        + "lostluggage.airport, lostluggage.itemname,"
+                        + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
+                        + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
+                        + "inner join luggageowner "
+                        + "on lostluggage.ownerid = luggageowner.ownerid "
+                        + "WHERE " + output + " LIKE " + "'%" + zoekConditie + "%'");
+
                 } else {
+
+                    // the selected value in the combobox will be converted to a string
+                    String output = (String) comboBoxFound.getValue();
+                    // the entered search condition will be converted to a string
+                    String zoekConditie = (String) tekst.getText();
+                   
+                    if ("flightnumber".equals(output)) {
+                        output = "flightnr";
+                    }
+                    
+                    if ("first name".equals(output)) {
+                        output = "ownerName";
+                    }
+                    
+                    if ("last name".equals(output)) {
+                        output = "lastname";
+                    }
+                    
+                    if ("airport name".equals(output)) {
+                        output = "airport";
+                    }
+                    
+                    if ("item name".equals(output)) {
+                        output = "itemname";
+                    }
+                    
+                                   
+
+                    // if the color option is selected it will be changed here
+                    // because the name in de database is different
+                    if ("color".equals(output)) {
+                        output = "colors";
+                    }
+                    
+                    if ("date found".equals(output)) {
+                        output = "dateFound";
+                    }
+                    
+                    if ("time found".equals(output)) {
+                        output = "timeFound";
+                    }
+                    
+                    
+
                     catalogue.getItems().clear();
                     catalogue.getColumns().clear();
                     FoundLuggageTable("SELECT * FROM foundluggage "
                         + "WHERE " + output + " LIKE " + "'%" + zoekConditie + "%'");
-                }
 
+                }
             }
         });
-
+        
+        // this button will display the table with found luggage
         Button showFound = new Button("show found luggage");
         showFound.setMinSize(150, 20);
         showFound.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                
+                // the table with found luggage will be made visible
                 catalogueFound.setVisible(true);
+                // the table with lost luggage wil be made invisible
                 catalogue.setVisible(false);
-                // LostLuggageTable("Select * FROM foundluggage");
+                // the boolean will be set to false so that the rest of the 
+                // programm knows the found luggage is displayed
                 lostOrFound = false;
+                // this query will select all the data from the database
                 FoundLuggageTable("Select * FROM foundluggage");
+               
+                comboBoxFound.setVisible(true);
+                comboBox.setVisible(false);
             }
         });
 
@@ -169,9 +320,19 @@ public class BagageCatalogue {
 
                 catalogue.setVisible(true);
                 catalogueFound.setVisible(false);
-                LostLuggageTable("Select * FROM lostluggage");
+                LostLuggageTable("select lostluggage.lostID, lostluggage.ownerid, "
+                    + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
+                    + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
+                    + "lostluggage.airport, lostluggage.itemname,"
+                    + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
+                    + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
+                    + "inner join luggageowner"
+                    + " on lostluggage.ownerid = luggageowner.ownerid");
                 // LostLuggageTable("Select * FROM lostluggage");
                 lostOrFound = true;
+                comboBoxFound.setVisible(false);
+                comboBox.setVisible(true);
+
             }
         });
 
@@ -189,7 +350,14 @@ public class BagageCatalogue {
                         String lost = "lostluggage";
                         String ID = "lostID";
                         DeleteCase(person, lost, ID);
-                        LostLuggageTable("Select * FROM lostluggage");
+                        LostLuggageTable("select lostluggage.lostID, lostluggage.ownerid, "
+                    + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
+                    + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
+                    + "lostluggage.airport, lostluggage.itemname,"
+                    + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
+                    + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
+                    + "inner join luggageowner"
+                    + " on lostluggage.ownerid = luggageowner.ownerid");
 
                     } catch (Exception ex) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -209,8 +377,7 @@ public class BagageCatalogue {
                         String ID = "foundID";
                         DeleteCase(person, found, ID);
                         FoundLuggageTable("Select * FROM foundluggage");
-                        
-                        
+
                     } catch (Exception ex) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("error");
@@ -218,11 +385,11 @@ public class BagageCatalogue {
                         alert.setContentText("Select a case to delete");
 
                         alert.showAndWait();
-                        }
+                    }
                 }
             }
         });
-        
+
         // this button will return to the main meny
         Button buttonCurrent = new Button("Main Menu");
         //buttonCurrent.setPrefSize(90, 50);
@@ -244,13 +411,13 @@ public class BagageCatalogue {
             @Override
             public void handle(ActionEvent event) {
 
-            // the boolean will determine wether the lost or found luggage is selected
+                // the boolean will determine wether the lost or found luggage is selected
                 if (lostOrFound) {
                     // a object of the person class wil be made with the selected values
                     LostLuggage person = catalogue.getSelectionModel().getSelectedItem();
 
                     if (person != null) {
-                       // an editform will be made with the person class and the selected values
+                        // an editform will be made with the person class and the selected values
                         GridPane Editform = LostLuggageEdit.MakeEdit(person);
                         // the editform is added to the screen
                         basisPane.addnewpane(Editform);
@@ -267,18 +434,18 @@ public class BagageCatalogue {
                 } else {
                     // a object of the person class wil be made with the selected values
                     FoundLuggage EditFound = catalogueFound.getSelectionModel().getSelectedItem();
-                    
+
                     // if no value is selected then a warning will be displayed
                     if (EditFound != null) {
                         // an editform will be made with the person class and the selected values
                         GridPane Editform = LostLuggageEdit.MakeEdit(EditFound);
-                         // the editform is added to the screen
+                        // the editform is added to the screen
                         basisPane.addnewpane(Editform);
                     } else {
                         // an alert that will be shown if nothing is selected
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("foutmelding");
-                        alert.setHeaderText("Wijzig luchthaven");
+                        alert.setTitle("error");
+                        alert.setHeaderText("edit case");
                         alert.setContentText("Select a case to edit");
 
                         alert.showAndWait();
@@ -289,14 +456,14 @@ public class BagageCatalogue {
             }
         });
 
-        
         hbox.getChildren().addAll(buttonCurrent);
 
+        // all the buttons are added here
         HBox tabelKnoppen = new HBox();
         tabelKnoppen.getChildren().addAll(zoekTabel, showFound, showLost, deleteCase);
         tabelKnoppen.setSpacing(10);
         Zoekscherm.add(tekst, 1, 1);
-        Zoekscherm.add(comboBox, 1, 0);
+        Zoekscherm.add(comboContainer, 1, 0);
         Zoekscherm.add(buttonViewCase, 1, 3);
         Zoekscherm.add(showFound, 1, 4);
         Zoekscherm.add(showLost, 1, 5);
@@ -320,6 +487,15 @@ public class BagageCatalogue {
 
         TableColumn<LostLuggage, Integer> owneridColumn = new TableColumn<>("ownerid");
         owneridColumn.setCellValueFactory(new PropertyValueFactory<>("ownerid"));
+
+        TableColumn<LostLuggage, String> firstNameColumn = new TableColumn<>("first name");
+        firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
+
+        TableColumn<LostLuggage, String> insertionColumn = new TableColumn<>("insertion");
+        insertionColumn.setCellValueFactory(new PropertyValueFactory<>("insertion"));
+
+        TableColumn<LostLuggage, String> lastNameColumn = new TableColumn<>("last name");
+        lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
 
         TableColumn<LostLuggage, Integer> labelnrColumn = new TableColumn<>("labelnr");
         labelnrColumn.setCellValueFactory(new PropertyValueFactory<>("labelnr"));
@@ -347,7 +523,11 @@ public class BagageCatalogue {
 
         TableColumn<LostLuggage, String> dateLostColumn = new TableColumn<>("date lost");
         dateLostColumn.setCellValueFactory(new PropertyValueFactory<>("dateLost"));
+        
+         TableColumn<LostLuggage, String> timeLostColumn = new TableColumn<>("time lost");
+        timeLostColumn.setCellValueFactory(new PropertyValueFactory<>("timeLost"));
 
+        
         TableColumn<LostLuggage, String> statusColumn = new TableColumn<>("status");
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
@@ -356,6 +536,7 @@ public class BagageCatalogue {
             // a connection is made
             Connection catalogueConnect = db.getConnection();
             Statement statement = catalogueConnect.createStatement();
+            System.out.println(query);
             ResultSet TableData = statement.executeQuery(query);
 
             // this while loop gets data in the ovservable list
@@ -363,28 +544,32 @@ public class BagageCatalogue {
             while (TableData.next()) {
                 //Iterate Row
                 // the data will be added to the arraylist
-                data.add(new LostLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
-                    TableData.getInt(4), TableData.getString(5), TableData.getString(6),
-                    TableData.getString(7), TableData.getString(8),
-                    TableData.getString(9), TableData.getString(10), TableData.getString(11),
-                    TableData.getString(12)));
+                data.add(new LostLuggage(TableData.getInt(1), TableData.getInt(2),
+                    TableData.getString(3), TableData.getString(4), TableData.getString(5), TableData.getInt(6),
+                    TableData.getInt(7), TableData.getString(8), TableData.getString(9),
+                    TableData.getString(10), TableData.getString(11),
+                    TableData.getString(12), TableData.getString(13), TableData.getString(14),
+                    TableData.getString(15), TableData.getString(16)));
 
             }
+        
             // the tableview will be emptied
             catalogue.getItems().clear();
             catalogue.getColumns().clear();
 
             //System.out.println(data);
             catalogue.setItems(data);
-            catalogue.getColumns().addAll(caseidColumn, owneridColumn, labelnrColumn,
+            catalogue.getColumns().addAll(caseidColumn, owneridColumn,
+                firstNameColumn, insertionColumn, lastNameColumn, labelnrColumn,
                 destinationColumn, flightnrColumn, airportColumn, itemnameColumn, brandColumn,
-                colorsColumn, descriptionColumn, dateLostColumn, statusColumn);
+                colorsColumn, descriptionColumn, dateLostColumn, timeLostColumn, statusColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
             System.out.println(ex);
         }
 
     }
+
     // this is the table with the found luggage
     public void FoundLuggageTable(String query) {
         catalogueFound.setEditable(true);
@@ -395,22 +580,22 @@ public class BagageCatalogue {
 
         TableColumn<FoundLuggage, Integer> labelnrColumn = new TableColumn<>("labelnr");
         labelnrColumn.setCellValueFactory(new PropertyValueFactory<>("labelnr"));
-        
+
         TableColumn<FoundLuggage, Integer> owneridColumn = new TableColumn<>("ownerID");
         owneridColumn.setCellValueFactory(new PropertyValueFactory<>("ownerid"));
 
         TableColumn<FoundLuggage, Integer> flightnrColumn = new TableColumn<>("flightnumber");
         flightnrColumn.setCellValueFactory(new PropertyValueFactory<>("flightnr"));
-        
+
         TableColumn<FoundLuggage, String> firstNameColumn = new TableColumn<>("first name");
         firstNameColumn.setCellValueFactory(new PropertyValueFactory<>("firstName"));
-        
+
         TableColumn<FoundLuggage, String> insertionColumn = new TableColumn<>("insertion");
         insertionColumn.setCellValueFactory(new PropertyValueFactory<>("insertion"));
-        
+
         TableColumn<FoundLuggage, String> lastNameColumn = new TableColumn<>("last name");
         lastNameColumn.setCellValueFactory(new PropertyValueFactory<>("lastName"));
-        
+
         TableColumn<FoundLuggage, String> airportColumn = new TableColumn<>("airport name");
         airportColumn.setCellValueFactory(new PropertyValueFactory<>("airport"));
 
@@ -431,6 +616,9 @@ public class BagageCatalogue {
 
         TableColumn<FoundLuggage, String> dateFoundColumn = new TableColumn<>("date found");
         dateFoundColumn.setCellValueFactory(new PropertyValueFactory<>("dateFound"));
+        
+        TableColumn<FoundLuggage, String> timeFoundColumn = new TableColumn<>("time found");
+        timeFoundColumn.setCellValueFactory(new PropertyValueFactory<>("timeFound"));
 
         TableColumn<FoundLuggage, String> statusColumn = new TableColumn<>("status");
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
@@ -449,13 +637,14 @@ public class BagageCatalogue {
                 // the database data is added to the observable list
                 dataFound.add(new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
                     TableData.getInt(4), TableData.getString(5), TableData.getString(6),
-                    TableData.getString(7), TableData.getString(8),
-                    TableData.getString(9), TableData.getString(10), 
-                    TableData.getString(11), TableData.getString(12), 
-                    TableData.getString(13) , TableData.getString(14) , TableData.getString(15)));
+                    TableData.getString(7), TableData.getString(9),
+                    TableData.getString(8), TableData.getString(10),
+                    TableData.getString(11), TableData.getString(12),
+                    TableData.getString(13), TableData.getString(14), TableData.getString(15), TableData.getString(16)));
 
             }
-
+           
+            System.out.println(query);
             // the table is cleared
             catalogueFound.getItems().clear();
             catalogueFound.getColumns().clear();
@@ -463,37 +652,33 @@ public class BagageCatalogue {
             catalogueFound.setItems(dataFound);
             //the columns are added to the table
             catalogueFound.getColumns().addAll(caseidColumn, labelnrColumn, owneridColumn,
-                flightnrColumn, firstNameColumn, insertionColumn, lastNameColumn, airportColumn, destinationColumn, itemnameColumn,
-                brandColumn, colorsColumn, descriptionColumn, dateFoundColumn, statusColumn);
+                flightnrColumn, firstNameColumn, insertionColumn, lastNameColumn, 
+                destinationColumn, airportColumn, itemnameColumn,
+                brandColumn, colorsColumn, descriptionColumn, dateFoundColumn, 
+                timeFoundColumn, statusColumn);
         } catch (Exception ex) {
             System.out.println("exception 2 ");
             System.out.println(ex);
         }
 
     }
-    
+
     // a method to delete a case
     public void DeleteCase(int id, String table, String whichID) {
-
-        
 
         try {
             // a connection is made
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
             // this query will delete the selected row from the database
-           statement.executeUpdate("DELETE FROM `corendon`. " + table +" WHERE " + whichID 
-               + " ='" + id +"';");
-
-            
+            statement.executeUpdate("DELETE FROM `corendon`. " + table + " WHERE " + whichID
+                + " ='" + id + "';");
 
         } catch (Exception ex) {
             System.out.println("failed to delete case ");
             System.out.println(ex);
         }
 
-       
     }
-    
 
 }

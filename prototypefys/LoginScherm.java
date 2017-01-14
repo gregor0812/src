@@ -2,7 +2,6 @@ package prototypefys;
 
 import database.Database;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javafx.event.ActionEvent;
@@ -11,12 +10,12 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 
@@ -63,17 +62,17 @@ public class LoginScherm {
         
         root.add(Corendon, 0, 0, 2, 1);
         
-        Text username = new Text("Username:");
-        root.add(username, 0, 1);
-        username.setFill(Color.BLACK);
+        Label usernameL = new Label("Username:");
+        root.add(usernameL, 0, 1);
+       
         TextField userText = new TextField();
         userText.setPrefColumnCount(1);
         userText.setPrefWidth(100);
         root.add(userText, 1, 1);
 
-        Text password = new Text("Password:");
-        root.add(password, 0, 2);
-        password.setFill(Color.BLACK);
+        Label passwordL = new Label("Password:");
+        root.add(passwordL, 0, 2);
+        
         PasswordField passwordText = new PasswordField();
         passwordText.setPrefColumnCount(1);
         passwordText.setPrefWidth(10);
@@ -114,14 +113,31 @@ public class LoginScherm {
                 System.out.println("X");
                 
                resetPassword scherm = new resetPassword();
+
                GridPane resetPassword = scherm.maakPasswordReset();
                rootpane.addnewpane(resetPassword);
+
+               //StackPane resetPassword = scherm.maakPasswordReset();
+               //rootpane.addnewpane(resetPassword);
+
                
             }
         });
         
-        
-        
+        root.setOnKeyPressed(e -> {
+            switch (e.getCode()) {
+                case ENTER:
+                  String username = userText.getText();
+                String password = passwordText.getText();
+                
+                
+                LoginCheck(username, password);
+                        
+                    
+                    break;
+            }
+        });
+            
         root.add(login, 0 , 3);
         root.add(resetPassword, 0 , 4);
         

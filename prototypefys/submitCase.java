@@ -5,16 +5,20 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -22,10 +26,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.StringConverter;
 
 /**
  *
  * @author Koen Hengsdijk
+ *
  */
 public class submitCase {
 
@@ -106,9 +112,50 @@ public class submitCase {
 
         Label date = new Label("Date:");
         grid.add(date, 10, 17, 10, 1);
-        TextField dateT = new TextField();
-        grid.add(dateT, 20, 17);
-        dateT.setPromptText("yyyy-mm-dd");
+//        TextField dateT = new TextField();
+//        grid.add(dateT, 20, 17);
+//        dateT.setPromptText("yyyy-mm-dd");
+        
+        // this datepicker will be used to select dates
+        DatePicker datePicker = new DatePicker();
+        datePicker.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                LocalDate date = datePicker.getValue();
+                System.err.println("Selected date: " + date);
+            }
+        });
+
+         // this pattern is the data format used
+        String pattern = "yyyy-MM-dd";
+
+        datePicker.setPromptText(pattern.toLowerCase());
+
+        datePicker.setConverter(new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+          });  
+         
+        grid.add(datePicker, 20, 17);
+        
+        
 
         Label time = new Label("Time:");
         grid.add(time, 10, 18, 10, 1);
@@ -135,69 +182,36 @@ public class submitCase {
         TextField destinationT = new TextField();
         grid.add(destinationT, 40, 19);
 
+        // Label and textfield for owner firstname
         Label ownerFirstName = new Label("First name:");
         grid.add(ownerFirstName, 30, 20, 10, 1);
         TextField ownerFirstNameT = new TextField();
         grid.add(ownerFirstNameT, 40, 20);
+        ownerFirstNameT.textProperty().addListener((listener) -> {
+            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(), "", "");
+        });
 
+        // Label and textfield for owner insertions
         Label ownerInsertion = new Label("Insertion(s):");
         grid.add(ownerInsertion, 30, 21, 10, 1);
         TextField ownerInsertionT = new TextField();
         grid.add(ownerInsertionT, 40, 21);
+        ownerInsertionT.textProperty().addListener((listener) -> {
+            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
+                    ownerInsertionT.getText(), "");
+        });
 
+        // Label and textfield for owner lastname
         Label ownerLastName = new Label("Last name: ");
         grid.add(ownerLastName, 30, 22, 10, 1);
         TextField ownerLastNameT = new TextField();
         grid.add(ownerLastNameT, 40, 22);
-        ownerLastNameT.textProperty().addListener((obs) -> {
-            
-            // Remove alle current items from combobox
-            foundOwnersList.clear();
-
-            // Get all values of the textfields
-            String firstname = ownerFirstNameT.getText();
-            String insertion = ownerInsertionT.getText();
-            String lastname = ownerLastNameT.getText();
-            
-            if (insertion == "" || insertion == null) {
-                insertion = "*";
-            }
-            
-            try {
-                // Run the query to find all owners with the same name
-                Connection ReportGenerationConnect = db.getConnection();
-                Statement statement = ReportGenerationConnect.createStatement();
-                ResultSet rs = statement.executeQuery("SELECT firstname, "
-                        + "insertion, lastname, address, zipcode, city, "
-                        + "country "
-                        + "FROM luggageowner L "
-                        + "INNER JOIN address A "
-                        + "ON L.ownerid=A.ownerid "
-                        + "WHERE firstname LIKE '%" + firstname + "%' "
-                        + "AND insertion LIKE '%" + insertion + "%' "
-                        + "AND lastname LIKE '%" + lastname + "%';");
-                
-                System.err.println(statement.toString());
-                
-                while(rs.next()) {
-                    
-                    StringBuilder sb = new StringBuilder();
-                    sb.append(rs.getString("firstname")).append(" ")
-                            .append(rs.getString("insertion")).append(" ")
-                            .append(rs.getString("lastname")).append(", ")
-                            .append(rs.getString("address")).append(" ")
-                            .append(rs.getString("zipcode")).append(" ")
-                            .append(rs.getString("city")).append(", ")
-                            .append(rs.getString("country"));
-                    
-                    foundOwnersList.add(sb.toString());
-                }
-                
-            } catch (SQLException e) {
-                System.err.println(e.getMessage());
-            }
+        ownerLastNameT.textProperty().addListener((listener) -> {
+            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
+                    ownerInsertionT.getText(), ownerLastNameT.getText());
         });
 
+        // Combobox to display all owners that exist with the same name
         ComboBox foundCustomers = new ComboBox(foundOwnersList);
         foundCustomers.setMinSize(160, 20);
         foundCustomers.setMaxWidth(160);
@@ -275,20 +289,40 @@ public class submitCase {
                     flightnr = Integer.parseInt(flightT.getText());
                 }
 
+                int ownerID = -1;
+
+                if (foundCustomers.getValue() != "New") {
+                    String item = foundCustomers.getValue().toString();
+                    StringBuilder sb = new StringBuilder();
+                    for (int i = 0; i < item.length(); i++) {
+                        if (Character.isDigit(item.charAt(i))) {
+                            sb.append(item.charAt(i));
+                        } else {
+                            break;
+                        }
+                    }
+                    
+                    ownerID = Integer.parseInt(sb.toString());
+                }
+
                 // the lugggage info will get the value of their respective fields
                 String airportName = airportT.getText();
                 String itemname = typeT.getText();
                 String Brand = itemBrandT.getText();
                 String color = itemColorT.getText();
                 String description = addNotesT.getText();
-                String dateFound = dateT.getText();
+                String dateFound = datePicker.getValue().toString();
                 String destination = destinationT.getText();
+                String firstname = ownerFirstNameT.getText();
+                String insertion = ownerInsertionT.getText();
+                String lastname = ownerLastNameT.getText();
 
                 // the info will be entered in the the database using the 
                 //insert into database method
                 insertIntoDatabase(caseid, labelnr, flightnr,
                         airportName, destination, itemname, Brand,
-                        color, description, dateFound);
+                        color, description, dateFound, ownerID, firstname, insertion,
+                        lastname);
             }
         });
 
@@ -335,14 +369,18 @@ public class submitCase {
      */
     public int getOwnerID(String firstname, String insertion, String lastname) {
 
+        String query = "SELECT ownerid "
+                + "FROM luggageowner "
+                + "WHERE firstname='" + firstname + "' "
+                + "AND insertion='" + insertion + "' "
+                + "AND lastname='" + lastname + "' "
+                + "ORDER BY ownerid DESC "
+                + "LIMIT 1";
+
         try {
-            Connection ReportGenerationConnect = db.getConnection();
-            Statement statement = ReportGenerationConnect.createStatement();
-            ResultSet tableData = statement.executeQuery("SELECT ownerid "
-                    + "FROM luggageowner "
-                    + "WHERE firstname='" + firstname + "' "
-                    + "AND insertion='" + insertion + "' "
-                    + "AND lastname='" + lastname + "';");
+            Connection selectOwnerId = db.getConnection();
+            Statement statement = selectOwnerId.createStatement();
+            ResultSet tableData = statement.executeQuery(query);
 
             while (tableData.next()) {
                 return tableData.getInt(1);
@@ -357,14 +395,92 @@ public class submitCase {
 
     }
 
-    public void listFoundOwners() {
+    /**
+     * List all existing owner with the same name that the user enterd
+     *
+     * @param foundOwnersList The list with all found owners
+     * @param firstname The first name to search for
+     * @param insertion The insertion to search for
+     * @param lastname The lastname to search for
+     */
+    public void listFoundOwners(ObservableList foundOwnersList,
+            String firstname, String insertion, String lastname) {
 
+// Remove alle current items from combobox
+        foundOwnersList.clear();
+
+        // Add option to create a new owner to the list
+        foundOwnersList.add("New");
+
+        try {
+
+            // Query to search all existing owners
+            String query = "SELECT firstname, "
+                    + "insertion, lastname, address, zipcode, city, "
+                    + "country "
+                    + "FROM luggageowner L "
+                    + "INNER JOIN address A "
+                    + "ON L.ownerid=A.ownerid "
+                    + "WHERE firstname LIKE '%" + firstname + "%' "
+                    + "AND insertion LIKE '%" + insertion + "%' "
+                    + "AND lastname LIKE '%" + lastname + "%';";
+
+            // Run the query to find all owners with the same name
+            Connection findOwners = db.getConnection();
+            Statement statement = findOwners.createStatement();
+            ResultSet rs = statement.executeQuery(query);
+
+            // Loop trough all results
+            while (rs.next()) {
+
+                // Create StrinBuilder to display all owners
+                StringBuilder sb = new StringBuilder();
+                sb.append(rs.getString("firstname")).append(" ")
+                        .append(rs.getString("insertion")).append(" ")
+                        .append(rs.getString("lastname")).append(", ")
+                        .append(rs.getString("address")).append(" ")
+                        .append(rs.getString("zipcode")).append(" ")
+                        .append(rs.getString("city")).append(", ")
+                        .append(rs.getString("country"));
+
+                // Add owner to the list
+                foundOwnersList.add(sb.toString());
+            }
+
+            // Handle the errors
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     // this method will insert the luggage info into the database
     public void insertIntoDatabase(int caseid, Integer labelnr, Integer flightnr,
             String airportName, String destination, String itemname, String Brand,
-            String color, String description, String dateFound) {
+            String color, String description, String dateFound, int ownerId, 
+            String firstname, String insertion, String lastname) {
+
+        
+        
+/* TO-DO!!!    PHONE 1 in database must have default value!!!!! */
+        if (ownerId == -1) {
+            try {
+
+                String sql = "INSERT INTO luggageowner (firstname, insertion, "
+                        + "lastname, phone1) "
+                        + "VALUES('" + firstname + "', '" + insertion + "',"
+                        + "'" + lastname + "', 0)";
+
+                Connection insertNewOwner = db.getConnection();
+                Statement stmt = insertNewOwner.createStatement();
+                
+                stmt.executeUpdate(sql);
+                
+                ownerId = getOwnerID(firstname, insertion, lastname);
+
+            } catch (SQLException e) {
+                System.err.println(e.getMessage());
+            }
+        }
 
         try {
 

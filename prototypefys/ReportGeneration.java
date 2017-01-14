@@ -4,9 +4,12 @@ import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -16,10 +19,12 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import javafx.util.StringConverter;
 
 /**
  *
@@ -48,6 +53,7 @@ public class ReportGeneration {
         BorderPane root = new BorderPane();
         root.setStyle("-fx-background-color: white");
 
+        // this vbox contains the buttons
         VBox ButtonContainer = new VBox(10);
         ButtonContainer.setPadding(new Insets(25, 25, 25, 25));
 
@@ -56,6 +62,7 @@ public class ReportGeneration {
         ButtonContainer.setPrefSize(280, 250);
         ButtonContainer.setMaxSize(280, 250);
 
+        // this button will return to the main menu
         Button mainMenu = new Button(); // button 1
         mainMenu.setText("Main Menu");
         mainMenu.setPrefSize(205, 50);
@@ -69,6 +76,7 @@ public class ReportGeneration {
             }
         });
 
+        // this button will show the statistics of the found luggage
         Button ShowFound = new Button(); // button 1
         ShowFound.setText("Show found luggage per airport");
         ShowFound.setPrefSize(210, 50);
@@ -78,19 +86,21 @@ public class ReportGeneration {
             @Override
             public void handle(ActionEvent event) {
 
+                // this boolean checks if the barchart is used or not
                 if (BarchartUsed) {
-                    
-                     String BarChartQuery = "select airport, count(airport) "
+
+                    // this query selects the data from the database
+                    String BarChartQuery = "select airport, count(airport) "
                         + "from foundluggage "
                         + "where airport is not null "
                         + "group by airport";
-                    String LostLuggageName = "found bagage per airport";
+                    
 
                     BarChart bc = MakeBarchart(BarChartQuery);
 
                     root.setCenter(bc);
-                    
-                 String FoundAirportQuery = "select airport, count(airport) "
+
+                    String FoundAirportQuery = "select airport, count(airport) "
                         + "from foundluggage "
                         + "where airport is not null "
                         + "group by airport";
@@ -98,12 +108,10 @@ public class ReportGeneration {
                     PieChart showFound = createPieChart(FoundAirportQuery, FoundLuggageName);
 
                     root.setCenter(showFound);
-                    
-                    
+
                 } else {
 
-                    
-                     String BarChartQuery = "select airport, count(airport) "
+                    String BarChartQuery = "select airport, count(airport) "
                         + "from foundluggage "
                         + "where airport is not null "
                         + "group by airport";
@@ -204,8 +212,45 @@ public class ReportGeneration {
 
         PieChart test = createPieChart(LostAirportQuery, LostLuggageName);
 
+        DatePicker datePicker = new DatePicker();
+        datePicker.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                LocalDate date = datePicker.getValue();
+                System.err.println("Selected date: " + date);
+            }
+        });
+
+        datePicker.setPrefSize(200, 100);
+        String pattern = "yyyy-MM-dd";
+
+        datePicker.setPromptText(pattern.toLowerCase());
+
+        datePicker.setConverter(new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+
         root.setLeft(ButtonContainer);
         root.setCenter(test);
+        root.setBottom(datePicker);
         //root.setAlignment(Pos.CENTER); 
         return root;
     }
