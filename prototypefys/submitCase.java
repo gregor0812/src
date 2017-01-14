@@ -216,6 +216,9 @@ public class submitCase {
         foundCustomers.setMinSize(160, 20);
         foundCustomers.setMaxWidth(160);
         grid.add(foundCustomers, 40, 23);
+        foundCustomers.valueProperty().addListener((listener) -> {
+            System.out.println("Je moeder is zo dik, haar bloedgroep is nutella!");
+        });
 
         Label type = new Label("Type:");
         grid.add(type, 30, 25, 10, 1);
@@ -293,16 +296,20 @@ public class submitCase {
 
                 if (foundCustomers.getValue() != "New") {
                     String item = foundCustomers.getValue().toString();
+ /* Verwijder -> */                   System.out.println(item);
                     StringBuilder sb = new StringBuilder();
                     for (int i = 0; i < item.length(); i++) {
                         if (Character.isDigit(item.charAt(i))) {
+/* Verwijder -> */                            System.out.println("Is DIGIT");
                             sb.append(item.charAt(i));
+                            ownerID = Integer.parseInt(sb.toString());
+ /* Verwijder -> */                            System.out.println("OWNER ID -> " + ownerID);
                         } else {
                             break;
                         }
                     }
-
-                    ownerID = Integer.parseInt(sb.toString());
+                } else {
+                    ownerID = -1;
                 }
 
                 // the lugggage info will get the value of their respective fields
@@ -445,7 +452,7 @@ public class submitCase {
         try {
 
             // Query to search all existing owners
-            String query = "SELECT firstname, "
+            String query = "SELECT L.ownerid, firstname, "
                     + "insertion, lastname, address, zipcode, city, "
                     + "country "
                     + "FROM luggageowner L "
@@ -467,7 +474,8 @@ public class submitCase {
 
                 // Create StrinBuilder to display all owners
                 StringBuilder sb = new StringBuilder();
-                sb.append(rs.getString("firstname")).append(" ")
+                sb.append(rs.getInt("ownerid")).append(" ")
+                        .append(rs.getString("firstname")).append(" ")
                         .append(rs.getString("insertion")).append(" ")
                         .append(rs.getString("lastname")).append(", ")
                         .append(rs.getString("address")).append(" ")
@@ -539,10 +547,10 @@ public class submitCase {
             // a statement is made
             Statement statement = matchCheckConnection.createStatement();
             // 
-            String databaseQuery = ("INSERT INTO foundluggage (foundID, labelnr, "
+            String databaseQuery = ("INSERT INTO foundluggage ( labelnr, "
                     + "ownerid, flightnr, airport, destination, itemname, brand, "
                     + "colors, description, dateFound, timeFound, status) "
-                    + "VALUES( " + caseid + " , " + labelnr + " , " + ownerId + " , "
+                    + "VALUES( "  + labelnr + " , " + ownerId + " , "
                     + flightnr + ", " + " '" + airportName + "' , '"
                     + destination + "' , ' " + itemname + " ' , ' " + Brand
                     + " ' , ' " + color + "', ' " + description + "' , ' "
