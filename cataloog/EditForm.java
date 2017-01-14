@@ -281,7 +281,8 @@ public class EditForm {
         return grid;
 
     }
-
+    
+    // this method will get the owner information
     public String getOwnerinfo(int ownerid, int infoNumber) {
 
         String info = "";

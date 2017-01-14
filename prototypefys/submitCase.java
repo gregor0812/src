@@ -5,10 +5,12 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -115,7 +117,7 @@ public class submitCase {
 //        TextField dateT = new TextField();
 //        grid.add(dateT, 20, 17);
 //        dateT.setPromptText("yyyy-mm-dd");
-        
+
         // this datepicker will be used to select dates
         DatePicker datePicker = new DatePicker();
         datePicker.setOnAction(new EventHandler() {
@@ -126,7 +128,7 @@ public class submitCase {
             }
         });
 
-         // this pattern is the data format used
+        // this pattern is the data format used
         String pattern = "yyyy-MM-dd";
 
         datePicker.setPromptText(pattern.toLowerCase());
@@ -151,21 +153,14 @@ public class submitCase {
                     return null;
                 }
             }
-          });  
-         
-        grid.add(datePicker, 20, 17);
-        
-        
+        });
 
-        Label time = new Label("Time:");
-        grid.add(time, 10, 18, 10, 1);
-        TextField timeT = new TextField();
-        grid.add(timeT, 20, 18);
+        grid.add(datePicker, 20, 17);
 
         Label airport = new Label("Airport:");
-        grid.add(airport, 10, 19, 10, 1);
+        grid.add(airport, 10, 18, 10, 1);
         TextField airportT = new TextField();
-        grid.add(airportT, 20, 19);
+        grid.add(airportT, 20, 18);
 
         Label labelN = new Label("Label number:");
         grid.add(labelN, 30, 17, 10, 1);
@@ -301,7 +296,7 @@ public class submitCase {
                             break;
                         }
                     }
-                    
+
                     ownerID = Integer.parseInt(sb.toString());
                 }
 
@@ -319,10 +314,40 @@ public class submitCase {
 
                 // the info will be entered in the the database using the 
                 //insert into database method
-                insertIntoDatabase(caseid, labelnr, flightnr,
+                if (insertIntoDatabase(caseid, labelnr, flightnr,
                         airportName, destination, itemname, Brand,
                         color, description, dateFound, ownerID, firstname, insertion,
-                        lastname);
+                        lastname) == true) {
+
+                    // Tell user the form has been submitted succesfully
+                    Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
+                    successMessage.setHeaderText("Operation completed successfully");
+                    successMessage.setContentText("All data has been added to the "
+                            + "database");
+                    successMessage.showAndWait();
+
+                    // Clear all form fields
+                    datePicker.setValue(LocalDate.now());
+                    //dateT.setText("");
+                    airportT.setText("");
+                    labelT.setText("");
+                    flightT.setText("");
+                    destinationT.setText("");
+                    ownerFirstNameT.setText("");
+                    ownerInsertionT.setText("");
+                    ownerLastNameT.setText("");
+                    typeT.setText("");
+                    itemBrandT.setText("");
+                    itemColorT.setText("");
+                    addNotesT.setText("");
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setHeaderText("Error");
+                    alert.setContentText("An error accured while submitting "
+                            + "the form, please try again later.");
+                    alert.showAndWait();
+                }
+
             }
         });
 
@@ -352,7 +377,7 @@ public class submitCase {
             }
 
             // if the connection fails the exception will be printed
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println("exception 2 ");
         }
 
@@ -406,7 +431,7 @@ public class submitCase {
     public void listFoundOwners(ObservableList foundOwnersList,
             String firstname, String insertion, String lastname) {
 
-// Remove alle current items from combobox
+        // Remove alle current items from combobox
         foundOwnersList.clear();
 
         // Add option to create a new owner to the list
@@ -419,7 +444,7 @@ public class submitCase {
                     + "insertion, lastname, address, zipcode, city, "
                     + "country "
                     + "FROM luggageowner L "
-                    + "INNER JOIN address A "
+                    + "LEFT JOIN address A "
                     + "ON L.ownerid=A.ownerid "
                     + "WHERE firstname LIKE '%" + firstname + "%' "
                     + "AND insertion LIKE '%" + insertion + "%' "
@@ -429,6 +454,8 @@ public class submitCase {
             Connection findOwners = db.getConnection();
             Statement statement = findOwners.createStatement();
             ResultSet rs = statement.executeQuery(query);
+
+            System.out.println(query);
 
             // Loop trough all results
             while (rs.next()) {
@@ -453,15 +480,32 @@ public class submitCase {
         }
     }
 
-    // this method will insert the luggage info into the database
-    public void insertIntoDatabase(int caseid, Integer labelnr, Integer flightnr,
+    /**
+     * Insert the form data into the database
+     *
+     * @param caseid The identifier of the luggage
+     * @param labelnr The labelnr on the luggage
+     * @param flightnr The flightnr the luggage is from
+     * @param airportName The name of the airport where the luggage was found
+     * @param destination The destination of the luggage
+     * @param itemname A name to describe the luggage
+     * @param Brand The brand of the luggage
+     * @param color The color of the luggage
+     * @param description A brief description of the luggage
+     * @param dateFound The data the luggage was reported
+     * @param ownerId The id of the owner of the luggage, if known
+     * @param firstname The firstname of the luggage owner
+     * @param insertion The name insertion of the luggage owner
+     * @param lastname The lastname of the luggage owner
+     * @return Boolean, true if no errors accured
+     */
+    public boolean insertIntoDatabase(int caseid, Integer labelnr, Integer flightnr,
             String airportName, String destination, String itemname, String Brand,
-            String color, String description, String dateFound, int ownerId, 
+            String color, String description, String dateFound, int ownerId,
             String firstname, String insertion, String lastname) {
 
-        
-        
-/* TO-DO!!!    PHONE 1 in database must have default value!!!!! */
+        String time = new SimpleDateFormat("hh:mm:ss").format(new Date());
+
         if (ownerId == -1) {
             try {
 
@@ -472,30 +516,34 @@ public class submitCase {
 
                 Connection insertNewOwner = db.getConnection();
                 Statement stmt = insertNewOwner.createStatement();
-                
+
                 stmt.executeUpdate(sql);
-                
+
                 ownerId = getOwnerID(firstname, insertion, lastname);
 
             } catch (SQLException e) {
                 System.err.println(e.getMessage());
+                return false;
             }
         }
 
         try {
 
             // a connection is made
-            Connection ReportGenerationConnect = db.getConnection();
+            Connection matchCheckConnection = db.getConnection();
             // a statement is made
-            Statement statement = ReportGenerationConnect.createStatement();
+            Statement statement = matchCheckConnection.createStatement();
             // 
-            String databaseQuery = (" insert into foundluggage (foundID, labelnr,"
-                    + " flightnr, airport, destination, itemname, brand, colors, description, dateFound, status) "
-                    + " values( " + caseid + " , " + labelnr + " , " + flightnr + ", "
-                    + " '" + airportName + "' , '" + destination + "' , ' " + itemname
-                    + " ' , ' " + Brand + " ' , ' " + color + "', ' "
-                    + description + "' , ' " + dateFound + "', 'open');");
+            String databaseQuery = ("INSERT INTO foundluggage (foundID, labelnr, "
+                    + "ownerid, flightnr, airport, destination, itemname, brand, "
+                    + "colors, description, dateFound, timeFound, status) "
+                    + "VALUES( " + caseid + " , " + labelnr + " , " + ownerId + " , "
+                    + flightnr + ", " + " '" + airportName + "' , '"
+                    + destination + "' , ' " + itemname + " ' , ' " + Brand
+                    + " ' , ' " + color + "', ' " + description + "' , ' "
+                    + dateFound + "', '" + time + "', 'open');");
 
+            // For debugging
             System.out.println(databaseQuery);
 
             statement.executeUpdate(databaseQuery);
@@ -503,22 +551,36 @@ public class submitCase {
             // een resultset met verloren labelnummers
             try {
 
-                Statement statement2 = ReportGenerationConnect.createStatement();
+                Statement statement2 = matchCheckConnection.createStatement();
                 ResultSet knownlabelnr = statement2.executeQuery("select labelnr from lostluggage");
                 List rowValues = new ArrayList();
                 while (knownlabelnr.next()) {
                     rowValues.add(knownlabelnr.getInt(1));
                 }
 
-                Statement statement3 = ReportGenerationConnect.createStatement();
+                Statement statement3 = matchCheckConnection.createStatement();
 
                 if (rowValues.contains(labelnr)) {
 
+                    Statement owneridStatement = matchCheckConnection.createStatement();
+
+                    // this resultset will contain the ownerid of the luggageowner
+                    ResultSet LostLuggageOwnerId
+                            = owneridStatement.executeQuery("select ownerid from lostluggage "
+                                    + "where labelnr = " + labelnr + " ;");
+
+                    int ownerid = 0;
+
+                    while (LostLuggageOwnerId.next()) {
+                        ownerid = LostLuggageOwnerId.getInt(1);
+                    }
+
+                    // this will update the status from the foundluggage
                     String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
-                            + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+                            + "`status`='matched', ownerid = " + ownerid + " WHERE labelnr = " + labelnr + ";";
 
                     statement3.executeUpdate(updatestatus1);
-
+                    // this will update the status of the lostluggage
                     String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
                             + "`status`='matched' WHERE labelnr = " + labelnr + ";";
 
@@ -532,15 +594,19 @@ public class submitCase {
                 }
 
                 System.out.println(rowValues);
-            } catch (Exception ex) {
+            } catch (SQLException ex) {
                 System.out.println("failed to check for matches");
                 System.err.println(ex.getMessage());
+                return false;
             }
 
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println("failed to insert data in to the database ");
             System.err.println(ex.getMessage());
+            return false;
         }
+
+        return true;
 
     }
 

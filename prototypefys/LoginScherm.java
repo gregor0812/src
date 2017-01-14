@@ -132,25 +132,10 @@ public class LoginScherm {
                     break;
             }
         });
-        
-        Button testMatchView = new Button("testmatchview");
-        testMatchView.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                
-                matchInformatie kaka = new matchInformatie();
-                GridPane ksad = kaka.matchInfo();
-                
-                rootpane.addnewpane(ksad);
-                
-            }
-        });
-        
-        
-        
+       
+
         root.add(login, 0 , 3);
         root.add(resetPassword, 0 , 4);
-        root.add(testMatchView, 0 , 6);
         
         return root;
     }
