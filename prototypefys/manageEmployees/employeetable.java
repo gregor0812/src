@@ -354,7 +354,7 @@ public class employeetable {
             String databaseQuery = ("UPDATE `corendon`.`employee` SET username ="
                 + "'" + username + "', " + "`password`='" + password + "', firstname = "
                 + "'" + firstname + "', insertion = '" + insertion + "', "
-                + "lastname = '" + lastname + "', role = '" + role + "', email = '" + email + "', "
+                + "lastname = '" + lastname + "', role = '" + role + "', email = '" + email + "' "
                 + "WHERE `employeenumber`= " + employeenumber + "; ");
             
            // String databaseQuery = ("UPDATE `corendon`.`employee` SET `password`" + generatedPassword + " WHERE `employeenumber`= " + employeenumber + "; ");
