@@ -113,8 +113,13 @@ public class LoginScherm {
                 System.out.println("X");
                 
                resetPassword scherm = new resetPassword();
+
+               GridPane resetPassword = scherm.maakPasswordReset();
+               rootpane.addnewpane(resetPassword);
+
                //StackPane resetPassword = scherm.maakPasswordReset();
                //rootpane.addnewpane(resetPassword);
+
                
             }
         });
