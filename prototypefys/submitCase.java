@@ -1,5 +1,7 @@
 package prototypefys;
 
+import cataloog.FoundLuggage;
+import cataloog.LostLuggage;
 import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -11,6 +13,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.util.Optional;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -19,6 +22,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -566,7 +571,7 @@ public class submitCase {
 
                     // this resultset will contain the ownerid of the luggageowner
                     ResultSet LostLuggageOwnerId
-                            = owneridStatement.executeQuery("select ownerid from lostluggage "
+                            = owneridStatement.executeQuery("select ownerid from foundluggage "
                                     + "where labelnr = " + labelnr + " ;");
 
                     int ownerid = 0;
@@ -591,6 +596,40 @@ public class submitCase {
                     alert.setHeaderText("you got a match");
                     alert.setContentText("a match has been found!");
                     alert.showAndWait();
+                    
+                      ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    ButtonType ViewMatchBtn = new ButtonType("View match");
+                    alert.getButtonTypes().setAll(okButton, ViewMatchBtn);
+
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    if (result.get() == ViewMatchBtn) {
+
+                        String LostLuggageInfo = ("select lostluggage.lostID, lostluggage.ownerid, "
+                            + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
+                            + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
+                            + "lostluggage.airport, lostluggage.itemname,"
+                            + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
+                            + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
+                            + "inner join luggageowner"
+                            + " on lostluggage.ownerid = luggageowner.ownerid "
+                            + "where labelnr = " + labelnr);
+                            
+                        String FoundLuggageInfo = ("select * from foundluggage "
+                            + "where labelnr = " + labelnr);
+                        
+                                               
+                         matchInformatie matchinfo = new matchInformatie();
+                            GridPane infoScherm = matchinfo.matchInfo(lostLuggageMatchInfo(LostLuggageInfo),
+                            foundLuggageMatchInfo(FoundLuggageInfo));
+                            rootpane.addnewpane(infoScherm);
+                    
+                  
+                    
+                }
+                    
+                    
+                    
                 }
 
                 System.out.println(rowValues);
@@ -609,5 +648,67 @@ public class submitCase {
         return true;
 
     }
+    
+    public LostLuggage lostLuggageMatchInfo(String query) {
+        
+        
+        
+        LostLuggage LostInfo = null;
+
+        try {
+            
+            Connection matchCheckConnection = db.getConnection();
+            Statement statement = matchCheckConnection.createStatement();
+            
+            ResultSet LostLuggageResult = statement.executeQuery(query);
+            
+            while (LostLuggageResult.next()) {
+
+                LostInfo = (new LostLuggage(LostLuggageResult.getInt(1), LostLuggageResult.getInt(2),
+                    LostLuggageResult.getString(3), LostLuggageResult.getString(4),
+                    LostLuggageResult.getString(5), LostLuggageResult.getInt(6),
+                    LostLuggageResult.getInt(7), LostLuggageResult.getString(8),
+                    LostLuggageResult.getString(9),
+                    LostLuggageResult.getString(10), LostLuggageResult.getString(11),
+                    LostLuggageResult.getString(12), LostLuggageResult.getString(13),
+                    LostLuggageResult.getString(14),
+                    LostLuggageResult.getString(15), LostLuggageResult.getString(16)));
+            }
+        } catch (Exception ex) {
+            System.out.println("Failed to retrieve matchinfo ");
+            System.err.println(ex.getMessage());
+        }
+
+        return LostInfo;
+    }
+
+    public FoundLuggage foundLuggageMatchInfo(String query) {
+
+        FoundLuggage FoundInfo = null;
+        try {
+            
+            Connection matchCheckConnection = db.getConnection();
+            Statement statement = matchCheckConnection.createStatement();
+            
+            ResultSet TableData = statement.executeQuery(query);
+            
+            while (TableData.next()){
+            FoundInfo = (new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
+                TableData.getInt(4), TableData.getString(5), TableData.getString(6),
+                TableData.getString(7), TableData.getString(9),
+                TableData.getString(8), TableData.getString(10),
+                TableData.getString(11), TableData.getString(12),
+                TableData.getString(13), TableData.getString(14), 
+                TableData.getString(15), TableData.getString(16)));
+            }
+            
+        } catch (Exception ex) {
+            System.out.println("Failed to retrieve matchinfo ");
+            System.err.println(ex.getMessage());
+        }
+        
+        return FoundInfo;
+    }
+    
 
 }
