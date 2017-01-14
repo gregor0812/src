@@ -600,8 +600,6 @@ public class submitCase {
                     alert.setTitle("congrats");
                     alert.setHeaderText("you got a match");
                     alert.setContentText("a match has been found!");
-                    alert.showAndWait();
-
                     ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.CANCEL_CLOSE);
                     ButtonType ViewMatchBtn = new ButtonType("View match");
                     alert.getButtonTypes().setAll(okButton, ViewMatchBtn);

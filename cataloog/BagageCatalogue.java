@@ -159,7 +159,7 @@ public class BagageCatalogue {
             + "-fx-base:white; -fx-border-color:darkred"
         );
         comboBox.getSelectionModel().selectFirst();
-
+        
         ComboBox comboBoxFound = new ComboBox(FoundOptions);
         comboBoxFound.setMinSize(150, 20);
         comboBoxFound.setStyle("-fx-background-color: white; "
