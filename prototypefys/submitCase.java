@@ -5,12 +5,9 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-<<<<<<< HEAD
 import java.text.SimpleDateFormat;
-=======
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
->>>>>>> origin/master
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
@@ -120,7 +117,7 @@ public class submitCase {
 //        TextField dateT = new TextField();
 //        grid.add(dateT, 20, 17);
 //        dateT.setPromptText("yyyy-mm-dd");
-        
+
         // this datepicker will be used to select dates
         DatePicker datePicker = new DatePicker();
         datePicker.setOnAction(new EventHandler() {
@@ -131,7 +128,7 @@ public class submitCase {
             }
         });
 
-         // this pattern is the data format used
+        // this pattern is the data format used
         String pattern = "yyyy-MM-dd";
 
         datePicker.setPromptText(pattern.toLowerCase());
@@ -156,11 +153,9 @@ public class submitCase {
                     return null;
                 }
             }
-          });  
-         
+        });
+
         grid.add(datePicker, 20, 17);
-        
-        
 
         Label airport = new Label("Airport:");
         grid.add(airport, 10, 18, 10, 1);
@@ -324,15 +319,16 @@ public class submitCase {
                         color, description, dateFound, ownerID, firstname, insertion,
                         lastname) == true) {
 
-                    // Alert user about successfull data processing
-                    Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("congrats");
-                    alert.setHeaderText("you got a match");
-                    alert.setContentText("a match has been found!");
-                    alert.showAndWait();
+                    // Tell user the form has been submitted succesfully
+                    Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
+                    successMessage.setHeaderText("Operation completed successfully");
+                    successMessage.setContentText("All data has been added to the "
+                            + "database");
+                    successMessage.showAndWait();
 
                     // Clear all form fields
-                    dateT.setText("");
+                    datePicker.setValue(LocalDate.now());
+                    //dateT.setText("");
                     airportT.setText("");
                     labelT.setText("");
                     flightT.setText("");
@@ -381,7 +377,7 @@ public class submitCase {
             }
 
             // if the connection fails the exception will be printed
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println("exception 2 ");
         }
 
@@ -458,7 +454,7 @@ public class submitCase {
             Connection findOwners = db.getConnection();
             Statement statement = findOwners.createStatement();
             ResultSet rs = statement.executeQuery(query);
-            
+
             System.out.println(query);
 
             // Loop trough all results
@@ -486,7 +482,7 @@ public class submitCase {
 
     /**
      * Insert the form data into the database
-     * 
+     *
      * @param caseid The identifier of the luggage
      * @param labelnr The labelnr on the luggage
      * @param flightnr The flightnr the luggage is from
@@ -547,14 +543,8 @@ public class submitCase {
                     + " ' , ' " + color + "', ' " + description + "' , ' "
                     + dateFound + "', '" + time + "', 'open');");
 
+            // For debugging
             System.out.println(databaseQuery);
-
-            // Tell user the form has been submitted succesfully
-            Alert successMessage = new Alert(Alert.AlertType.CONFIRMATION);
-            successMessage.setHeaderText("Operation completed successfully");
-            successMessage.setContentText("All data has been added to the "
-                    + "database");
-            successMessage.showAndWait();
 
             statement.executeUpdate(databaseQuery);
 
@@ -571,27 +561,24 @@ public class submitCase {
                 Statement statement3 = matchCheckConnection.createStatement();
 
                 if (rowValues.contains(labelnr)) {
-                    
-                    
+
                     Statement owneridStatement = matchCheckConnection.createStatement();
-                    
+
                     // this resultset will contain the ownerid of the luggageowner
                     ResultSet LostLuggageOwnerId
-                    = owneridStatement.executeQuery("select ownerid from lostluggage " +
-                    "where labelnr = " + labelnr + " ;");
-                    
+                            = owneridStatement.executeQuery("select ownerid from lostluggage "
+                                    + "where labelnr = " + labelnr + " ;");
+
                     int ownerid = 0;
-                    
-                     while (LostLuggageOwnerId.next()) {
+
+                    while (LostLuggageOwnerId.next()) {
                         ownerid = LostLuggageOwnerId.getInt(1);
-                      }
-                     
-                    
+                    }
+
                     // this will update the status from the foundluggage
                     String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
                             + "`status`='matched', ownerid = " + ownerid + " WHERE labelnr = " + labelnr + ";";
-                    
-                    
+
                     statement3.executeUpdate(updatestatus1);
                     // this will update the status of the lostluggage
                     String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
@@ -599,17 +586,11 @@ public class submitCase {
 
                     statement3.executeUpdate(updatestatus2);
 
-<<<<<<< HEAD
-=======
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("congrats");
                     alert.setHeaderText("you got a match");
                     alert.setContentText("a match has been found!");
                     alert.showAndWait();
-                    
-                    
-                    
->>>>>>> origin/master
                 }
 
                 System.out.println(rowValues);
