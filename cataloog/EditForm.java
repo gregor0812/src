@@ -281,7 +281,8 @@ public class EditForm {
         return grid;
 
     }
-
+    
+    // this method will get the owner information
     public String getOwnerinfo(int ownerid, int infoNumber) {
 
         String info = "";
@@ -497,10 +498,10 @@ public class EditForm {
         grid.add(dateT, 20, 17);
         dateT.setPromptText("yyyy/mm/dd");
 
-//        Label time = new Label("Time:");
-//        grid.add(time, 10, 18, 10, 1);
-//        TextField timeT = new TextField();
-//        grid.add(timeT, 20, 18);
+        Label time = new Label("Time:");
+        grid.add(time, 10, 18, 10, 1);
+        TextField timeT = new TextField();
+        grid.add(timeT, 20, 18);
         Label airport = new Label("Airport:");
         grid.add(airport, 10, 19, 10, 1);
         TextField airportT = new TextField(person.getAirport());

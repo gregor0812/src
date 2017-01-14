@@ -20,6 +20,7 @@ import javafx.scene.chart.PieChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -41,6 +42,21 @@ public class ReportGeneration {
 
     // this boolean checks if a barchart is used or a piechart
     private boolean BarchartUsed = true;
+    // this boolean check whether the lost luggage is shown or the found
+    private boolean lostOrFound = true;
+    
+    private PieChart chart = new PieChart();
+    
+    private CategoryAxis xAxis = new CategoryAxis();
+    private NumberAxis yAxis = new NumberAxis();
+    
+    private BarChart<String, Number> bc;
+    
+    private ObservableList dataPie = FXCollections.observableArrayList();
+    
+    private XYChart.Series series1 = new XYChart.Series();
+    
+  
 
     ReportGeneration() {
 
@@ -90,25 +106,17 @@ public class ReportGeneration {
                 if (BarchartUsed) {
 
                     // this query selects the data from the database
-                    String BarChartQuery = "select airport, count(airport) "
-                        + "from foundluggage "
-                        + "where airport is not null "
-                        + "group by airport";
-                    
-
-                    BarChart bc = MakeBarchart(BarChartQuery);
-
-                    root.setCenter(bc);
-
                     String FoundAirportQuery = "select airport, count(airport) "
                         + "from foundluggage "
                         + "where airport is not null "
                         + "group by airport";
                     String FoundLuggageName = "Found luggage per airport";
-                    PieChart showFound = createPieChart(FoundAirportQuery, FoundLuggageName);
-
-                    root.setCenter(showFound);
-
+                    setPieChartData(FoundAirportQuery, FoundLuggageName);
+                    root.setCenter(null);
+                    root.setCenter(chart);
+                    
+                    lostOrFound = false;
+                    
                 } else {
 
                     String BarChartQuery = "select airport, count(airport) "
@@ -117,9 +125,14 @@ public class ReportGeneration {
                         + "group by airport";
                     String LostLuggageName = "found bagage per airport";
 
-                    BarChart bc = MakeBarchart(BarChartQuery);
-
+                     String xAxisName = "airport";
+                    String yAxisName = "lost luggage";
+                    
+                    setBarchartData(BarChartQuery, LostLuggageName, xAxisName, yAxisName);
+                    
+                    root.setCenter(null);
                     root.setCenter(bc);
+                    lostOrFound = false;
 
                 }
 
@@ -137,32 +150,41 @@ public class ReportGeneration {
             public void handle(ActionEvent event) {
 
                 if (BarchartUsed) {
-
+                    
+                    // this query selects the data from the database
                     String LostAirportQuery = "select airport, count(airport) "
                         + "from lostluggage "
                         + "where airport is not null "
                         + "group by airport";
+                    // this is the title of the piechart
                     String LostLuggageName = "lost bagage per airport";
 
-                    PieChart showLost = createPieChart(LostAirportQuery, LostLuggageName);
-
-                    root.setCenter(showLost);
+                    setPieChartData(LostAirportQuery, LostLuggageName);
+                    root.setCenter(null);
+                    root.setCenter(chart);
+                    
+                    lostOrFound = true;
                 } else {
-
+                    
+                    // this query selects the data from the database
                     String BarChartQuery = "select airport, count(airport) "
                         + "from lostluggage "
                         + "where airport is not null "
                         + "group by airport";
                     String LostLuggageName = "lost bagage per airport";
-
-                    BarChart bc = MakeBarchart(BarChartQuery);
-
+                     String xAxisName = "airport";
+                    String yAxisName = "lost luggage";
+                    // a barchart is made using the query
+                    setBarchartData(BarChartQuery, LostLuggageName, xAxisName, yAxisName);
+                    root.setCenter(null);
                     root.setCenter(bc);
-
+                    lostOrFound = true;
                 }
             }
-        });
-
+        }); 
+        
+        // this button wil show the barchart or the piechart depending on which
+        // is shown at the moment
         Button ShowBarChart = new Button(); // button 1
 
         ShowBarChart.setPrefSize(210, 50);
@@ -172,7 +194,7 @@ public class ReportGeneration {
         ShowBarChart.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-
+                lostOrFound = true;
                 if (BarchartUsed) {
 
                     String BarChartQuery = "select airport, count(airport) "
@@ -180,11 +202,19 @@ public class ReportGeneration {
                         + "where airport is not null "
                         + "group by airport";
                     String LostLuggageName = "lost bagage per airport";
-
-                    BarChart bc = MakeBarchart(BarChartQuery);
+                    String xAxisName = "airport";
+                    String yAxisName = "lost luggage";
+                    
+                    
+                    setBarchartData(BarChartQuery, LostLuggageName, xAxisName, yAxisName);
 
                     root.setCenter(bc);
+                    
+                    // the text of the 
                     ShowBarChart.setText("Show piechart");
+                    
+                    // by setting this boolean to false the rest of the program
+                    // will know that a barchart is shown
                     BarchartUsed = false;
                 } else {
                     String LostAirportQuery = "select airport, count(airport) "
@@ -193,9 +223,9 @@ public class ReportGeneration {
                         + "group by airport";
                     String LostLuggageName = "lost bagage per airport";
 
-                    PieChart showLost = createPieChart(LostAirportQuery, LostLuggageName);
+                    setPieChartData(LostAirportQuery, LostLuggageName);
 
-                    root.setCenter(showLost);
+                    root.setCenter(chart);
                     ShowBarChart.setText("Show barchart");
                     BarchartUsed = true;
                 }
@@ -210,23 +240,26 @@ public class ReportGeneration {
             + "group by airport";
         String LostLuggageName = "lost bagage per airport";
 
-        PieChart test = createPieChart(LostAirportQuery, LostLuggageName);
+        setPieChartData(LostAirportQuery, LostLuggageName);
 
-        DatePicker datePicker = new DatePicker();
-        datePicker.setOnAction(new EventHandler() {
+        HBox dateControls = new HBox();
+        
+        Label startDateLabel = new Label("select a starting date: ");
+        
+        
+        // this datepicker selects the start date to get data out of a certain period
+        DatePicker startDate = new DatePicker();
+        startDate.setOnAction(new EventHandler() {
             @Override
             public void handle(Event t) {
-                LocalDate date = datePicker.getValue();
+                LocalDate date = startDate.getValue();
                 System.err.println("Selected date: " + date);
             }
         });
-
-        datePicker.setPrefSize(200, 100);
+        
         String pattern = "yyyy-MM-dd";
-
-        datePicker.setPromptText(pattern.toLowerCase());
-
-        datePicker.setConverter(new StringConverter<LocalDate>() {
+        startDate.setPromptText(pattern.toLowerCase());
+        startDate.setConverter(new StringConverter<LocalDate>() {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
 
             @Override
@@ -247,18 +280,107 @@ public class ReportGeneration {
                 }
             }
         });
+        
+        Label endDateLabel = new Label("select a ending date: ");
+        
+        DatePicker endDate = new DatePicker();
+        endDate.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                LocalDate date = endDate.getValue();
+                System.err.println("Selected date: " + date);
+            }
+        });
+        
+        endDate.setPromptText(pattern.toLowerCase());
+        endDate.setConverter(new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
 
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+        });
+        
+        Button DateSelection = new Button("show selection");
+        DateSelection.setPrefSize(180, 20);
+        DateSelection.setStyle("-fx-base:darkred;-fx-border-color:white");
+        DateSelection.setFont(Font.font("Verdana", 12));
+        DateSelection.setOnAction(new EventHandler<ActionEvent>() 
+        {
+            @Override
+            public void handle(ActionEvent event) 
+            {
+            
+            if(BarchartUsed)
+            {    
+                
+                if(lostOrFound)
+                {
+                String beginDate = startDate.getValue().toString();   
+                String endingDate = endDate.getValue().toString();  
+                
+                String LostAirportQuery = "select airport, count(airport) "
+                + "from lostluggage "
+                + "where airport is not null and `date lost` between '" 
+                + beginDate + "' and '" + endingDate + "' "
+                + "group by airport";
+                String LostLuggageName = "lost luggage per airport between " 
+                + beginDate + " and " + endingDate ;
+                 setPieChartData(LostAirportQuery, LostLuggageName);
+            
+                }
+                else
+                {
+                    String beginDate = startDate.getValue().toString();   
+                String endingDate = endDate.getValue().toString();  
+                
+                String LostAirportQuery = "select airport, count(airport) "
+                + "from foundluggage "
+                + "where airport is not null and `dateFound` between '" 
+                + beginDate + "' and '" + endingDate + "' "
+                + "group by airport";
+                String LostLuggageName = "found luggage per airport between " 
+                + beginDate + " and " + endingDate ;
+                 setPieChartData(LostAirportQuery, LostLuggageName);
+                    
+                }
+            }
+            }
+        });
+        
+            
+        dateControls.setSpacing(10);
+        dateControls.getChildren().addAll(startDateLabel, startDate, endDateLabel,
+            endDate, DateSelection);
+        
+        dateControls.setAlignment(Pos.TOP_CENTER);
+        
         root.setLeft(ButtonContainer);
-        root.setCenter(test);
-        root.setBottom(datePicker);
+        root.setCenter(chart);
+        root.setBottom(dateControls);
         //root.setAlignment(Pos.CENTER); 
         return root;
     }
 
     // test 5634t
-    private static PieChart createPieChart(String query, String TableName) {
-
-        ObservableList data = FXCollections.observableArrayList();
+    private void setPieChartData(String query, String TableName) {
+        
+        dataPie.clear();
+        
 
         try {
 
@@ -269,33 +391,41 @@ public class ReportGeneration {
 
             while (TableData.next()) {
 
-                data.add(new PieChart.Data(TableData.getString(1), TableData.getInt(2)));
-
+                dataPie.add(new PieChart.Data(TableData.getString(1), TableData.getInt(2)));
+                
             }
 
         } catch (Exception ex) {
             System.out.println("exception 2 ");
         }
 
-        final PieChart chart = new PieChart(data);
+        
         chart.setTitle(TableName);
         chart.setPrefSize(600, 600);
-        return chart;
+        chart.setData(dataPie);
+        
     }
 
-    private static BarChart MakeBarchart(String query) {
+    private void setBarchartData(String query, String title, String xAxisLabel, String yAxisLabel) {
+        
+        bc = null;
+        
+        bc = new BarChart<>(xAxis, yAxis);
+        
+        System.out.println(query);
+        
+        series1.getData().clear();
+        bc.getData().clear();
+        
+        bc.setTitle(title);
+        
+        xAxis.setLabel(null);
+        yAxis.setLabel(null);
+        
+        xAxis.setLabel(xAxisLabel);
+        yAxis.setLabel(yAxisLabel);
 
-        ObservableList data = FXCollections.observableArrayList();
-
-        final CategoryAxis xAxis = new CategoryAxis();
-        final NumberAxis yAxis = new NumberAxis();
-        final BarChart<String, Number> bc
-            = new BarChart<>(xAxis, yAxis);
-        bc.setTitle("Country Summary");
-        xAxis.setLabel("airport");
-        yAxis.setLabel("lost luggage");
-
-        XYChart.Series series1 = new XYChart.Series();
+        
         try {
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
@@ -314,7 +444,7 @@ public class ReportGeneration {
 
         bc.getData().addAll(series1);
 
-        return bc;
+        
     }
 
 }

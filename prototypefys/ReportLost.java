@@ -1,20 +1,24 @@
 package prototypefys;
 
+import cataloog.FoundLuggage;
+import cataloog.LostLuggage;
 import database.Database;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -81,7 +85,7 @@ public class ReportLost {
         Label caseid = new Label();
         caseid.setText("The case id is: " + getCaseId());
         caseid.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-        
+
         Label OwnerId = new Label("The owner id is: " + getOwnerId());
         grid.add(OwnerId, 39, 28, 2, 1);
         OwnerId.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
@@ -109,12 +113,12 @@ public class ReportLost {
         luggage.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(luggage, 30, 23, 15, 1);
 
-//        Label date = new Label("Date:");
-//        grid.add(date, 10, 17, 10, 1);
+        Label date = new Label("Date:");
+        grid.add(date, 10, 17, 10, 1);
 //        TextField dateT = new TextField();
 //        grid.add(dateT, 20, 17);
 //        dateT.setPromptText("yyyy-mm-dd");
-        
+
         DatePicker datePicker = new DatePicker();
         datePicker.setOnAction(new EventHandler() {
             @Override
@@ -149,10 +153,9 @@ public class ReportLost {
                     return null;
                 }
             }
-          });  
-         
+        });
+
         grid.add(datePicker, 20, 17);
-        
 
         Label airport = new Label("Airport:");
         grid.add(airport, 10, 18, 10, 1);
@@ -278,21 +281,19 @@ public class ReportLost {
 
                 int ownerid = getOwnerId();
                 String firstname = naamReizigerT.getText();
-              
-                
+
                 String insertion = NameInsertionT.getText();
 
                 String Lastname = LastNameT.getText();
                 int phone1 = Integer.parseInt(phone1T.getText());
-                
+
                 // because phone number 2 is optional the value turn into 
                 // null if nothing is entered
                 Integer phone2 = null;
-                if (phone2T.getText().isEmpty()){
+                if (phone2T.getText().isEmpty()) {
                     phone2 = null;
-                }
-                else{
-                phone2 = Integer.parseInt(phone2T.getText());
+                } else {
+                    phone2 = Integer.parseInt(phone2T.getText());
                 }
                 String email = emailT.getText();
                 String notes = addOwnerNotesT.getText();
@@ -307,19 +308,17 @@ public class ReportLost {
                 String color = itemColorT.getText();
                 String description = addNotesT.getText();
                 String dateLost = datePicker.getValue().toString();
-                
+
                 String address = ownerAddT.getText();
                 String city = ownerCityT.getText();
                 String zipcode = ownerZipT.getText();
                 String country = ownerCountryT.getText();
-                
+
                 insertIntoDatabase(ownerid, firstname, insertion,
                     Lastname, phone1, phone2, email, notes,
-                    caseid, labelnr, flightnr,destination, airportName,
+                    caseid, labelnr, flightnr, destination, airportName,
                     itemname, Brand, color, description, dateLost, address,
                     city, zipcode, country);
-                
-                
 
             }
         });
@@ -375,78 +374,119 @@ public class ReportLost {
     public void insertIntoDatabase(int ownerid, String firstname, String insertion,
         String Lastname, int phone1, Integer phone2, String email, String notes,
         int caseid, int labelnr, int flightnr, String destination, String airportName,
-        String itemname, String Brand, String color, String description, String dateLost, 
+        String itemname, String Brand, String color, String description, String dateLost,
         String address, String city, String zipcode, String country) {
 
         try {
 
             // a connection is made
-            Connection ReportGenerationConnect = db.getConnection();
-            Statement statement = ReportGenerationConnect.createStatement();
+            Connection matchCheckConnection = db.getConnection();
+            Statement statement = matchCheckConnection.createStatement();
 
             String databaseQuery = ("insert into luggageowner (ownerid, firstname, insertion, lastname, phone1, phone2, email, notes)"
                 + " values(" + ownerid + ", '" + firstname + "', '" + insertion + "', '"
                 + Lastname + "' , " + phone1 + ", " + phone2 + " ,  '" + email + "', '" + notes + "');");
-                
-                String addressQuery = ("insert into address values (" + ownerid
-                    + ",  '" + address + "' ,  '" + zipcode + "'"
-                    + ",  '" + city + "' ,  '" + country + "')");
-                
-                String query2 = (" insert into lostluggage (lostID, ownerid, labelnr,"
+
+            String addressQuery = ("insert into address values (" + ownerid
+                + ",  '" + address + "' ,  '" + zipcode + "'"
+                + ",  '" + city + "' ,  '" + country + "')");
+
+            String query2 = (" insert into lostluggage (lostID, ownerid, labelnr,"
                 + " flightr, destination, airport, itemname, brand, colors, description, `date lost`, status) "
-                + " values( " + caseid + " , " + ownerid + " , " + labelnr + ", " 
-                + flightnr + " , '" + destination + "', '" + airportName + "' , '" + itemname 
-                + "' , '" + Brand + "' , '" + color + "', '" 
+                + " values( " + caseid + " , " + ownerid + " , " + labelnr + ", "
+                + flightnr + " , '" + destination + "', '" + airportName + "' , '" + itemname
+                + "' , '" + Brand + "' , '" + color + "', '"
                 + description + "' , '" + dateLost + "', 'open');");
 
-                System.out.println(databaseQuery);
-                
+            System.out.println(databaseQuery);
+
             statement.executeUpdate(databaseQuery);
             statement.executeUpdate(query2);
             statement.executeUpdate(addressQuery);
-            
+
             try {
-                
-                Statement statement2 = ReportGenerationConnect.createStatement();
-                ResultSet knownlabelnr = statement2.executeQuery("select labelnr from foundluggage " +
-                "where labelnr != 0");
+
+                Statement statement2 = matchCheckConnection.createStatement();
+                ResultSet knownlabelnr = statement2.executeQuery("select labelnr from foundluggage "
+                    + "where labelnr != 0");
                 List rowValues = new ArrayList();
                 while (knownlabelnr.next()) {
                     rowValues.add(knownlabelnr.getInt(1));
                 }
-                
-                Statement statement3 = ReportGenerationConnect.createStatement();
-                
-               if(rowValues.contains(labelnr)){
-                   
-                   String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
-                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
-                   
-                   statement3.executeUpdate(updatestatus1);
-                   
-                   String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
-                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
-                   
-                   statement3.executeUpdate(updatestatus2);
-                   
-                   Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Congratulations");
-                        alert.setHeaderText("you got a match");
-                        alert.setContentText("a match has been found!");
+
+                Statement statement3 = matchCheckConnection.createStatement();
+
+                if (rowValues.contains(labelnr)) {
+                    
+                    
+                    Statement owneridStatement = matchCheckConnection.createStatement();
+
+                    // this resultset will contain the ownerid of the luggageowner
+                    ResultSet LostLuggageOwnerId
+                        = owneridStatement.executeQuery("select ownerid from lostluggage "
+                            + "where labelnr = " + labelnr + " ;");
+
+                    int knownOwnerID = 0;
+
+                    while (LostLuggageOwnerId.next()) {
+                        knownOwnerID = LostLuggageOwnerId.getInt(1);
+                    }
+
+                    String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
+                        + "`status`='matched', ownerid = " + knownOwnerID + " WHERE labelnr = " + labelnr + ";";
+
+                    statement3.executeUpdate(updatestatus1);
+
+                    String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
+                        + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+
+                    statement3.executeUpdate(updatestatus2);
+
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Congratulations");
+                    alert.setHeaderText("you got a match");
+                    alert.setContentText("a match has been found!");
+
+                    ButtonType okButton = new ButtonType("ok", ButtonData.CANCEL_CLOSE);
+                    ButtonType ViewMatchBtn = new ButtonType("View match");
+                    alert.getButtonTypes().setAll(okButton, ViewMatchBtn);
+
+                    Optional<ButtonType> result = alert.showAndWait();
+
+                    if (result.get() == ViewMatchBtn) {
+
+                        String LostLuggageInfo = ("select lostluggage.lostID, lostluggage.ownerid, "
+                            + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
+                            + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
+                            + "lostluggage.airport, lostluggage.itemname,"
+                            + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
+                            + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
+                            + "inner join luggageowner"
+                            + " on lostluggage.ownerid = luggageowner.ownerid "
+                            + "where labelnr = " + labelnr);
+                            
+                        String FoundLuggageInfo = ("select * from foundluggage "
+                            + "where labelnr = " + labelnr);
                         
-                           alert.showAndWait(); 
-               }
+                                               
+                         matchInformatie matchinfo = new matchInformatie();
+                            GridPane infoScherm = matchinfo.matchInfo(lostLuggageMatchInfo(LostLuggageInfo),
+                            foundLuggageMatchInfo(FoundLuggageInfo));
+                            rootpane.addnewpane(infoScherm);
+                    
+                  
+                    
+                }
                 
                 
-                
+            }
                 System.out.println(rowValues);
             } catch (Exception ex) {
                 System.out.println("Failed to check for matches");
                 System.err.println(ex.getMessage());
             }
-                
 
-         ReportGenerationConnect.close();
+            matchCheckConnection.close();
 
         } catch (Exception ex) {
             System.out.println("Failed to insert data into the database ");
@@ -455,12 +495,64 @@ public class ReportLost {
 
     }
 
-//    public TableView userInfo(){
-//        
-//        
-//        
-//        
-//        
-//        
-//    }
+    public LostLuggage lostLuggageMatchInfo(String query) {
+        
+        
+        
+        LostLuggage LostInfo = null;
+
+        try {
+            
+            Connection matchCheckConnection = db.getConnection();
+            Statement statement = matchCheckConnection.createStatement();
+            
+            ResultSet LostLuggageResult = statement.executeQuery(query);
+            
+            while (LostLuggageResult.next()) {
+
+                LostInfo = (new LostLuggage(LostLuggageResult.getInt(1), LostLuggageResult.getInt(2),
+                    LostLuggageResult.getString(3), LostLuggageResult.getString(4),
+                    LostLuggageResult.getString(5), LostLuggageResult.getInt(6),
+                    LostLuggageResult.getInt(7), LostLuggageResult.getString(8),
+                    LostLuggageResult.getString(9),
+                    LostLuggageResult.getString(10), LostLuggageResult.getString(11),
+                    LostLuggageResult.getString(12), LostLuggageResult.getString(13),
+                    LostLuggageResult.getString(14),
+                    LostLuggageResult.getString(15), LostLuggageResult.getString(16)));
+            }
+        } catch (Exception ex) {
+            System.out.println("Failed to retrieve matchinfo ");
+            System.err.println(ex.getMessage());
+        }
+
+        return LostInfo;
+    }
+
+    public FoundLuggage foundLuggageMatchInfo(String query) {
+
+        FoundLuggage FoundInfo = null;
+        try {
+            
+            Connection matchCheckConnection = db.getConnection();
+            Statement statement = matchCheckConnection.createStatement();
+            
+            ResultSet TableData = statement.executeQuery(query);
+            
+            while (TableData.next()){
+            FoundInfo = (new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
+                TableData.getInt(4), TableData.getString(5), TableData.getString(6),
+                TableData.getString(7), TableData.getString(9),
+                TableData.getString(8), TableData.getString(10),
+                TableData.getString(11), TableData.getString(12),
+                TableData.getString(13), TableData.getString(14), 
+                TableData.getString(15), TableData.getString(16)));
+            }
+            
+        } catch (Exception ex) {
+            System.out.println("Failed to retrieve matchinfo ");
+            System.err.println(ex.getMessage());
+        }
+        
+        return FoundInfo;
+    }
 }

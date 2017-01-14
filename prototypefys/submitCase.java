@@ -5,18 +5,25 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+<<<<<<< HEAD
 import java.text.SimpleDateFormat;
+=======
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+>>>>>>> origin/master
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -24,6 +31,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.util.StringConverter;
 
 /**
  *
@@ -109,9 +117,50 @@ public class submitCase {
 
         Label date = new Label("Date:");
         grid.add(date, 10, 17, 10, 1);
-        TextField dateT = new TextField();
-        grid.add(dateT, 20, 17);
-        dateT.setPromptText("yyyy-mm-dd");
+//        TextField dateT = new TextField();
+//        grid.add(dateT, 20, 17);
+//        dateT.setPromptText("yyyy-mm-dd");
+        
+        // this datepicker will be used to select dates
+        DatePicker datePicker = new DatePicker();
+        datePicker.setOnAction(new EventHandler() {
+            @Override
+            public void handle(Event t) {
+                LocalDate date = datePicker.getValue();
+                System.err.println("Selected date: " + date);
+            }
+        });
+
+         // this pattern is the data format used
+        String pattern = "yyyy-MM-dd";
+
+        datePicker.setPromptText(pattern.toLowerCase());
+
+        datePicker.setConverter(new StringConverter<LocalDate>() {
+            DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
+
+            @Override
+            public String toString(LocalDate date) {
+                if (date != null) {
+                    return dateFormatter.format(date);
+                } else {
+                    return "";
+                }
+            }
+
+            @Override
+            public LocalDate fromString(String string) {
+                if (string != null && !string.isEmpty()) {
+                    return LocalDate.parse(string, dateFormatter);
+                } else {
+                    return null;
+                }
+            }
+          });  
+         
+        grid.add(datePicker, 20, 17);
+        
+        
 
         Label airport = new Label("Airport:");
         grid.add(airport, 10, 18, 10, 1);
@@ -262,7 +311,7 @@ public class submitCase {
                 String Brand = itemBrandT.getText();
                 String color = itemColorT.getText();
                 String description = addNotesT.getText();
-                String dateFound = dateT.getText();
+                String dateFound = datePicker.getValue().toString();
                 String destination = destinationT.getText();
                 String firstname = ownerFirstNameT.getText();
                 String insertion = ownerInsertionT.getText();
@@ -485,9 +534,9 @@ public class submitCase {
         try {
 
             // a connection is made
-            Connection ReportGenerationConnect = db.getConnection();
+            Connection matchCheckConnection = db.getConnection();
             // a statement is made
-            Statement statement = ReportGenerationConnect.createStatement();
+            Statement statement = matchCheckConnection.createStatement();
             // 
             String databaseQuery = ("INSERT INTO foundluggage (foundID, labelnr, "
                     + "ownerid, flightnr, airport, destination, itemname, brand, "
@@ -512,27 +561,55 @@ public class submitCase {
             // een resultset met verloren labelnummers
             try {
 
-                Statement statement2 = ReportGenerationConnect.createStatement();
+                Statement statement2 = matchCheckConnection.createStatement();
                 ResultSet knownlabelnr = statement2.executeQuery("select labelnr from lostluggage");
                 List rowValues = new ArrayList();
                 while (knownlabelnr.next()) {
                     rowValues.add(knownlabelnr.getInt(1));
                 }
 
-                Statement statement3 = ReportGenerationConnect.createStatement();
+                Statement statement3 = matchCheckConnection.createStatement();
 
                 if (rowValues.contains(labelnr)) {
-
+                    
+                    
+                    Statement owneridStatement = matchCheckConnection.createStatement();
+                    
+                    // this resultset will contain the ownerid of the luggageowner
+                    ResultSet LostLuggageOwnerId
+                    = owneridStatement.executeQuery("select ownerid from lostluggage " +
+                    "where labelnr = " + labelnr + " ;");
+                    
+                    int ownerid = 0;
+                    
+                     while (LostLuggageOwnerId.next()) {
+                        ownerid = LostLuggageOwnerId.getInt(1);
+                      }
+                     
+                    
+                    // this will update the status from the foundluggage
                     String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
-                            + "`status`='matched' WHERE labelnr = " + labelnr + ";";
-
+                            + "`status`='matched', ownerid = " + ownerid + " WHERE labelnr = " + labelnr + ";";
+                    
+                    
                     statement3.executeUpdate(updatestatus1);
-
+                    // this will update the status of the lostluggage
                     String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
                             + "`status`='matched' WHERE labelnr = " + labelnr + ";";
 
                     statement3.executeUpdate(updatestatus2);
 
+<<<<<<< HEAD
+=======
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("congrats");
+                    alert.setHeaderText("you got a match");
+                    alert.setContentText("a match has been found!");
+                    alert.showAndWait();
+                    
+                    
+                    
+>>>>>>> origin/master
                 }
 
                 System.out.println(rowValues);
