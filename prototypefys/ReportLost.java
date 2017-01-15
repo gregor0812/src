@@ -40,7 +40,6 @@ public class ReportLost {
     public GridPane MakeLostReport() {
 
         Button btn;
-        Button btn2;
         Button btnS;
 
         HBox Menu = new HBox();
@@ -50,12 +49,6 @@ public class ReportLost {
         btn.setPrefSize(110, 50);
         btn.setStyle("-fx-base:darkred;-fx-border-color:white");
         btn.setFont(Font.font("Verdana", 12));
-        // ------------------------------
-        btn2 = new Button(); // button 2
-        btn2.setText("Options");
-        btn2.setPrefSize(110, 50);
-        btn2.setStyle("-fx-base:darkred;-fx-border-color:white");
-        btn2.setFont(Font.font("Verdana", 12));
         //--------------------------------
         btnS = new Button(); // button Submit
         btnS.setText("Submit Case");
@@ -69,8 +62,6 @@ public class ReportLost {
         grid.setHgap(10);
 
         GridPane.setConstraints(btn, 1, 15);
-
-        GridPane.setConstraints(btn2, 2, 15);
 
         GridPane.setConstraints(btnS, 39, 30, 2, 2);
         Label caseid = new Label();
@@ -92,7 +83,7 @@ public class ReportLost {
             }
         });
 
-        Label Case = new Label("lost");
+        Label Case = new Label("Destination");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 16, 15, 1);
 
@@ -136,32 +127,32 @@ public class ReportLost {
         OwnerInfo.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(OwnerInfo, 10, 20, 12, 1);
 
-        Label naamReiziger = new Label("first Name:");
+        Label naamReiziger = new Label("First Name:");
         grid.add(naamReiziger, 10, 21, 10, 1);
         TextField naamReizigerT = new TextField();
         grid.add(naamReizigerT, 20, 21);
 
-        Label NameInsertion = new Label("insertion:");
+        Label NameInsertion = new Label("Insertion:");
         grid.add(NameInsertion, 10, 22, 10, 1);
         TextField NameInsertionT = new TextField();
         grid.add(NameInsertionT, 20, 22);
 
-        Label lastName = new Label("last name:");
+        Label lastName = new Label("Last name:");
         grid.add(lastName, 10, 23, 10, 1);
         TextField LastNameT = new TextField();
         grid.add(LastNameT, 20, 23);
 
-        Label phone1 = new Label("phone number 1:");
+        Label phone1 = new Label("Phone number 1:");
         grid.add(phone1, 10, 24, 10, 1);
         TextField phone1T = new TextField();
         grid.add(phone1T, 20, 24);
 
-        Label phone2L = new Label("phone number 2:");
+        Label phone2L = new Label("Phone number 2:");
         grid.add(phone2L, 10, 25, 10, 1);
         TextField phone2T = new TextField();
         grid.add(phone2T, 20, 25);
 
-        Label emailL = new Label("email: ");
+        Label emailL = new Label("E-mail: ");
         grid.add(emailL, 10, 26, 10, 1);
         TextField emailT = new TextField();
         grid.add(emailT, 20, 26);
@@ -228,7 +219,7 @@ public class ReportLost {
         grid.add(Corendon, 1, 1, 10, 10);
 
         // Toevoegen van buttons
-        grid.getChildren().addAll(btn, btn2, btnS, caseid);
+        grid.getChildren().addAll(btn, btnS, caseid);
 
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -277,8 +268,12 @@ public class ReportLost {
                     itemname, Brand, color, description, dateLost, address,
                     city, zipcode, country);
                 
-                
-
+                Alert alertS = new Alert(Alert.AlertType.WARNING);
+                        alertS.setTitle("");
+                        alertS.setHeaderText("Submit Case");
+                        alertS.setContentText("The case is submitted.");
+                        
+                           alertS.showAndWait(); 
             }
         });
 
