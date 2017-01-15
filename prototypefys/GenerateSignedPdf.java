@@ -47,7 +47,7 @@ public class GenerateSignedPdf {
         
         contentStream.beginText();
         contentStream.setFont(font, 12);
-        contentStream.moveTextPositionByAmount(100, 700);
+        contentStream.moveTextPositionByAmount(200, 700);
         contentStream.drawString("date: ");
         contentStream.endText();
         
