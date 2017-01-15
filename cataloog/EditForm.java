@@ -11,6 +11,8 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.StringProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -38,7 +40,7 @@ public class EditForm {
 
     }
 
-    public GridPane MakeLostReport(LostLuggage person) {
+    public GridPane MakeEdit(LostLuggage person) {
 
         Button btnmainmenu;
         Button btn2;
@@ -87,7 +89,7 @@ public class EditForm {
                 BagageCatalogue scherm2 = new BagageCatalogue();
                 GridPane cataloog = scherm2.MaakCatalogue();
                 rootpane.addnewpane(cataloog);
-               
+
             }
         });
 
@@ -226,31 +228,29 @@ public class EditForm {
 
         // Toevoegen van buttons
         grid.getChildren().addAll(btnmainmenu, btnS);
-        
+
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+
                 int ownerid = person.getOwnerid();
                 String firstname = naamReizigerT.getText();
-              
-                
+
                 String insertion = NameInsertionT.getText();
 
                 String Lastname = LastNameT.getText();
                 int phone1 = Integer.parseInt(phone1T.getText());
-                                
+
                 // because phone number 2 is optional the value turn into 
                 // null if nothing is entered
                 Integer phone2 = null;
-                if (phone2T.getText().isEmpty()){
+                if (phone2T.getText().isEmpty()) {
                     phone2 = null;
+                } else {
+                    phone2 = Integer.parseInt(phone2T.getText());
                 }
-                else{
-                phone2 = Integer.parseInt(phone2T.getText());
-                }
-                
-                 String email = emailT.getText();
+
+                String email = emailT.getText();
                 String notes = addOwnerNotesT.getText();
                 int caseid = person.getCaseid();
                 int labelnr = Integer.parseInt(labelNumberT.getText());
@@ -263,28 +263,26 @@ public class EditForm {
                 String color = itemColorT.getText();
                 String description = addNotesT.getText();
                 String dateLost = dateT.getText();
-                
+
                 String address = ownerAddT.getText();
                 String city = ownerCityT.getText();
                 String zipcode = ownerZipT.getText();
                 String country = ownerCountryT.getText();
-                
-                
-                
+
                 insertEditIntoDatabase(ownerid, firstname, insertion,
                     Lastname, phone1, phone2, email, notes,
-                    caseid, labelnr, flightnr,destination, airportName,
+                    caseid, labelnr, flightnr, destination, airportName,
                     itemname, Brand, color, description, dateLost, address,
                     city, zipcode, country);
-                
+
             }
         });
-        
 
         return grid;
 
     }
-
+    
+    // this method will get the owner information
     public String getOwnerinfo(int ownerid, int infoNumber) {
 
         String info = "";
@@ -308,7 +306,7 @@ public class EditForm {
 
         return info;
     }
-    
+
     public String getAddressInfo(int ownerid, int infoNumber) {
 
         String info = "";
@@ -332,122 +330,131 @@ public class EditForm {
 
         return info;
     }
-    
-    
-    
-    
-    
-    
+
     public void insertEditIntoDatabase(int ownerid, String firstname, String insertion,
         String Lastname, int phone1, Integer phone2, String email, String notes,
         int caseid, int labelnr, int flightnr, String destination, String airportName,
-        String itemname, String Brand, String color, String description, String dateLost, 
+        String itemname, String Brand, String color, String description, String dateLost,
         String address, String city, String zipcode, String country) {
 
         try {
 
             // a connection is made
-            Connection ReportGenerationConnect = db.getConnection();
-            Statement statement = ReportGenerationConnect.createStatement();
+            Connection newConnection = db.getConnection();
+            Statement statement = newConnection.createStatement();
 
+            // this query will update the lugguowner info with the information provided
             String databaseQuery = ("UPDATE `corendon`.`luggageowner` SET "
-                + "`firstname`='" + firstname + "', `insertion`='" + insertion +
-                "', `lastname`='" + Lastname + "',"
+                + "`firstname`='" + firstname + "', `insertion`='" + insertion
+                + "', `lastname`='" + Lastname + "',"
                 + " `phone1`='" + phone1 + "', `phone2`='" + phone2 + "', "
                 + "`email`='" + email + "',"
                 + " `notes`='" + notes + "' WHERE `ownerid`='" + ownerid + "';");
-                
-                String addressQuery = ("update address SET address = '" + address + "' , "
-                    + "SET zipcode = '" + zipcode  
-                    + "' ,  SET city = '" + city + "' ,  SET country = '" + country + "'"
-                    + " WHERE lostID = " + caseid + ";");
-                
-                String query2 = (" UPDATE `corendon`.`lostluggage` SET `labelnr`='" + labelnr + ""
-                    + "', `flightr`=" + flightnr + ", " +
-                "`destination`='" + destination + "', `airport`='" + airportName +
-                    "', `itemname`='" + itemname + "', " +
-            "`brand`='" + Brand + "', `colors`='" + color + "', `description`='" + description + "'," +
-            " `date lost`='" + dateLost + "' WHERE `lostID`=" + caseid + ";");
 
-                System.out.println(databaseQuery);
-                
+            // this query will update the address info with with the information provided
+            String addressQuery = ("update address SET address = '" + address + "' , "
+                + " zipcode = '" + zipcode
+                + "' , city = '" + city + "', country = '" + country
+                + "' WHERE ownerid = " + ownerid + ";");
+
+            // this query will update the luggageinfo with the information provided
+            String query2 = (" UPDATE `corendon`.`lostluggage` SET `labelnr`='" + labelnr + ""
+                + "', `flightr`=" + flightnr + ", "
+                + "`destination`='" + destination + "', `airport`='" + airportName
+                + "', `itemname`='" + itemname + "', "
+                + "`brand`='" + Brand + "', `colors`='" + color + "', `description`='" + description + "',"
+                + " `date lost`='" + dateLost + "' WHERE `lostID`=" + caseid + ";");
+
+            System.out.println(addressQuery);
+
+            // the querys are executed here
             statement.executeUpdate(databaseQuery);
             statement.executeUpdate(query2);
             statement.executeUpdate(addressQuery);
-            
+
+            /**
+             * after the edit is made the programm will check for matches using
+             * the labelnr
+             */
             try {
-                
-                Statement statement2 = ReportGenerationConnect.createStatement();
-                ResultSet knownlabelnr = statement2.executeQuery("select labelnr from foundluggage " +
-                "where labelnr != 0");
+
+                // a new statement is made
+                Statement statement2 = newConnection.createStatement();
+                // a resultset is made using a query to select all the labelnumbers
+                // from the foundluggage
+                ResultSet knownlabelnr = statement2.executeQuery("select labelnr from foundluggage "
+                    + "where labelnr != 0");
+
+                // an arraylist is made to contain the labelnumbers
                 List rowValues = new ArrayList();
+                // this loop will add labelnumbers to the arraylist until there
+                // is no more data in the resultset
                 while (knownlabelnr.next()) {
                     rowValues.add(knownlabelnr.getInt(1));
                 }
-                
-                Statement statement3 = ReportGenerationConnect.createStatement();
-                
-               if(rowValues.contains(labelnr)){
-                   
-                   String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
-                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
-                   
-                   statement3.executeUpdate(updatestatus1);
-                   
-                   String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
-                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
-                   
-                   statement3.executeUpdate(updatestatus2);
-                   
-                   Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("congrats");
-                        alert.setHeaderText("you got a match");
-                        alert.setContentText("YOU GOT A MATCH WANKER");
-                        
-                           alert.showAndWait(); 
-               }
-                
-                
-                
+                // a new statement is made
+                Statement statement3 = newConnection.createStatement();
+                // this if function will check if there are matching labelnumbers
+                if (rowValues.contains(labelnr)) {
+
+                    // if an match has been found the status of the  found luggage will
+                    // be updated to "matched"
+                    String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
+                        + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+
+                    // the query is executed
+                    statement3.executeUpdate(updatestatus1);
+
+                    // if an match has been found the status of the  lost luggage will
+                    // be updated to "matched"
+                    String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
+                        + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+                    // the query is executed
+                    statement3.executeUpdate(updatestatus2);
+
+                    // an alert is displayed to notify the user of the match
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("congrats");
+                    alert.setHeaderText("you got a match");
+                    alert.setContentText("a match has been found!");
+
+                    alert.showAndWait();
+                }
+
                 System.out.println(rowValues);
+
             } catch (Exception ex) {
                 System.out.println("failed to check for matches");
                 System.err.println(ex.getMessage());
             }
-                
-
-         ReportGenerationConnect.close();
+            // the connection is closed
+            newConnection.close();
 
         } catch (Exception ex) {
-            System.out.println("failed to inser data in to the database ");
+            System.out.println("failed to insert data in to the database ");
             System.err.println(ex.getMessage());
         }
 
     }
-    
 
-    public GridPane MakeLostReport(FoundLuggage person) {
+// this is an edit form for the found luggage
+    public GridPane MakeEdit(FoundLuggage person) {
 
-        Button btn;
-        Button btn2;
+        // the buttons are made here
+        Button backBtn;
         Button btnS;
 
-        HBox Menu = new HBox();
+        // this button will return the user to the catalogue
+        backBtn = new Button();
+        backBtn.setText("back to catalogue");
+        backBtn.setPrefSize(160, 50);
+        backBtn.setStyle("-fx-base:darkred;-fx-border-color:white");
+        backBtn.setFont(Font.font("Verdana", 12));
         // ------------------------------
-        btn = new Button(); // button 1
-        btn.setText("back to catalogue");
-        btn.setPrefSize(160, 50);
-        btn.setStyle("-fx-base:darkred;-fx-border-color:white");
-        btn.setFont(Font.font("Verdana", 12));
-        // ------------------------------
-        btn2 = new Button(); // button 2
-        btn2.setText("Options");
-        btn2.setPrefSize(160, 50);
-        btn2.setStyle("-fx-base:darkred;-fx-border-color:white");
-        btn2.setFont(Font.font("Verdana", 12));
-        //--------------------------------
-        btnS = new Button(); // button Submit
-        btnS.setText("Submit Case");
+
+        // this button will submit the edits
+        btnS = new Button();
+        btnS.setText("Submit Edits");
         btnS.setPrefSize(160, 50);
         btnS.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnS.setFont(Font.font("Verdana", 12));
@@ -457,15 +464,13 @@ public class EditForm {
         grid.setVgap(8);
         grid.setHgap(10);
 
-        GridPane.setConstraints(btn, 1, 15);
-
-        GridPane.setConstraints(btn2, 2, 15);
+        GridPane.setConstraints(backBtn, 1, 15);
 
         GridPane.setConstraints(btnS, 40, 31);
 
         grid.setStyle("-fx-background-color: white");
 
-        btn.setOnAction(new EventHandler<ActionEvent>() {
+        backBtn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
                 BagageCatalogue scherm2 = new BagageCatalogue();
@@ -485,19 +490,18 @@ public class EditForm {
 
         Label luggage = new Label("Luggage information");
         luggage.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
-        grid.add(luggage, 30, 22, 15, 1);
+        grid.add(luggage, 30, 23, 15, 1);
 
         Label date = new Label("Date:");
         grid.add(date, 10, 17, 10, 1);
         TextField dateT = new TextField(person.getDateFound());
         grid.add(dateT, 20, 17);
-        dateT.setPromptText("dd/mm/yyyy");
+        dateT.setPromptText("yyyy/mm/dd");
 
         Label time = new Label("Time:");
         grid.add(time, 10, 18, 10, 1);
         TextField timeT = new TextField();
         grid.add(timeT, 20, 18);
-
         Label airport = new Label("Airport:");
         grid.add(airport, 10, 19, 10, 1);
         TextField airportT = new TextField(person.getAirport());
@@ -518,33 +522,43 @@ public class EditForm {
         TextField destinationT = new TextField(person.getDestination());
         grid.add(destinationT, 40, 19);
 
-        Label ownerName = new Label("Name traveler:");
-        grid.add(ownerName, 30, 20, 10, 1);
-        TextField ownerNameT = new TextField();
-        grid.add(ownerNameT, 40, 20);
+        Label firstNameL = new Label("first name traveler:");
+        grid.add(firstNameL, 30, 20, 10, 1);
+        TextField firstNameT = new TextField(person.getFirstName());
+        grid.add(firstNameT, 40, 20);
+
+        Label insertionL = new Label("insertion:");
+        grid.add(insertionL, 30, 21, 10, 1);
+        TextField insertionT = new TextField(person.getInsertion());
+        grid.add(insertionT, 40, 21);
+
+        Label lastNameL = new Label("Last name traveler:");
+        grid.add(lastNameL, 30, 22, 10, 1);
+        TextField lastNameT = new TextField(person.getLastName());
+        grid.add(lastNameT, 40, 22);
 
         Label type = new Label("Type:");
-        grid.add(type, 30, 23, 10, 1);
+        grid.add(type, 30, 24, 10, 1);
         TextField typeT = new TextField(person.getItemname());
-        grid.add(typeT, 40, 23);
+        grid.add(typeT, 40, 24);
 
         Label itemBrand = new Label("Brand:");
-        grid.add(itemBrand, 30, 24, 10, 1);
+        grid.add(itemBrand, 30, 25, 10, 1);
         TextField itemBrandT = new TextField(person.getBrand());
-        grid.add(itemBrandT, 40, 24);
+        grid.add(itemBrandT, 40, 25);
 
         Label itemColor = new Label("Color:");
-        grid.add(itemColor, 30, 25, 10, 1);
+        grid.add(itemColor, 30, 26, 10, 1);
         TextField itemColorT = new TextField(person.getColors());
-        grid.add(itemColorT, 40, 25);
+        grid.add(itemColorT, 40, 26);
 
         Label addNotes = new Label("Additional notes:");
-        grid.add(addNotes, 30, 26, 10, 1);
+        grid.add(addNotes, 30, 27, 10, 1);
         TextField addNotesT = new TextField(person.getDescription());
-        grid.add(addNotesT, 40, 26);
+        grid.add(addNotesT, 40, 27);
 
-        Label CaseId = new Label("The case id is: " + person.getCaseid());
-        grid.add(CaseId, 40, 27, 2, 1);
+        Label CaseId = new Label("The found id is: " + person.getCaseid());
+        grid.add(CaseId, 40, 28, 2, 1);
         CaseId.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
 
         ImageView Calendar = new ImageView("/resources/Calendar-icon.png");
@@ -560,31 +574,65 @@ public class EditForm {
         grid.add(Corendon, 1, 1, 10, 10);
 
         // Toevoegen van buttons
-        grid.getChildren().addAll(btn, btn2, btnS);
+        grid.getChildren().addAll(backBtn, btnS);
 
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
-//                int caseid = getCaseId();
-//                int labelnr = Integer.parseInt(labelT.getText());
-//                int flightnr = Integer.parseInt(flightT.getText());
-//                String airportName = airportT.getText();
-//
-//                String itemname = typeT.getText();
-//                String Brand = itemBrandT.getText();
-//                String color = itemColorT.getText();
-//                String description = addNotesT.getText();
-//                String dateFound = dateT.getText();
-//                String destination = destinationT.getText();
-//
-//                insertIntoDatabase(caseid, labelnr, flightnr,
-//                    airportName, destination, itemname, Brand,
-//                    color, description, dateFound);
+                // the case is gotten from the person object
+                int foundId = person.getCaseid();
+
+                // the info from the textfields are out in these variables
+                int labelnr = Integer.parseInt(labelT.getText());
+                int flightnr = Integer.parseInt(flightT.getText());
+                String firstName = firstNameT.getText();
+                String insertion = insertionT.getText();
+                String lastName = lastNameT.getText();
+                String airport = airportT.getText();
+                String destination = destinationT.getText();
+                String itemname = typeT.getText();
+                String brand = itemBrandT.getText();
+                String colors = itemColorT.getText();
+                String description = addNotesT.getText();
+                String dateFound = dateT.getText();
+
+                UpdateFoundLuggage(foundId, labelnr, flightnr,
+                    firstName, insertion, lastName, airport,
+                    destination, itemname, brand, colors,
+                    description, dateFound);
+
             }
         });
 
         return grid;
+
+    }
+
+    // this method will insert the updates made to the found luggage in the database
+    public void UpdateFoundLuggage(int foundId, int labelnr, int flightnr,
+        String firstName, String insertion, String lastName, String airport,
+        String destination, String itemname, String brand, String colors,
+        String description, String dateFound) {
+
+        try {
+
+            Connection newConnection = db.getConnection();
+            Statement statement = newConnection.createStatement();
+
+            String query = "UPDATE `corendon`.`foundluggage` SET `labelnr`= " + labelnr + ","
+                + "`flightnr`= " + flightnr + ", `ownerName`='" + firstName + "', "
+                + "`insertion`='" + insertion + "', `lastname`='" + lastName + "', "
+                + "`destination`='" + destination + "', `airport`='" + airport + "', "
+                + "`itemname`='" + itemname + "', `brand`='" + brand + "', `colors`='" + colors + "', "
+                + "`description`='" + description + "', "
+                + "`dateFound`='" + dateFound + "' WHERE `foundID`= " + foundId + ";";
+
+            statement.executeUpdate(query);
+        } catch (Exception ex) {
+            System.out.println("failed to insert data in to the database ");
+            System.err.println(ex.getMessage());
+        }
 
     }
 }

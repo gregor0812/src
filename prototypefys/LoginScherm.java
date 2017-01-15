@@ -2,7 +2,6 @@ package prototypefys;
 
 import database.Database;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import javafx.event.ActionEvent;
@@ -11,6 +10,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
@@ -26,7 +26,7 @@ import javafx.scene.text.Text;
 public class LoginScherm {
     
     private Button login = new Button();
-
+    private Button resetPassword = new Button();
     LoginScherm() {
 
     }
@@ -62,17 +62,17 @@ public class LoginScherm {
         
         root.add(Corendon, 0, 0, 2, 1);
         
-        Text username = new Text("Username:");
-        root.add(username, 0, 1);
-        username.setFill(Color.WHITE);
+        Label usernameL = new Label("Username:");
+        root.add(usernameL, 0, 1);
+       
         TextField userText = new TextField();
         userText.setPrefColumnCount(1);
         userText.setPrefWidth(100);
         root.add(userText, 1, 1);
 
-        Text password = new Text("Password:");
-        root.add(password, 0, 2);
-        password.setFill(Color.WHITE);
+        Label passwordL = new Label("Password:");
+        root.add(passwordL, 0, 2);
+        
         PasswordField passwordText = new PasswordField();
         passwordText.setPrefColumnCount(1);
         passwordText.setPrefWidth(10);
@@ -82,15 +82,16 @@ public class LoginScherm {
         
         Button login = new Button();
         login.setText("Login");
-        login.setStyle("-fx-background-color: #009b91;-fx-text-fill:#eaaf00");
+        login.setStyle("-fx-background-color: #ffffff;-fx-text-fill:BLACK");
+        
+        
+        Button resetPassword = new Button();
+        resetPassword.setText("Reset password");
+        resetPassword.setStyle("-fx-background-color: #ffffff;-fx-text-fill:BLACK");
 
-        root.setStyle("-fx-background-color: #16302e");
+        root.setStyle("-fx-background-color: #baf9ff");
+               
         
-        
-        
-        
-
-
 
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -106,9 +107,35 @@ public class LoginScherm {
             }
         });
         
+        resetPassword.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {                
+                
+               resetPassword scherm = new resetPassword();
+
+               GridPane resetPassword = scherm.maakPasswordReset();
+               rootpane.addnewpane(resetPassword);
+             
+            }
+        });
+        
+        root.setOnKeyPressed(e -> {
+            switch (e.getCode()) {
+                case ENTER:
+                  String username = userText.getText();
+                String password = passwordText.getText();
+                
+                
+                LoginCheck(username, password);
+                        
+                    
+                    break;
+            }
+        });
+       
+
         root.add(login, 0 , 3);
-        
-        
+        root.add(resetPassword, 0 , 4);
         
         return root;
     }
@@ -133,13 +160,13 @@ public class LoginScherm {
         
         ResultSet NumberUsers = statement2.executeQuery("select count(*) as total from employee;");
        
-        int kaka = 1;
+        
         if (NumberUsers.next()){
-        kaka = NumberUsers.getInt("total");
+        
         }
         
         String[] ListOfKnownUsers;
-           ListOfKnownUsers = new String[kaka];
+           ListOfKnownUsers = new String[10];
         
            
         for (int i = 0; knownUsers.next(); i++){
@@ -195,6 +222,8 @@ public class LoginScherm {
        alert.setHeaderText("Wrong password");
        alert.setContentText("Wrong password/username");
        alert.showAndWait();
+       
+       
        }   
         
            
@@ -207,6 +236,9 @@ public class LoginScherm {
               
            
    }
+   
+   
+   
     
    
 }

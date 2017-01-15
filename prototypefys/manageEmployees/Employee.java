@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package prototypefys.manageEmployees;
 
 import javafx.beans.property.IntegerProperty;
@@ -23,9 +18,10 @@ public class Employee {
     private StringProperty insertion;
     private StringProperty lastname;
     private StringProperty role;
+    private StringProperty email;
 
     public Employee(int employeenumber, String username, String password, String firstname, 
-        String insertion, String lastname, String role) {
+        String insertion, String lastname, String role, String email) {
         this.employeenumber = new SimpleIntegerProperty(employeenumber);
         this.username = new SimpleStringProperty(username);
         this.password = new SimpleStringProperty(password);
@@ -33,6 +29,7 @@ public class Employee {
         this.insertion = new SimpleStringProperty(insertion);
         this.lastname = new SimpleStringProperty(lastname);
         this.role = new SimpleStringProperty(role);
+        this.email = new SimpleStringProperty(email);
     }
     
     public int getEmployeenumber() {
@@ -89,6 +86,14 @@ public class Employee {
 
     public void setRole(String role) {
         this.role.set(role);
+    }
+    
+    public String getEmail(){
+        return email.get();
+    }
+    
+    public void setEmail(String email){
+        this.email.set(email);
     }
     
     

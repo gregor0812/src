@@ -18,6 +18,9 @@ public class LostLuggage {
 
     private IntegerProperty caseid;
     private IntegerProperty ownerid;
+    private StringProperty firstName;
+    private StringProperty insertion;
+    private StringProperty lastName;
     private IntegerProperty labelnr;
     private IntegerProperty flightnr;
     private StringProperty destination;
@@ -27,14 +30,19 @@ public class LostLuggage {
     private StringProperty colors;
     private StringProperty description;
     private StringProperty dateLost;
+    private StringProperty timeLost;
     private StringProperty status;
     
     
-    public LostLuggage(int caseid, int ownerid, int labelnr, int flightnr, String destination,
+    public LostLuggage(int caseid, int ownerid, String firstName, 
+        String insertion, String lastName, int labelnr, int flightnr, String destination,
         String airport, String itemname, String brand, String colors, 
-        String description, String dateLost, String status) {
+        String description, String dateLost, String timeLost, String status) {
         this.caseid =  new SimpleIntegerProperty(caseid);
         this.ownerid = new SimpleIntegerProperty(ownerid);
+        this.firstName = new SimpleStringProperty(firstName);
+        this.insertion = new SimpleStringProperty(insertion);
+        this.lastName = new SimpleStringProperty(lastName);
         this.labelnr = new SimpleIntegerProperty(labelnr);
         this.flightnr = new SimpleIntegerProperty(flightnr);
         this.destination = new SimpleStringProperty(destination);
@@ -44,6 +52,7 @@ public class LostLuggage {
         this.colors = new SimpleStringProperty(colors);
         this.description = new SimpleStringProperty(description);
         this.dateLost = new SimpleStringProperty(dateLost);
+        this.timeLost = new SimpleStringProperty(timeLost);
         this.status = new SimpleStringProperty(status);
     }
 
@@ -62,7 +71,31 @@ public class LostLuggage {
     public void setOwnerid(int ownerid) {
         this.ownerid.set(ownerid);
     }
+    
+    public String getFirstName(){
+        return firstName.get();
+    }
+    
+    public void setFirstName(String firstName) {
+        this.firstName.set(firstName);
+    }
+    
+    public String getInsertion() {
+        return insertion.get();
+    }
 
+    public void setInsertion(String insertion) {
+        this.insertion.set(insertion);
+    }
+    
+    public String getLastName() {
+        return lastName.get();
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName.set(lastName);
+    }
+    
     public int getLabelnr() {
         return labelnr.get();
     }
@@ -135,6 +168,13 @@ public class LostLuggage {
         this.dateLost.set(dateLost);
     }
     
+    public String getTimeLost() {
+        return timeLost.get();
+    }
+
+    public void setTimeLost(String timeLost) {
+     this.timeLost.set(timeLost);
+    }
     public String getStatus() {
         return status.get();
     }
