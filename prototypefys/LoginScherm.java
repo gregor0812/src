@@ -98,7 +98,7 @@ public class LoginScherm {
             @Override
             public void handle(ActionEvent event) {
                 
-        
+            
                 
                 
                 String username = userText.getText();

@@ -521,8 +521,9 @@ public class ReportLost {
             }
                 
 
-
-            matchCheckConnection.close();
+            // dit heb ik gecomment omdat ik een error kreeg dat ik niet iets
+            // kon invoeren nadat de connectie is gesloten
+            //matchCheckConnection.close();
 
         } catch (Exception ex) {
             System.out.println("Failed to insert data into the database ");

@@ -198,16 +198,18 @@ public class GenerateSignedPdf {
 
             // Make sure that the content stream is closed:
             contentStream.close();
-
+            
+            // this file chooser is used to select a directory to save to pdf
             JFileChooser f = new JFileChooser();
             f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             f.showSaveDialog(null);
 
             System.out.println(f.getCurrentDirectory());
             System.out.println(f.getSelectedFile());
+            
 
             // Save the results and ensure that the document is properly closed:
-            document.save(f.getCurrentDirectory() + "\\test.pdf");
+            document.save(f.getSelectedFile() + "\\test.pdf");
             document.close();
 
         } catch (Exception ex) {
