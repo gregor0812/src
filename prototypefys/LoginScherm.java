@@ -16,8 +16,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javax.swing.JFileChooser;
 
 /**
  *
@@ -47,6 +47,7 @@ public class LoginScherm {
 
     public GridPane MaakHetScherm() {
         
+                
         
         GridPane root = new GridPane();
         root.setAlignment(Pos.CENTER);
@@ -96,6 +97,8 @@ public class LoginScherm {
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                
+        
                 
                 
                 String username = userText.getText();
