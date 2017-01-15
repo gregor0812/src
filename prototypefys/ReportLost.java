@@ -78,9 +78,10 @@ public class ReportLost {
         grid.setHgap(10);
 
         GridPane.setConstraints(btn, 1, 15);
-
-        GridPane.setConstraints(btn2, 2, 15);
-
+        btn.setPrefSize(150, 50);
+        GridPane.setConstraints(btn2, 1, 16);
+        btn2.setPrefSize(150, 50);
+        
         GridPane.setConstraints(btnS, 39, 30, 2, 2);
         Label caseid = new Label();
         caseid.setText("The case id is: " + getCaseId());
@@ -91,7 +92,7 @@ public class ReportLost {
         OwnerId.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
         GridPane.setConstraints(caseid, 39, 29, 2, 1);
 
-        grid.setStyle("-fx-background-color: white");
+        grid.setStyle("-fx-background-color: #baf9ff");
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -266,7 +267,7 @@ public class ReportLost {
 
         grid.add(Calendar, 21, 17);
 
-        ImageView Corendon = new ImageView("/resources/corendon.jpg");
+        ImageView Corendon = new ImageView("/resources/CorendonAirlines.png");
         Corendon.setFitHeight(100);
         Corendon.setFitWidth(300);
 

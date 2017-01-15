@@ -86,7 +86,7 @@ public class submitCase {
         GridPane.setConstraints(btn, 1, 15);
         GridPane.setConstraints(btnS, 40, 31);
 
-        grid.setStyle("-fx-background-color: white");
+        grid.setStyle("-fx-background-color: #baf9ff");
 
         // the main menu button will return to the main menu through this action
         btn.setOnAction(new EventHandler<ActionEvent>() {
@@ -183,41 +183,70 @@ public class submitCase {
         grid.add(ownerFirstName, 30, 20, 10, 1);
         TextField ownerFirstNameT = new TextField();
         grid.add(ownerFirstNameT, 40, 20);
-        ownerFirstNameT.textProperty().addListener((listener) -> {
-            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(), "", "");
-        });
 
         // Label and textfield for owner insertions
         Label ownerInsertion = new Label("Insertion(s):");
         grid.add(ownerInsertion, 30, 21, 10, 1);
         TextField ownerInsertionT = new TextField();
         grid.add(ownerInsertionT, 40, 21);
-        ownerInsertionT.textProperty().addListener((listener) -> {
-            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
-                    ownerInsertionT.getText(), "");
-        });
 
         // Label and textfield for owner lastname
         Label ownerLastName = new Label("Last name: ");
         grid.add(ownerLastName, 30, 22, 10, 1);
         TextField ownerLastNameT = new TextField();
         grid.add(ownerLastNameT, 40, 22);
-        ownerLastNameT.textProperty().addListener((listener) -> {
-            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
-                    ownerInsertionT.getText(), ownerLastNameT.getText());
-        });
 
         // Combobox to display all owners that exist with the same name
         ComboBox foundCustomers = new ComboBox(foundOwnersList);
         foundCustomers.setMinSize(160, 20);
         foundCustomers.setMaxWidth(160);
+        foundCustomers.getSelectionModel().selectFirst();
+        foundCustomers.setStyle("-fx-background-color: white; "
+            + "-fx-base:white; -fx-border-color:darkred");
         grid.add(foundCustomers, 40, 23);
+
+        // Add Event when de combobox os shown
+        foundCustomers.setOnShown(((event) -> {
+
+            foundCustomers.setValue(null);
+
+            // Fill the combobox with found owners
+            listFoundOwners(foundOwnersList, ownerFirstNameT.getText(),
+                    ownerInsertionT.getText(), ownerLastNameT.getText());
+        }));
+
+        // Fill all textfields with data of the selected owner
         foundCustomers.valueProperty().addListener((listener) -> {
-            String selectedItem = foundCustomers.getValue().toString();
-            String[] test = selectedItem.replace(",", "").split(" ");
-            ownerFirstNameT.setText(test[1]);
-            ownerInsertionT.setText(test[2]);
-            ownerLastNameT.setText(test[3]);
+            // Check if the value of the checkbox contains a name
+            if (!"New".equals(foundCustomers.getValue().toString())) {
+                // Convert the selected item to a string
+                String selectedItem = foundCustomers.getValue().toString();
+                // Split the item into an array
+                String[] selectedItemArray = selectedItem.split(" ");
+                // Display the firstname in the textfield
+                ownerFirstNameT.setText(selectedItemArray[1]);
+                // Loop trough the remaining parts of the data
+                for (int i = 2; i < selectedItemArray.length; i++) {
+                    // Check if the part is the last name
+                    if (selectedItemArray[i].contains(",")) {
+                        // Remove the comma and display the lastname
+                        ownerLastNameT.setText(selectedItemArray[i]
+                                .replace(",", ""));
+                        break;
+                    } else {
+                        // Check if the insertion textfield is empty
+                        if ("".equals(ownerInsertionT.getText())) {
+                            // Add the first insertion to the textfield
+                            ownerInsertionT.setText(selectedItemArray[i]);
+                        } else {
+                            // Add the seccond insertion with a whtiespace
+                            ownerInsertionT.setText(ownerInsertionT.getText()
+                                    + " " + selectedItemArray[i]);
+                        }
+
+                    }
+                }
+            }
         });
 
         Label type = new Label("Type:");
@@ -251,7 +280,7 @@ public class submitCase {
         grid.add(Calendar, 21, 17);
 
         // an image of the corendon logo is made
-        ImageView Corendon = new ImageView("/resources/corendon.jpg");
+        ImageView Corendon = new ImageView("/resources/CorendonAirlines.png");
         Corendon.setFitHeight(100);
         Corendon.setFitWidth(300);
 
@@ -286,21 +315,17 @@ public class submitCase {
             } else {
                 flightnr = Integer.parseInt(flightT.getText());
             }
-            int ownerID = -1;
+
+            int ownerID = -1; // Used to identify the owner of the luggage
             if (foundCustomers.getValue() != "New") {
+                // Save the current selected item in a string
                 String item = foundCustomers.getValue().toString();
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < item.length(); i++) {
-                    if (Character.isDigit(item.charAt(i))) {
-                        sb.append(item.charAt(i));
-                        ownerID = Integer.parseInt(sb.toString());
-                    } else {
-                        break;
-                    }
-                }
-            } else {
-                ownerID = -1;
+
+                String[] test = item.split(" ");
+                
+                ownerID = Integer.parseInt(test[0]);
             }
+
             // the lugggage info will get the value of their respective fields
             String airportName = airportT.getText();
             String itemname = typeT.getText();
@@ -338,6 +363,7 @@ public class submitCase {
                 itemBrandT.setText("");
                 itemColorT.setText("");
                 addNotesT.setText("");
+                foundCustomers.getSelectionModel().clearSelection();
             } else {
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Error");
@@ -670,7 +696,7 @@ public class submitCase {
                         LostLuggageResult.getString(14),
                         LostLuggageResult.getString(15), LostLuggageResult.getString(16)));
             }
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println("Failed to retrieve matchinfo ");
             System.err.println(ex.getMessage());
         }
@@ -698,7 +724,7 @@ public class submitCase {
                         TableData.getString(15), TableData.getString(16)));
             }
 
-        } catch (Exception ex) {
+        } catch (SQLException ex) {
             System.out.println("Failed to retrieve matchinfo ");
             System.err.println(ex.getMessage());
         }
