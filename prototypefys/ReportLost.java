@@ -1,7 +1,5 @@
 package prototypefys;
 
-import cataloog.FoundLuggage;
-import cataloog.LostLuggage;
 import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -10,15 +8,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -28,6 +23,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.StringConverter;
+import cataloog.FoundLuggage;
+import cataloog.LostLuggage;
+import java.util.Optional;
+import javafx.scene.control.ButtonBar.ButtonData;
+import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -49,7 +49,6 @@ public class ReportLost {
     public GridPane MakeLostReport() {
 
         Button btn;
-        Button btn2;
         Button btnS;
 
         HBox Menu = new HBox();
@@ -59,12 +58,6 @@ public class ReportLost {
         btn.setPrefSize(110, 50);
         btn.setStyle("-fx-base:darkred;-fx-border-color:white");
         btn.setFont(Font.font("Verdana", 12));
-        // ------------------------------
-        btn2 = new Button(); // button 2
-        btn2.setText("Options");
-        btn2.setPrefSize(110, 50);
-        btn2.setStyle("-fx-base:darkred;-fx-border-color:white");
-        btn2.setFont(Font.font("Verdana", 12));
         //--------------------------------
         btnS = new Button(); // button Submit
         btnS.setText("Submit Case");
@@ -78,21 +71,21 @@ public class ReportLost {
         grid.setHgap(10);
 
         GridPane.setConstraints(btn, 1, 15);
-        btn.setPrefSize(150, 50);
-        GridPane.setConstraints(btn2, 1, 16);
-        btn2.setPrefSize(150, 50);
-        
+
+       
+
+
         GridPane.setConstraints(btnS, 39, 30, 2, 2);
         Label caseid = new Label();
         caseid.setText("The case id is: " + getCaseId());
         caseid.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
-
+        
         Label OwnerId = new Label("The owner id is: " + getOwnerId());
         grid.add(OwnerId, 39, 28, 2, 1);
         OwnerId.setFont(Font.font("Verdana", FontWeight.BOLD, 14));
         GridPane.setConstraints(caseid, 39, 29, 2, 1);
 
-        grid.setStyle("-fx-background-color: #baf9ff");
+        grid.setStyle("-fx-background-color: white");
 
         btn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -102,7 +95,7 @@ public class ReportLost {
             }
         });
 
-        Label Case = new Label("Lost");
+        Label Case = new Label("Destination");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 16, 15, 1);
 
@@ -116,10 +109,8 @@ public class ReportLost {
 
         Label date = new Label("Date:");
         grid.add(date, 10, 17, 10, 1);
-//        TextField dateT = new TextField();
-//        grid.add(dateT, 20, 17);
-//        dateT.setPromptText("yyyy-mm-dd");
-
+        
+        // this datepicker will be used to select dates
         DatePicker datePicker = new DatePicker();
         datePicker.setOnAction(new EventHandler() {
             @Override
@@ -129,7 +120,7 @@ public class ReportLost {
             }
         });
 
-        //datePicker.setPrefSize(200, 100);
+        // this pattern is the data format used
         String pattern = "yyyy-MM-dd";
 
         datePicker.setPromptText(pattern.toLowerCase());
@@ -157,6 +148,8 @@ public class ReportLost {
         });
 
         grid.add(datePicker, 20, 17);
+
+        
 
         Label airport = new Label("Airport:");
         grid.add(airport, 10, 18, 10, 1);
@@ -207,7 +200,7 @@ public class ReportLost {
         TextField phone2T = new TextField();
         grid.add(phone2T, 20, 25);
 
-        Label emailL = new Label("Email: ");
+        Label emailL = new Label("E-mail: ");
         grid.add(emailL, 10, 26, 10, 1);
         TextField emailT = new TextField();
         grid.add(emailT, 20, 26);
@@ -267,14 +260,14 @@ public class ReportLost {
 
         grid.add(Calendar, 21, 17);
 
-        ImageView Corendon = new ImageView("/resources/CorendonAirlines.png");
+        ImageView Corendon = new ImageView("/resources/corendon.jpg");
         Corendon.setFitHeight(100);
         Corendon.setFitWidth(300);
 
         grid.add(Corendon, 1, 1, 10, 10);
 
         // Toevoegen van buttons
-        grid.getChildren().addAll(btn, btn2, btnS, caseid);
+        grid.getChildren().addAll(btn, btnS, caseid);
 
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -282,19 +275,21 @@ public class ReportLost {
 
                 int ownerid = getOwnerId();
                 String firstname = naamReizigerT.getText();
-
+              
+                
                 String insertion = NameInsertionT.getText();
 
                 String Lastname = LastNameT.getText();
                 int phone1 = Integer.parseInt(phone1T.getText());
-
+                
                 // because phone number 2 is optional the value turn into 
                 // null if nothing is entered
                 Integer phone2 = null;
-                if (phone2T.getText().isEmpty()) {
+                if (phone2T.getText().isEmpty()){
                     phone2 = null;
-                } else {
-                    phone2 = Integer.parseInt(phone2T.getText());
+                }
+                else{
+                phone2 = Integer.parseInt(phone2T.getText());
                 }
                 String email = emailT.getText();
                 String notes = addOwnerNotesT.getText();
@@ -308,19 +303,25 @@ public class ReportLost {
                 String Brand = itemBrandT.getText();
                 String color = itemColorT.getText();
                 String description = addNotesT.getText();
-                String dateLost = datePicker.getValue().toString();
-
+                String dateFound = datePicker.getValue().toString();
+                
                 String address = ownerAddT.getText();
                 String city = ownerCityT.getText();
                 String zipcode = ownerZipT.getText();
                 String country = ownerCountryT.getText();
-
+                
                 insertIntoDatabase(ownerid, firstname, insertion,
                     Lastname, phone1, phone2, email, notes,
-                    caseid, labelnr, flightnr, destination, airportName,
-                    itemname, Brand, color, description, dateLost, address,
+                    caseid, labelnr, flightnr,destination, airportName,
+                    itemname, Brand, color, description, dateFound, address,
                     city, zipcode, country);
-
+                
+                Alert alertS = new Alert(Alert.AlertType.WARNING);
+                        alertS.setTitle("Submit");
+                        alertS.setHeaderText("Submit Case");
+                        alertS.setContentText("The case is submitted.");
+                        
+                           alertS.showAndWait(); 
             }
         });
 
@@ -375,7 +376,7 @@ public class ReportLost {
     public void insertIntoDatabase(int ownerid, String firstname, String insertion,
         String Lastname, int phone1, Integer phone2, String email, String notes,
         int caseid, int labelnr, int flightnr, String destination, String airportName,
-        String itemname, String Brand, String color, String description, String dateLost,
+        String itemname, String Brand, String color, String description, String dateLost, 
         String address, String city, String zipcode, String country) {
 
         try {
@@ -387,39 +388,59 @@ public class ReportLost {
             String databaseQuery = ("insert into luggageowner (ownerid, firstname, insertion, lastname, phone1, phone2, email, notes)"
                 + " values(" + ownerid + ", '" + firstname + "', '" + insertion + "', '"
                 + Lastname + "' , " + phone1 + ", " + phone2 + " ,  '" + email + "', '" + notes + "');");
-
-            String addressQuery = ("insert into address values (" + ownerid
-                + ",  '" + address + "' ,  '" + zipcode + "'"
-                + ",  '" + city + "' ,  '" + country + "')");
-
-            String query2 = (" insert into lostluggage (lostID, ownerid, labelnr,"
+                
+                String addressQuery = ("insert into address values (" + ownerid
+                    + ",  '" + address + "' ,  '" + zipcode + "'"
+                    + ",  '" + city + "' ,  '" + country + "')");
+                
+                String query2 = (" insert into lostluggage (lostID, ownerid, labelnr,"
                 + " flightr, destination, airport, itemname, brand, colors, description, `date lost`, status) "
-                + " values( " + caseid + " , " + ownerid + " , " + labelnr + ", "
-                + flightnr + " , '" + destination + "', '" + airportName + "' , '" + itemname
-                + "' , '" + Brand + "' , '" + color + "', '"
+                + " values( " + caseid + " , " + ownerid + " , " + labelnr + ", " 
+                + flightnr + " , '" + destination + "', '" + airportName + "' , '" + itemname 
+                + "' , '" + Brand + "' , '" + color + "', '" 
                 + description + "' , '" + dateLost + "', 'open');");
 
-            System.out.println(databaseQuery);
-
+                System.out.println(databaseQuery);
+                
             statement.executeUpdate(databaseQuery);
             statement.executeUpdate(query2);
             statement.executeUpdate(addressQuery);
 
-            try {
 
+            // this string is used to make a lostluggage object which is used to
+            // make a pdf and potentially a matchview
+            String LostLuggageInfoQuery = ("select lostluggage.lostID, lostluggage.ownerid, "
+                + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
+                + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
+                + "lostluggage.airport, lostluggage.itemname,"
+                + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
+                + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
+                + "inner join luggageowner"
+                + " on lostluggage.ownerid = luggageowner.ownerid "
+                + "where labelnr = " + labelnr);
+            // a LostLuggage object is made using the query
+            LostLuggage LostLuggageInfo = lostLuggageMatchInfo(LostLuggageInfoQuery);
+            
+            // a pdf is made using the lostluggage object
+            GenerateSignedPdf pdfmaker = new GenerateSignedPdf();
+            pdfmaker.MakePdf(LostLuggageInfo);
+
+
+            try {
+                
                 Statement statement2 = matchCheckConnection.createStatement();
-                ResultSet knownlabelnr = statement2.executeQuery("select labelnr from foundluggage "
-                    + "where labelnr != 0");
+                ResultSet knownlabelnr = statement2.executeQuery("select labelnr from foundluggage " +
+                "where labelnr != 0");
                 List rowValues = new ArrayList();
                 while (knownlabelnr.next()) {
                     rowValues.add(knownlabelnr.getInt(1));
                 }
 
+
                 Statement statement3 = matchCheckConnection.createStatement();
 
                 if (rowValues.contains(labelnr)) {
-                    
-                    
+
                     Statement owneridStatement = matchCheckConnection.createStatement();
 
                     // this resultset will contain the ownerid of the luggageowner
@@ -456,38 +477,53 @@ public class ReportLost {
 
                     if (result.get() == ViewMatchBtn) {
 
-                        String LostLuggageInfo = ("select lostluggage.lostID, lostluggage.ownerid, "
-                            + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
-                            + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
-                            + "lostluggage.airport, lostluggage.itemname,"
-                            + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
-                            + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
-                            + "inner join luggageowner"
-                            + " on lostluggage.ownerid = luggageowner.ownerid "
-                            + "where labelnr = " + labelnr);
-                            
                         String FoundLuggageInfo = ("select * from foundluggage "
                             + "where labelnr = " + labelnr);
-                        
-                                               
-                         matchInformatie matchinfo = new matchInformatie();
-                            GridPane infoScherm = matchinfo.matchInfo(lostLuggageMatchInfo(LostLuggageInfo),
+
+                        matchInformatie matchinfo = new matchInformatie();
+                        GridPane infoScherm = matchinfo.matchInfo(LostLuggageInfo,
                             foundLuggageMatchInfo(FoundLuggageInfo));
-                            rootpane.addnewpane(infoScherm);
-                    
-                  
-                    
+                        rootpane.addnewpane(infoScherm);
+
+                    }
+
                 }
+   
                 
                 
-            }
+               if(rowValues.contains(labelnr)){
+                   
+                   String updatestatus1 = "UPDATE `corendon`.`foundluggage` SET "
+                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+                   
+                   statement3.executeUpdate(updatestatus1);
+                   
+                   String updatestatus2 = "UPDATE `corendon`.`lostluggage` SET "
+                       + "`status`='matched' WHERE labelnr = " + labelnr + ";";
+                   
+                   statement3.executeUpdate(updatestatus2);
+                   
+                   Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("congrats");
+                        alert.setHeaderText("you got a match");
+                        alert.setContentText("a match has been found!");
+                        
+                           alert.showAndWait(); 
+               }
+                
+                
+                
+
                 System.out.println(rowValues);
             } catch (Exception ex) {
-                System.out.println("Failed to check for matches");
+                System.out.println("failed to check for matches");
                 System.err.println(ex.getMessage());
             }
+                
 
-            matchCheckConnection.close();
+            // dit heb ik gecomment omdat ik een error kreeg dat ik niet iets
+            // kon invoeren nadat de connectie is gesloten
+            //matchCheckConnection.close();
 
         } catch (Exception ex) {
             System.out.println("Failed to insert data into the database ");
@@ -497,18 +533,16 @@ public class ReportLost {
     }
 
     public LostLuggage lostLuggageMatchInfo(String query) {
-        
-        
-        
+
         LostLuggage LostInfo = null;
 
         try {
-            
+
             Connection matchCheckConnection = db.getConnection();
             Statement statement = matchCheckConnection.createStatement();
-            
+
             ResultSet LostLuggageResult = statement.executeQuery(query);
-            
+
             while (LostLuggageResult.next()) {
 
                 LostInfo = (new LostLuggage(LostLuggageResult.getInt(1), LostLuggageResult.getInt(2),
@@ -521,11 +555,17 @@ public class ReportLost {
                     LostLuggageResult.getString(14),
                     LostLuggageResult.getString(15), LostLuggageResult.getString(16)));
             }
+
+         matchCheckConnection.close();
+
+
         } catch (Exception ex) {
-            System.out.println("Failed to retrieve matchinfo ");
+            System.out.println("failed to inser data in to the database ");
             System.err.println(ex.getMessage());
         }
 
+
+        // this method makes a pdf with all the user info
         return LostInfo;
     }
 
@@ -533,27 +573,38 @@ public class ReportLost {
 
         FoundLuggage FoundInfo = null;
         try {
-            
+
             Connection matchCheckConnection = db.getConnection();
             Statement statement = matchCheckConnection.createStatement();
-            
+
             ResultSet TableData = statement.executeQuery(query);
-            
-            while (TableData.next()){
-            FoundInfo = (new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
-                TableData.getInt(4), TableData.getString(5), TableData.getString(6),
-                TableData.getString(7), TableData.getString(9),
-                TableData.getString(8), TableData.getString(10),
-                TableData.getString(11), TableData.getString(12),
-                TableData.getString(13), TableData.getString(14), 
-                TableData.getString(15), TableData.getString(16)));
+
+            while (TableData.next()) {
+                FoundInfo = (new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
+                    TableData.getInt(4), TableData.getString(5), TableData.getString(6),
+                    TableData.getString(7), TableData.getString(9),
+                    TableData.getString(8), TableData.getString(10),
+                    TableData.getString(11), TableData.getString(12),
+                    TableData.getString(13), TableData.getString(14),
+                    TableData.getString(15), TableData.getString(16)));
             }
-            
+
         } catch (Exception ex) {
             System.out.println("Failed to retrieve matchinfo ");
             System.err.println(ex.getMessage());
         }
-        
+
         return FoundInfo;
     }
-}
+    }
+
+//    public TableView userInfo(){
+//        
+//        
+//        
+//        
+//        
+//        
+//    }
+
+
