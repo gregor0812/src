@@ -23,7 +23,9 @@ import javax.swing.JFileChooser;
  *
  * @author Koen Hengsdijk
  */
+
 public class LoginScherm {
+        public static String ingelogdeEmployee;
     
     private Button login = new Button();
     private Button resetPassword = new Button();
@@ -32,8 +34,7 @@ public class LoginScherm {
     }
     
    
-    
-    
+
     
     private Database db = new Database();
     
@@ -106,6 +107,7 @@ public class LoginScherm {
                 
                 
                 LoginCheck(username, password);
+                
                // rootpane.addnewpane(homescreen);
             }
         });
@@ -143,7 +145,7 @@ public class LoginScherm {
         return root;
     }
     
-    
+   
    public void LoginCheck(String username, String password){
        
        try {
@@ -217,6 +219,7 @@ public class LoginScherm {
        }
        
        if (GoodPassword){
+           ingelogdeEmployee = username;
            firstConnection.close();
        }
        else{
@@ -235,12 +238,14 @@ public class LoginScherm {
             System.out.println(ex);
         }
                     
-       
+
               
            
    }
    
-   
+          public String GetingelogdeEmployee(){
+           return ingelogdeEmployee;
+       }
    
     
    

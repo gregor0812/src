@@ -25,6 +25,7 @@ import javafx.scene.layout.VBox;
 public class HomeScreen {
     
     Rootpane rootpane = new Rootpane();
+    String ingelogdeEmployee = LoginScherm.ingelogdeEmployee;
 // een commit
 
  
@@ -68,7 +69,7 @@ public class HomeScreen {
                 
                 BagageCatalogue scherm2 = new BagageCatalogue();
                 GridPane cataloog = scherm2.MaakCatalogue();
-                
+                System.out.println(ingelogdeEmployee);
                 rootpane.addnewpane(cataloog);
             }
             });
@@ -169,5 +170,6 @@ public class HomeScreen {
         hbox.getChildren().addAll(vbox1);
     
         return hbox;
+        
         }
 }   
