@@ -99,7 +99,7 @@ public class ReportGeneration {
         Button ShowFound = new Button(); // button 1
         ShowFound.setText("Show found luggage per airport");
         ShowFound.setPrefSize(210, 50);
-        ShowFound.setStyle("-fx-base:darkred;-fx-border-color:white");
+        ShowFound.setStyle("-fx-base: #BC3434;-fx-border-color:white");
         ShowFound.setFont(Font.font("Verdana", 12));
         ShowFound.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -126,10 +126,10 @@ public class ReportGeneration {
                         + "from foundluggage "
                         + "where airport is not null "
                         + "group by airport";
-                    String LostLuggageName = "found bagage per airport";
+                    String LostLuggageName = "Found luggage per airport";
 
-                     String xAxisName = "airport";
-                    String yAxisName = "lost luggage";
+                     String xAxisName = "Airport";
+                    String yAxisName = "Lost luggage";
                     
                     setBarchartData(BarChartQuery, LostLuggageName, xAxisName, yAxisName);
                     
@@ -146,7 +146,7 @@ public class ReportGeneration {
         Button ShowLost = new Button(); // button 1
         ShowLost.setText("Show lost luggage per airport");
         ShowLost.setPrefSize(210, 50);
-        ShowLost.setStyle("-fx-base:darkred;-fx-border-color:white");
+        ShowLost.setStyle("-fx-base: #BC3434;-fx-border-color:white");
         ShowLost.setFont(Font.font("Verdana", 12));
         ShowLost.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -160,7 +160,7 @@ public class ReportGeneration {
                         + "where airport is not null "
                         + "group by airport";
                     // this is the title of the piechart
-                    String LostLuggageName = "lost bagage per airport";
+                    String LostLuggageName = "Lost luggage per airport";
 
                     setPieChartData(LostAirportQuery, LostLuggageName);
                     root.setCenter(null);
@@ -174,9 +174,9 @@ public class ReportGeneration {
                         + "from lostluggage "
                         + "where airport is not null "
                         + "group by airport";
-                    String LostLuggageName = "lost bagage per airport";
-                     String xAxisName = "airport";
-                    String yAxisName = "lost luggage";
+                    String LostLuggageName = "Lost luggage per airport";
+                     String xAxisName = "Airport";
+                    String yAxisName = "Lost luggage";
                     // a barchart is made using the query
                     setBarchartData(BarChartQuery, LostLuggageName, xAxisName, yAxisName);
                     root.setCenter(null);
@@ -192,7 +192,7 @@ public class ReportGeneration {
 
         ShowBarChart.setPrefSize(210, 50);
         ShowBarChart.setText("Show barchart");
-        ShowBarChart.setStyle("-fx-base:darkred;-fx-border-color:white");
+        ShowBarChart.setStyle("-fx-base: #BC3434;-fx-border-color:white");
         ShowBarChart.setFont(Font.font("Verdana", 12));
         ShowBarChart.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -204,9 +204,9 @@ public class ReportGeneration {
                         + "from lostluggage "
                         + "where airport is not null "
                         + "group by airport";
-                    String LostLuggageName = "lost bagage per airport";
-                    String xAxisName = "airport";
-                    String yAxisName = "lost luggage";
+                    String LostLuggageName = "Lost luggage per airport";
+                    String xAxisName = "Airport";
+                    String yAxisName = "Lost luggage";
                     
                     
                     setBarchartData(BarChartQuery, LostLuggageName, xAxisName, yAxisName);
@@ -224,7 +224,7 @@ public class ReportGeneration {
                         + "from lostluggage "
                         + "where airport is not null "
                         + "group by airport";
-                    String LostLuggageName = "lost bagage per airport";
+                    String LostLuggageName = "Lost luggage per airport";
 
                     setPieChartData(LostAirportQuery, LostLuggageName);
 
@@ -241,13 +241,13 @@ public class ReportGeneration {
             + "from lostluggage "
             + "where airport is not null "
             + "group by airport";
-        String LostLuggageName = "lost bagage per airport";
+        String LostLuggageName = "Lost luggage per airport";
 
         setPieChartData(LostAirportQuery, LostLuggageName);
 
         HBox dateControls = new HBox();
         
-        Label startDateLabel = new Label("select a starting date: ");
+        Label startDateLabel = new Label("Select a starting date: ");
         
         
         // this datepicker selects the start date to get data out of a certain period
@@ -260,7 +260,7 @@ public class ReportGeneration {
             }
         });
         
-        String pattern = "yyyy-MM-dd";
+        String pattern = "yyyy-mm-dd";
         startDate.setPromptText(pattern.toLowerCase());
         startDate.setConverter(new StringConverter<LocalDate>() {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);
@@ -284,7 +284,7 @@ public class ReportGeneration {
             }
         });
         
-        Label endDateLabel = new Label("select a ending date: ");
+        Label endDateLabel = new Label("Select a ending date: ");
         
         DatePicker endDate = new DatePicker();
         endDate.setOnAction(new EventHandler() {
@@ -318,7 +318,7 @@ public class ReportGeneration {
             }
         });
         
-        Button DateSelection = new Button("show selection");
+        Button DateSelection = new Button("Show selection");
         DateSelection.setPrefSize(180, 20);
         DateSelection.setStyle("-fx-base:darkred;-fx-border-color:white");
         DateSelection.setFont(Font.font("Verdana", 12));
@@ -341,7 +341,7 @@ public class ReportGeneration {
                 + "where airport is not null and `date lost` between '" 
                 + beginDate + "' and '" + endingDate + "' "
                 + "group by airport";
-                String LostLuggageName = "lost luggage per airport between " 
+                String LostLuggageName = "Lost luggage per airport between " 
                 + beginDate + " and " + endingDate ;
                  setPieChartData(LostAirportQuery, LostLuggageName);
             
@@ -356,7 +356,7 @@ public class ReportGeneration {
                 + "where airport is not null and `dateFound` between '" 
                 + beginDate + "' and '" + endingDate + "' "
                 + "group by airport";
-                String LostLuggageName = "found luggage per airport between " 
+                String LostLuggageName = "Found luggage per airport between " 
                 + beginDate + " and " + endingDate ;
                  setPieChartData(LostAirportQuery, LostLuggageName);
                     
@@ -404,7 +404,7 @@ public class ReportGeneration {
             }
 
         } catch (Exception ex) {
-            System.out.println("exception 2 ");
+            System.out.println("Exception 2 ");
         }
 
         
@@ -439,7 +439,7 @@ public class ReportGeneration {
             Statement statement = ReportGenerationConnect.createStatement();
             ResultSet TableData = statement.executeQuery(query);
 
-            series1.setName("airportname");
+            series1.setName("Airportname");
             while (TableData.next()) {
 
                 series1.getData().add(new XYChart.Data(TableData.getString(1), TableData.getInt(2)));
@@ -447,7 +447,7 @@ public class ReportGeneration {
             }
 
         } catch (Exception ex) {
-            System.out.println("exception 2 ");
+            System.out.println("Exception 2 ");
         }
 
         bc.getData().addAll(series1);

@@ -295,7 +295,7 @@ public class BagageCatalogue {
             }
         });
         
-        Button FoundWithouthLabel = new Button("show found luggage \n with no label");
+        Button FoundWithouthLabel = new Button("Show found luggage\nwith no label");
         FoundWithouthLabel.setMinSize(150, 40);
         FoundWithouthLabel.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -317,7 +317,7 @@ public class BagageCatalogue {
         });
         
         // this button will display the table with found luggage
-        Button showFound = new Button("show found luggage");
+        Button showFound = new Button("Show found luggage");
         showFound.setMinSize(150, 40);
         showFound.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -389,8 +389,8 @@ public class BagageCatalogue {
 
                     } catch (Exception ex) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("error");
-                        alert.setHeaderText("delete case");
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Delete case");
                         alert.setContentText("Select a case to delete");
 
                         alert.showAndWait();
@@ -408,7 +408,7 @@ public class BagageCatalogue {
 
                     } catch (Exception ex) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("error");
+                        alert.setTitle("Error");
                         alert.setHeaderText("Delete case");
                         alert.setContentText("Select a case to delete");
 
@@ -452,8 +452,8 @@ public class BagageCatalogue {
                     } else {
                         // an alert that will be shown if nothing is selected
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("error");
-                        alert.setHeaderText("edit case");
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Edit case");
                         alert.setContentText("Select a case to edit");
 
                         alert.showAndWait();
@@ -472,8 +472,8 @@ public class BagageCatalogue {
                     } else {
                         // an alert that will be shown if nothing is selected
                         Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("error");
-                        alert.setHeaderText("edit case");
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Edit case");
                         alert.setContentText("Select a case to edit");
 
                         alert.showAndWait();
@@ -804,7 +804,7 @@ public class BagageCatalogue {
                 brandColumn, colorsColumn, descriptionColumn, dateFoundColumn, 
                 timeFoundColumn, statusColumn);
         } catch (Exception ex) {
-            System.out.println("exception 2 ");
+            System.out.println("Exception 2 ");
             System.out.println(ex);
         }
 
@@ -822,7 +822,7 @@ public class BagageCatalogue {
                 + " ='" + id + "';");
 
         } catch (Exception ex) {
-            System.out.println("failed to delete case ");
+            System.out.println("Failed to delete case ");
             System.out.println(ex);
         }
 

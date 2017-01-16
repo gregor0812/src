@@ -3,6 +3,7 @@ package prototypefys;
 import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,9 +17,6 @@ import javafx.scene.text.Text;
 import javax.mail.*;
 import java.util.*;
 import javafx.scene.control.Alert;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
 import javax.mail.internet.*;
 
 /**
@@ -54,62 +52,61 @@ public class resetPassword {
         TextField userText = new TextField();
         userText.setPrefColumnCount(1);
         userText.setPrefWidth(100);
-        basis.add(userText, 5, 2);
+        basis.add(userText, 5, 2,1,1);
 
         //Short explanation for the user.
-        Text explanation = new Text("Your password will be resetted, your new password will be sent to you mailbox");
-        basis.add(explanation, 4, 0);
+        Text explanation = new Text("Your password will be resetted, your new password will be sent to you mailbox.");
+        basis.add(explanation, 4, 0, 10,1);
         username.setFill(Color.BLACK);
 
         //Creates the button that will activate the "password reset" procedure
         Button resetPassword = new Button();
-        resetPassword.setText("Reset password");
+        resetPassword.setText("Confirm");
+        resetPassword.setPrefSize(100, 20);
         resetPassword.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
-        resetPassword.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                try {
-
-                    Connection emailConnection = db.getConnection();
-                    Statement statement = emailConnection.createStatement();
-
-                    String email = getUserEmail(userText.getText());
-
-                    //generates new password
-                    int generatedPassword;
-                    generatedPassword = (int) (Math.random() * 999999 + 99999);
-                    System.out.println(generatedPassword);
-
-                    String databaseQuery = ("UPDATE `corendon`.`employee` SET `password`=" + generatedPassword + " WHERE `email`= '" + email + "';");
-                    System.out.println(databaseQuery);
-                    statement.executeUpdate(databaseQuery);
-
-                    String RECIPIENT = email;
-                    String from = EMAIL_USER_NAME;
-                    String pass = EMAIL_PASSWORD;
-                    String[] to = {RECIPIENT};
-                    String subject = "Corendon password reset.";
-                    String body = "You have succesfully resetted your password, your new password is: " + generatedPassword + ". "
-                            + "Please store this password in a safe location.";
-                    //send mail
-                    sendFromGMail(from, pass, to, subject, body);
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Password reset ");                   
-                    alert.setContentText("Password reset has been sent");
-                    alert.showAndWait();
-
-                } catch (Exception ex) {
-                    System.out.println("failed to reset password");
-                    System.out.println(ex);
-                }
-
+        resetPassword.setOnAction((ActionEvent event) -> {
+            try {
+                
+                Connection emailConnection = db.getConnection();
+                Statement statement = emailConnection.createStatement();
+                
+                String email = getUserEmail(userText.getText());
+                
+                //generates new password
+                int generatedPassword;
+                generatedPassword = (int) (Math.random() * 999999 + 99999);
+                System.out.println(generatedPassword);
+                
+                //String encryptedPassword = Encription.encrypt(generatedPassword);
+                
+                String databaseQuery = ("UPDATE `corendon`.`employee` SET `password`=" + generatedPassword + " WHERE `email`= '" + email + "';");
+                System.out.println(databaseQuery);
+                statement.executeUpdate(databaseQuery);
+                
+                String RECIPIENT = email;
+                String from = EMAIL_USER_NAME;
+                String pass = EMAIL_PASSWORD;
+                String[] to = {RECIPIENT};
+                String subject = "Corendon password reset.";
+                String body = "You have succesfully resetted your password, your new password is: " + generatedPassword + ". "
+                        + "Please store this password in a safe location.";
+                //send mail
+                sendFromGMail(from, pass, to, subject, body);
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Password reset ");
+                alert.setContentText("Password reset has been sent");
+                alert.showAndWait();
+                
+            } catch (SQLException ex) {
+                System.out.println("failed to reset password");
+                System.out.println(ex);
             }
         });
 
         basis.add(resetPassword, 4, 3);
 
         //creates button that sends you back to the loginscreen
-        Button back = new Button("Logout ");
+        Button back = new Button("Cancel");
         back.setStyle("-fx-base:darkred;-fx-border-color:white");
         back.setPrefSize(100, 20);
         back.setOnAction(new EventHandler<ActionEvent>() {

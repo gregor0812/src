@@ -1,15 +1,14 @@
 package prototypefys;
 
 import database.Database;
-import static java.awt.SystemColor.window;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.print.PrinterJob;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -83,8 +82,7 @@ public class LoginScherm {
 
 
         login.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
-        
-        
+
 
         Button resetPassword = new Button();
         resetPassword.setText("Reset password");
@@ -93,19 +91,25 @@ public class LoginScherm {
 
         root.setStyle("-fx-background-color: #baf9ff");
         root.setStyle("-fx-background-color: white");
-               
-        
 
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
 
-                
-
                 String username = userText.getText();
                 String password = passwordText.getText();
 
-                LoginCheck(username, password);
+
+                if (loginCheck(username, password)) {
+                    rootpane.addnewpane(homescreen);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Verification error");
+                    alert.setHeaderText("Wrong password/username");
+                    alert.setContentText("Wrong password/username");
+                    alert.showAndWait();
+                }
+
 
                 // rootpane.addnewpane(homescreen);
             }
@@ -129,7 +133,19 @@ public class LoginScherm {
                     String username = userText.getText();
                     String password = passwordText.getText();
 
-                    LoginCheck(username, password);
+
+                    loginCheck(username, password);
+
+                    if (loginCheck(username, password)) {
+                        rootpane.addnewpane(homescreen);
+                        break;
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Verification error");
+                        alert.setHeaderText("Wrong password/username");
+                        alert.setContentText("Wrong password/username");
+                        alert.showAndWait();
+                    }
 
                     break;
             }
@@ -139,112 +155,6 @@ public class LoginScherm {
         root.add(resetPassword, 0, 4);
 
         return root;
-    }
-
-    public void LoginCheck(String username, String password) {
-
-        try {
-
-            Connection firstConnection = db.getConnection();
-
-            Statement statement = firstConnection.createStatement();
-            Statement statement2 = firstConnection.createStatement();
-            Statement statement3 = firstConnection.createStatement();
-            Statement statement4 = firstConnection.createStatement();
-            Statement statement5 = firstConnection.createStatement();
-            Statement statement6 = firstConnection.createStatement();
-            System.out.println("database connected");
-
-            ResultSet knownUsers
-                = statement.executeQuery("SELECT username, password FROM employee;");
-
-            System.out.println(knownUsers + "teststring");
-
-            ResultSet NumberUsers = statement2.executeQuery("select count(*) as total from employee;");
-
-            if (NumberUsers.next()) {
-
-            }
-
-            String[] ListOfKnownUsers;
-            ListOfKnownUsers = new String[10];
-
-            for (int i = 0; knownUsers.next(); i++) {
-                ListOfKnownUsers[i]
-                    = (knownUsers.getString(1) + " " + knownUsers.getString(2));
-                System.out.println(ListOfKnownUsers[i]);
-            }
-
-            String EnteredUser = username + " " + password;
-
-            boolean GoodPassword = false;
-
-            // checks the role 
-            String role = "";
-
-            ResultSet roleSet = statement3.executeQuery("select role from employee "
-                + "where password = '" + password + "'");
-            while (roleSet.next()) {
-                role = roleSet.getString(1);
-            }
-            // Check user ID
-
-            ResultSet IDCheck = statement4.executeQuery("select employeenumber from employee "
-                + "where password = '" + password + "'");
-            while (IDCheck.next()) {
-                sessionEmployeeID = IDCheck.getString(1);
-            }
-            //Check FirstName
-
-            ResultSet nameCheck = statement5.executeQuery("select firstname from employee "
-                + "where password = '" + password + "'");
-            while (nameCheck.next()) {
-                sessionEmployeeName = nameCheck.getString(1);
-            }
-            //Check LastName
-
-            ResultSet lastNameCheck = statement6.executeQuery("select lastname from employee "
-                + "where password = '" + password + "'");
-            while (nameCheck.next()) {
-                sessionEmployeeLastName = nameCheck.getString(1);
-            }
-
-            for (int i = 0; i < ListOfKnownUsers.length; i++) {
-                if (EnteredUser.equals(ListOfKnownUsers[i])) {
-
-                    if ("admin".equals(role)) {
-
-                        rootpane.addnewpane(homescreen);
-                        GoodPassword = true;
-                        break;
-                    } else {
-
-                        rootpane.addnewpane(HomeEmployee);
-                        GoodPassword = true;
-                        break;
-
-                    }
-
-                }
-
-            }
-
-            if (GoodPassword) {
-                firstConnection.close();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Wrong password");
-                alert.setHeaderText("Wrong password");
-                alert.setContentText("Wrong password/username");
-                alert.showAndWait();
-
-            }
-
-        } catch (Exception ex) {
-            System.out.println("exception 2 ");
-            System.out.println(ex);
-        }
-
     }
 
     public String GetSessionID() {
@@ -259,4 +169,53 @@ public class LoginScherm {
         return sessionEmployeeLastName;
     }
 
-}
+    /**
+     * Check the entered credentials and save the account info
+     * 
+     * @param username The username used to login
+     * @param password The password used to login
+     * @return True if the verification is successfull
+     */
+    public boolean loginCheck(String username, String password) {
+
+        // Encrypt password
+        password = Encription.encrypt(password);
+
+        // SQL query to 
+        String sql = "SELECT employeenumber, username, password, firstname, "
+                + "insertion, lastname, role, email "
+                + "FROM employee "
+                + "WHERE username = '" + username + "' "
+                + "AND password = '" + password + "' "
+                + "LIMIT 1";
+
+        try {
+            // Load the databse connection
+            Connection conn = db.getConnection();
+            // Create a statement
+            Statement stmt = conn.createStatement();
+            // Create a resultset to store all 
+            ResultSet rs = stmt.executeQuery(sql);
+            // Loop through all results
+            while (rs.next()) {
+                // Save user data in
+                DataCache.setUsername(rs.getString("username"));
+                DataCache.setPassword(rs.getString("password"));
+                DataCache.setFirstname(rs.getString("firstname"));
+                DataCache.setInsertion(rs.getString("insertion"));
+                DataCache.setLastname(rs.getString("lastname"));
+                DataCache.setRole(rs.getString("role"));
+                DataCache.setEmail(rs.getString("email"));
+                // Return true
+                return true;
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
+        }
+
+        return false;
+
+    }
+
+    }
