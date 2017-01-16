@@ -16,14 +16,18 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import javax.swing.JFileChooser;
 
 /**
  *
  * @author Koen Hengsdijk
  */
+
 public class LoginScherm {
+        public static String sessionEmployeeID= "";
+        public static String sessionEmployeeName= "";
+        public static String sessionEmployeeLastName= "";
     
     private Button login = new Button();
     private Button resetPassword = new Button();
@@ -32,8 +36,7 @@ public class LoginScherm {
     }
     
    
-    
-    
+
     
     private Database db = new Database();
     
@@ -47,6 +50,7 @@ public class LoginScherm {
 
     public GridPane MaakHetScherm() {
         
+                
         
         GridPane root = new GridPane();
         root.setAlignment(Pos.CENTER);
@@ -97,12 +101,15 @@ public class LoginScherm {
             @Override
             public void handle(ActionEvent event) {
                 
+            
+                
                 
                 String username = userText.getText();
                 String password = passwordText.getText();
                 
                 
                 LoginCheck(username, password);
+                
                // rootpane.addnewpane(homescreen);
             }
         });
@@ -140,7 +147,7 @@ public class LoginScherm {
         return root;
     }
     
-    
+   
    public void LoginCheck(String username, String password){
        
        try {
@@ -151,6 +158,9 @@ public class LoginScherm {
         Statement statement = firstConnection.createStatement();
         Statement statement2 = firstConnection.createStatement();
         Statement statement3 = firstConnection.createStatement();
+        Statement statement4 = firstConnection.createStatement();
+        Statement statement5 = firstConnection.createStatement();
+        Statement statement6 = firstConnection.createStatement();
         System.out.println("database connected");
         
         ResultSet knownUsers
@@ -179,7 +189,7 @@ public class LoginScherm {
       
        boolean GoodPassword = false;
        
-       // checks the role
+       // checks the role 
        String role= "";
        
        ResultSet roleSet = statement3.executeQuery("select role from employee " +
@@ -187,6 +197,29 @@ public class LoginScherm {
        while(roleSet.next()){
         role = roleSet.getString(1);
        }
+       // Check user ID
+
+       ResultSet IDCheck = statement4.executeQuery("select employeenumber from employee " +
+        "where password = '" +  password + "'");
+       while(IDCheck.next()){
+       sessionEmployeeID= IDCheck.getString(1);
+       }
+       //Check FirstName
+
+       ResultSet nameCheck = statement5.executeQuery("select firstname from employee " +
+        "where password = '" +  password + "'");
+       while(nameCheck.next()){
+       sessionEmployeeName= nameCheck.getString(1);
+       }
+       //Check LastName
+
+       ResultSet lastNameCheck = statement6.executeQuery("select lastname from employee " +
+        "where password = '" +  password + "'");
+       while(nameCheck.next()){
+       sessionEmployeeLastName= nameCheck.getString(1);
+       }
+       
+       
        
        
        for (int i = 0; i < ListOfKnownUsers.length; i++){
@@ -232,12 +265,20 @@ public class LoginScherm {
             System.out.println(ex);
         }
                     
-       
+
               
            
    }
    
-   
+          public String GetSessionID(){
+           return sessionEmployeeID;
+       }
+          public String GetSessionName(){
+              return sessionEmployeeName;
+          }
+          public String GetSessionLastName(){
+              return sessionEmployeeLastName;
+          }
    
     
    
