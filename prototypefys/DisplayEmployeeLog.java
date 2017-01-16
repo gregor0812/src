@@ -63,8 +63,9 @@ public class DisplayEmployeeLog extends HomeScreen{
                 // the data will be added to the arraylist
                 EmployeeLog.setItems(logList);
                 
-
+//ik probeer wel effe te restarten
             }
+            
             
             }
         catch(Exception e){
