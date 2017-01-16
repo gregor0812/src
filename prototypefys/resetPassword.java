@@ -188,28 +188,5 @@ public class resetPassword {
 
         return email;
     }
-
-    /*
-    //generates new password
-    int generatedPassword;
-
-    generatedPassword  = (int) (Math.random() * 999999 + 100000);
-
-    String randomGetal = "";
-    for (int i = 0; i < 8; i++) {
-        randomGetal += String.valueOf((int) (Math.random() * ((10 - 1) + 1)));
-    }
-    
-    
-    System.out.println (generatedPassword);
-
-//sets new password
-    String databaseQuery
-            = ("UPDATE `corendon`.`employee` SET `password`" + generatedPassword + " WHERE `email`= " + email + "; ");
-
-//sends generatedPassword to email of employee
-    xxx SHERM --> USERNAME BUTTON CLICK --> ''GENERATED PASSWORD METHODED ACTIVATED''
-
-
-     */
 }
+   
