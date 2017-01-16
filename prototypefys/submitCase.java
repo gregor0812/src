@@ -44,18 +44,33 @@ import static prototypefys.LoginScherm.sessionEmployeeID;
  */
 public class submitCase {
 
+
+   
+  
+   
     Rootpane rootpane = new Rootpane();
     private static HomeScreen nieuwscherm = new HomeScreen();
     private static HBox homescreen = nieuwscherm.maakhomescreen();
-
+     
     private Database db = new Database();
+    
+private static String lognaam;
+
+   
+   
+  
+
 
     submitCase() {
-
+ 
     }
 
+    
+    
     public GridPane MakeSubmitScreen() {
 
+        
+        
         Button btn;
         Button btn2;
         Button btnS;
@@ -547,11 +562,20 @@ public class submitCase {
 
                 ownerId = getOwnerID(firstname, insertion, lastname);
                 
-                String query = " insert into simplelogs (EmployeeID, EmployeeFirstName, EmployeeLastName, Action)"
-        + " values (?, ?, ?, ?)";
                 
+                String query = " insert into simplelogs (EmployeeFirstname, EmployeeLastName, Action)"
+        + " values (?, ?, ?)";
                 
-                PreparedStatement.setInt(1,sessionEmployeeID);
+                PreparedStatement logging = insertNewOwner.prepareStatement(query);
+                
+
+
+
+                logging.setString(1, DataCache.getFirstname());
+                logging.setString(2,DataCache.getLastname());
+                logging.setString(3,"Created case ID "+caseid);
+                
+                logging.execute();
 
 
             } catch (SQLException e) {
@@ -560,6 +584,7 @@ public class submitCase {
             }
         }
 
+    
         try {
 
             // a connection is made
@@ -584,7 +609,7 @@ public class submitCase {
                     + "'" + Brand + "', "
                     + "'" + color + "', "
                     + "'" + description + "', "
-                    + "'" + dateFound + "', "
+                    + "'" + dateFound + "', "  
                     + "'" + time + "', "
                     + "'open'"
                     + ");");
@@ -596,7 +621,7 @@ public class submitCase {
 
             // een resultset met verloren labelnummers
             try {
-
+ 
                 Statement statement2 = matchCheckConnection.createStatement();
                 ResultSet knownlabelnr = statement2.executeQuery("select labelnr from lostluggage");
                 List rowValues = new ArrayList();
@@ -742,4 +767,10 @@ public class submitCase {
         return FoundInfo;
     }
 
+    private String lognaam() {
+    lognaam = DataCache.getFirstname();
+    return lognaam;
 }
+    }
+
+
