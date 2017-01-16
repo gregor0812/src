@@ -49,7 +49,7 @@ public class EditForm {
         HBox Menu = new HBox();
         // ------------------------------
         btnmainmenu = new Button(); // button 1
-        btnmainmenu.setText("return to catalogue");
+        btnmainmenu.setText("Return to catalogue");
         btnmainmenu.setPrefSize(250, 50);
         btnmainmenu.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnmainmenu.setFont(Font.font("Verdana", 12));
@@ -93,7 +93,7 @@ public class EditForm {
             }
         });
 
-        Label Case = new Label("lost");
+        Label Case = new Label("Lost");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 16, 15, 1);
 
@@ -135,32 +135,32 @@ public class EditForm {
         OwnerInfo.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(OwnerInfo, 10, 20, 12, 1);
 
-        Label naamReiziger = new Label("first Name:");
+        Label naamReiziger = new Label("First Name:");
         grid.add(naamReiziger, 10, 21, 10, 1);
         TextField naamReizigerT = new TextField(getOwnerinfo(person.getOwnerid(), 2));
         grid.add(naamReizigerT, 20, 21);
 
-        Label NameInsertion = new Label("insertion:");
+        Label NameInsertion = new Label("Insertion:");
         grid.add(NameInsertion, 10, 22, 10, 1);
         TextField NameInsertionT = new TextField(getOwnerinfo(person.getOwnerid(), 3));
         grid.add(NameInsertionT, 20, 22);
 
-        Label lastName = new Label("last name:");
+        Label lastName = new Label("Last name:");
         grid.add(lastName, 10, 23, 10, 1);
         TextField LastNameT = new TextField(getOwnerinfo(person.getOwnerid(), 4));
         grid.add(LastNameT, 20, 23);
 
-        Label phone1 = new Label("phone number 1:");
+        Label phone1 = new Label("Phone number 1:");
         grid.add(phone1, 10, 24, 10, 1);
         TextField phone1T = new TextField(getOwnerinfo(person.getOwnerid(), 5));
         grid.add(phone1T, 20, 24);
 
-        Label phone2L = new Label("phone number 2:");
+        Label phone2L = new Label("Phone number 2:");
         grid.add(phone2L, 10, 25, 10, 1);
         TextField phone2T = new TextField(getOwnerinfo(person.getOwnerid(), 6));
         grid.add(phone2T, 20, 25);
 
-        Label emailL = new Label("email: ");
+        Label emailL = new Label("E-mail: ");
         grid.add(emailL, 10, 26, 10, 1);
         TextField emailT = new TextField(getOwnerinfo(person.getOwnerid(), 7));
         grid.add(emailT, 20, 26);
@@ -300,7 +300,7 @@ public class EditForm {
             }
 
         } catch (Exception ex) {
-            System.out.println("failed to get user information");
+            System.out.println("Failed to get user information");
             System.err.println(ex.getMessage());
         }
 
@@ -324,7 +324,7 @@ public class EditForm {
             }
 
         } catch (Exception ex) {
-            System.out.println("failed to get user information");
+            System.out.println("Failed to get user information");
             System.err.println(ex.getMessage());
         }
 
@@ -414,9 +414,9 @@ public class EditForm {
 
                     // an alert is displayed to notify the user of the match
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("congrats");
-                    alert.setHeaderText("you got a match");
-                    alert.setContentText("a match has been found!");
+                    alert.setTitle("Congrats");
+                    alert.setHeaderText("You got a match");
+                    alert.setContentText("A match has been found!");
 
                     alert.showAndWait();
                 }
@@ -424,14 +424,14 @@ public class EditForm {
                 System.out.println(rowValues);
 
             } catch (Exception ex) {
-                System.out.println("failed to check for matches");
+                System.out.println("Failed to check for matches");
                 System.err.println(ex.getMessage());
             }
             // the connection is closed
             newConnection.close();
 
         } catch (Exception ex) {
-            System.out.println("failed to insert data in to the database ");
+            System.out.println("Failed to insert data in to the database ");
             System.err.println(ex.getMessage());
         }
 
@@ -446,7 +446,7 @@ public class EditForm {
 
         // this button will return the user to the catalogue
         backBtn = new Button();
-        backBtn.setText("back to catalogue");
+        backBtn.setText("Back to catalogue");
         backBtn.setPrefSize(160, 50);
         backBtn.setStyle("-fx-base:darkred;-fx-border-color:white");
         backBtn.setFont(Font.font("Verdana", 12));
@@ -522,12 +522,12 @@ public class EditForm {
         TextField destinationT = new TextField(person.getDestination());
         grid.add(destinationT, 40, 19);
 
-        Label firstNameL = new Label("first name traveler:");
+        Label firstNameL = new Label("First name traveler:");
         grid.add(firstNameL, 30, 20, 10, 1);
         TextField firstNameT = new TextField(person.getFirstName());
         grid.add(firstNameT, 40, 20);
 
-        Label insertionL = new Label("insertion:");
+        Label insertionL = new Label("Insertion:");
         grid.add(insertionL, 30, 21, 10, 1);
         TextField insertionT = new TextField(person.getInsertion());
         grid.add(insertionT, 40, 21);
@@ -630,7 +630,7 @@ public class EditForm {
 
             statement.executeUpdate(query);
         } catch (Exception ex) {
-            System.out.println("failed to insert data in to the database ");
+            System.out.println("Failed to insert data in to the database ");
             System.err.println(ex.getMessage());
         }
 
