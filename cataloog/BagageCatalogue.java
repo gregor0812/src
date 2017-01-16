@@ -68,7 +68,7 @@ public class BagageCatalogue {
         root.setAlignment(Pos.TOP_LEFT);
         root.getColumnConstraints().add(new ColumnConstraints(200));
         root.setPadding(new Insets(30, 30, 30, 30));
-        root.setStyle("-fx-background-color: #baf9ff");
+        root.setStyle("-fx-background-color: white");
         
         GridPane Zoekscherm = new GridPane();
         Zoekscherm.setPadding(new Insets(25, 25, 25, 25));
