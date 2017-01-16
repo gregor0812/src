@@ -46,24 +46,34 @@ public class DisplayEmployeeLog extends HomeScreen{
     DisplayEmployeeLog(){
         
     }
-//    public void buildData(){
-//
-//        logList = FXCollections.observableArrayList();
-//        try{
-//                        Connection c = db.getConnection();
-//            Statement statement = c.createStatement();
-//                       //SQL FOR SELECTING ALL OF CUSTOMER
-//            String SQL = "SELECT * from CUSTOMer";
-//            //ResultSet
-//            ResultSet rs = c.createStatement().executeQuery(SQL);
-//            
-//            while(rs.next()){
-//                ObservableList<String
-//            }
-//
-//        }
-//    }
-//    
+    public void buildData(){
+
+        logList = FXCollections.observableArrayList();
+        try{
+                        Connection c = db.getConnection();
+            Statement statement = c.createStatement();
+
+            String SQL = "SELECT * from CUSTOMer";
+            
+            ResultSet rs = c.createStatement().executeQuery(SQL);
+            
+            logList = FXCollections.observableArrayList();
+            while (rs.next()) {
+                //Iterate Row
+                // the data will be added to the arraylist
+                EmployeeLog.setItems(logList);
+                
+
+            }
+            
+            }
+        catch(Exception e){
+            e.printStackTrace();
+            System.out.println("Error");
+
+        }
+    }
+    
     
     
    
