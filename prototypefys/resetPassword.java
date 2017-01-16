@@ -16,6 +16,9 @@ import javafx.scene.text.Text;
 import javax.mail.*;
 import java.util.*;
 import javafx.scene.control.Alert;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.internet.*;
 
 /**
@@ -147,11 +150,15 @@ public class resetPassword {
             }
             message.setSubject(subject);
             message.setText(body);
+           
+             
+            
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (MessagingException me) {
+            System.out.println(me);
         }
     }
 
