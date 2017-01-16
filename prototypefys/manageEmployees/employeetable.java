@@ -31,6 +31,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import prototypefys.Encription;
 import prototypefys.Rootpane;
 import prototypefys.adminScherm;
 
@@ -354,6 +355,9 @@ public class employeetable {
             Connection employeetableConnect = db.getConnection();
             Statement statement = employeetableConnect.createStatement();
             
+            // Encrupt the password
+            password = Encription.encrypt(password);
+            
             // this query will update the user info using the data entered into the method
             String databaseQuery = ("UPDATE `corendon`.`employee` SET username ="
                 + "'" + username + "', " + "`password`='" + password + "', firstname = "
@@ -535,6 +539,9 @@ public class employeetable {
             Connection employeetableConnect = db.getConnection();
             Statement statement = employeetableConnect.createStatement();
 
+            // Encrypt the password
+            password = Encription.encrypt(password);
+            
             String databaseQuery = ("insert into employee" +
             " values (" + employeenumber + ", '" + username + "', '" + password 
                 + "', '" + firstname + "', '" + insertion + "', '" + lastname 
