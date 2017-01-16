@@ -41,6 +41,8 @@ public class resetPassword {
         basis.setHgap(10);
         basis.setVgap(10);
         basis.setPadding(new Insets(10, 10, 10, 10));
+        
+        basis.setStyle("-fx-background-color: white");
 
         //Creates textarea for the username
         Text username = new Text("Username:");
@@ -59,7 +61,7 @@ public class resetPassword {
         //Creates the button that will activate the "password reset" procedure
         Button resetPassword = new Button();
         resetPassword.setText("Reset password");
-        resetPassword.setStyle("-fx-background-color: #009b91;-fx-text-fill:#eaaf00");
+        resetPassword.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
         resetPassword.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -105,7 +107,7 @@ public class resetPassword {
 
         //creates button that sends you back to the loginscreen
         Button back = new Button("Logout ");
-        back.setStyle("-fx-background-color: #009b91;-fx-text-fill:#eaaf00");
+        back.setStyle("-fx-base:darkred;-fx-border-color:white");
         back.setPrefSize(100, 20);
         back.setOnAction(new EventHandler<ActionEvent>() {
             @Override

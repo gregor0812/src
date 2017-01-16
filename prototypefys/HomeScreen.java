@@ -74,7 +74,7 @@ public class HomeScreen {
             });
     
             Button bt_RFB = new Button("Report Found Baggage ");
-            bt_RFB.setStyle("-fx-base:darkred;-fx-border-color:black");  
+            bt_RFB.setStyle("-fx-base:darkred;-fx-border-color:white");  
             bt_RFB.setPrefSize(160, 50);
             bt_RFB.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -87,7 +87,7 @@ public class HomeScreen {
             });
             
             Button bt_RLB = new Button("Report Lost Baggage ");
-            bt_RLB.setStyle("-fx-base:darkred;-fx-border-color:black"); 
+            bt_RLB.setStyle("-fx-base:darkred;-fx-border-color:white"); 
             bt_RLB.setPrefSize(160, 50);
             bt_RLB.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -101,7 +101,7 @@ public class HomeScreen {
 
             
             Button bt_ADM = new Button("Admin");
-            bt_ADM.setStyle("-fx-base:darkred;-fx-border-color:black"); 
+            bt_ADM.setStyle("-fx-base:darkred;-fx-border-color:white"); 
             bt_ADM.setPrefSize(120, 50);
             bt_ADM.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -114,7 +114,7 @@ public class HomeScreen {
             });
                         
             Button bt_LOG = new Button("Logout ");
-            bt_LOG.setStyle("-fx-base:darkred;-fx-border-color:black");  
+            bt_LOG.setStyle("-fx-base:darkred;-fx-border-color:white");  
             bt_LOG.setPrefSize(120, 50);
             bt_LOG.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -129,11 +129,11 @@ public class HomeScreen {
 //            bt_OPT.setStyle("-fx-base:darkred;-fx-border-color:black");   
 //            bt_OPT.setPrefSize(120, 50);            
             Button bt_STA = new Button("Statistics");
-            bt_STA.setStyle("-fx-base:darkred;-fx-border-color:black");   
+            bt_STA.setStyle("-fx-base:darkred;-fx-border-color:white");   
             bt_STA.setPrefSize(120, 50);
            
             
-            hbox.setStyle("-fx-background-color: #baf9ff");
+            hbox.setStyle("-fx-background-color: white");
             
  //           bt_VEC.setPrefSize(180, 20);
             bt_VBC.setPrefSize(180, 50);

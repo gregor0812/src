@@ -86,7 +86,7 @@ public class submitCase {
         GridPane.setConstraints(btn, 1, 15);
         GridPane.setConstraints(btnS, 40, 31);
 
-        grid.setStyle("-fx-background-color: #baf9ff");
+        grid.setStyle("-fx-background-color: white");
 
         // the main menu button will return to the main menu through this action
         btn.setOnAction(new EventHandler<ActionEvent>() {

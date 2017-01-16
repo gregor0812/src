@@ -56,6 +56,8 @@ public class DisplayEmployeeLog {
         
         Scene scene = new Scene(emplog, 900, 800);
         
+        emplog.setStyle("-fx-background-color: white");
+        
         ObservableList<Logs> logList = FXCollections.observableArrayList(
                 new Logs("001", "Fisher", "Deleted record"), 
                 new Logs("002", "Freed", "Created new case"), 
@@ -103,7 +105,8 @@ public class DisplayEmployeeLog {
         
                     Button bt_backButton = new Button("Back ");
             bt_backButton.setPrefSize(100, 50);
-
+            bt_backButton.setStyle("-fx-base:darkred;-fx-border-color:white");
+            
             bt_backButton.setOnAction(new EventHandler<ActionEvent>() {
              @Override
              public void handle(ActionEvent event) {
