@@ -3,6 +3,7 @@ package cataloog;
 import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,6 +11,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.SnapshotParameters;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
@@ -18,12 +20,14 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.WritableImage;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import prototypefys.HomeScreen;
 import prototypefys.Rootpane;
+import prototypefys.matchInformatie;
 
 /**
  *
@@ -36,6 +40,7 @@ public class BagageCatalogue {
     private static final HomeScreen thuisScherm = new HomeScreen();
     private static final HBox mainmenu = thuisScherm.maakhomescreen();
     private static final EditForm LostLuggageEdit = new EditForm();
+    private static final matchInformatie matchinfo = new matchInformatie();
     private Database db = new Database();
 
     private ObservableList<LostLuggage> data;
@@ -71,8 +76,8 @@ public class BagageCatalogue {
         Zoekscherm.setVgap(10);
         Zoekscherm.setStyle("-fx-base:darkred;-fx-border-color:darkred");
         Zoekscherm.setAlignment(Pos.CENTER);
-        Zoekscherm.setPrefSize(250, 430);
-        Zoekscherm.setMaxSize(250, 430);
+        Zoekscherm.setPrefSize(250, 460);
+        Zoekscherm.setMaxSize(250, 460);
 
 
         StackPane EmptyPane = new StackPane();
@@ -479,6 +484,115 @@ public class BagageCatalogue {
             }
         });
         
+        Button viewMatch = new Button("view match \n information");
+        viewMatch.setMinSize(150, 40);
+        viewMatch.setStyle("-fx-base:darkred;-fx-border-color:white");
+        viewMatch.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                 
+                  // the boolean will determine wether the lost or found luggage is selected
+                if (lostOrFound) {
+                    
+                    
+                    // a object of the person class wil be made with the selected values
+                    LostLuggage person = catalogue.getSelectionModel().getSelectedItem();
+                    
+                    
+
+                    if (person != null) {
+                        
+                        if("matched".equals(catalogue.getSelectionModel()
+                        .getSelectedItem().getStatus())){
+                            
+                        // an viewmatch form will be made with the person
+                        //class and the selected values
+                        
+                     FoundLuggage FoundLuggageMatch = foundLuggageMatchInfo(catalogue.getSelectionModel()
+                            .getSelectedItem().getLabelnr());
+                        
+                     GridPane infoScherm = matchinfo.matchInfo(person, FoundLuggageMatch);
+                        // the editform is added to the screen
+                        basisPane.addnewpane(infoScherm);
+                        }
+                        
+                        else{
+                        // an alert that will be shown if nothing is selected
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("error");
+                        alert.setHeaderText("view match");
+                        alert.setContentText("this case is not yet matched");
+
+                        alert.showAndWait();
+                        }  
+                        
+                    } else {
+                        // an alert that will be shown if nothing is selected
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("error");
+                        alert.setHeaderText("view match");
+                        alert.setContentText("Select a matched case to view");
+
+                        alert.showAndWait();
+                    }
+                  
+                     
+                    
+                }
+                else{
+                    
+                    
+                    // a object of the person class wil be made with the selected values
+                    FoundLuggage FoundMatchInfo = 
+                        catalogueFound.getSelectionModel().getSelectedItem();
+                    
+                    // if no value is selected then a warning will be displayed
+                    if (FoundMatchInfo != null) {
+                        
+                         if("matched".equals(catalogueFound.getSelectionModel()
+                        .getSelectedItem().getStatus())){
+                             
+                        LostLuggage LostLuggageMatch = lostLuggageMatchInfo(catalogueFound.getSelectionModel()
+                            .getSelectedItem().getLabelnr());     
+                        
+                        // an view match form will be made with the person class and 
+                        //the selected values
+                         GridPane infoScherm = matchinfo.matchInfo(LostLuggageMatch, FoundMatchInfo);
+                        // the editform is added to the screen
+                        basisPane.addnewpane(infoScherm);
+                        
+                        
+                         }
+                         
+                         else{
+                        // an alert that will be shown if nothing is selected
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("error");
+                        alert.setHeaderText("view match");
+                        alert.setContentText("this case is not yet matched");
+
+                        alert.showAndWait();
+                        }  
+                        
+                        
+                        
+                    } else {
+                        // an alert that will be shown if nothing is selected
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("error");
+                        alert.setHeaderText("edit case");
+                        alert.setContentText("Select a case to edit");
+
+                        alert.showAndWait();
+                    }
+                                       
+                }
+                
+            }
+        }); 
+        
+        
+        
         
 
         hbox.getChildren().addAll(buttonMainMenu);
@@ -494,13 +608,17 @@ public class BagageCatalogue {
         Zoekscherm.add(FoundWithouthLabel, 1, 5);
         Zoekscherm.add(showLost, 1, 6);
         Zoekscherm.add(deleteCase, 1, 7 );
+        Zoekscherm.add(viewMatch, 1, 8);
         Zoekscherm.add(tabelKnoppen, 1, 2);
         root.add(EmptyPane, 0, 1);
         root.add(Zoekscherm, 0, 3);
         root.add(hbox, 0, 2);
         root.add(EmptyPane2, 1, 1);
 
-        //root.add(catalogue, 2, 3, 2, 3);
+       
+       
+        
+        
         return root;
 
     }
@@ -709,5 +827,69 @@ public class BagageCatalogue {
         }
 
     }
+    
+    public FoundLuggage foundLuggageMatchInfo(int labelnr) {
+        
+       String query = "select * from foundluggage where labelnr = " + labelnr;
+        
+        FoundLuggage FoundInfo = null;
+        try {
 
+            Connection matchCheckConnection = db.getConnection();
+            Statement statement = matchCheckConnection.createStatement();
+
+            ResultSet TableData = statement.executeQuery(query);
+
+            while (TableData.next()) {
+                FoundInfo = (new FoundLuggage(TableData.getInt(1), TableData.getInt(2), TableData.getInt(3),
+                    TableData.getInt(4), TableData.getString(5), TableData.getString(6),
+                    TableData.getString(7), TableData.getString(9),
+                    TableData.getString(8), TableData.getString(10),
+                    TableData.getString(11), TableData.getString(12),
+                    TableData.getString(13), TableData.getString(14),
+                    TableData.getString(15), TableData.getString(16)));
+            }
+
+        } catch (Exception ex) {
+            System.out.println("Failed to retrieve matchinfo ");
+            System.err.println(ex.getMessage());
+        }
+
+        return FoundInfo;
+    }
+    
+    public LostLuggage lostLuggageMatchInfo(int labelnr) {
+        
+        String query = "select * from lostluggage where labelnr = " + labelnr;
+        
+        LostLuggage LostInfo = null;
+
+        try {
+
+            Connection matchCheckConnection = db.getConnection();
+            Statement statement = matchCheckConnection.createStatement();
+
+            ResultSet LostLuggageResult = statement.executeQuery(query);
+
+            while (LostLuggageResult.next()) {
+
+                LostInfo = (new LostLuggage(LostLuggageResult.getInt(1), LostLuggageResult.getInt(2),
+                        LostLuggageResult.getString(3), LostLuggageResult.getString(4),
+                        LostLuggageResult.getString(5), LostLuggageResult.getInt(6),
+                        LostLuggageResult.getInt(7), LostLuggageResult.getString(8),
+                        LostLuggageResult.getString(9),
+                        LostLuggageResult.getString(10), LostLuggageResult.getString(11),
+                        LostLuggageResult.getString(12), LostLuggageResult.getString(13),
+                        LostLuggageResult.getString(14),
+                        LostLuggageResult.getString(15), LostLuggageResult.getString(16)));
+            }
+        } catch (SQLException ex) {
+            System.out.println("Failed to retrieve matchinfo ");
+            System.err.println(ex.getMessage());
+        }
+
+        return LostInfo;
+    }
+    
+    
 }

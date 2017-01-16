@@ -7,7 +7,6 @@ package prototypefys;
 
 import cataloog.LostLuggage;
 import java.io.File;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.swing.JFileChooser;
@@ -16,32 +15,28 @@ import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDFont;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
-import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 /**
  *
  * @author Koen Hengsdijk
  */
-public class GenerateSignedPdf {
+public class matchInfoPdf {
 
-    public GenerateSignedPdf() {
+    matchInfoPdf() {
+
     }
-
-    // the matchinfo is called upon to use the getowner method 
-    // and the get owneraddres method
     private matchInformatie matchinfo = new matchInformatie();
 
-    public void MakePdf(LostLuggage person) {
-
+    public void maakMatchPdf(LostLuggage person) {
         try {
 
-            File pdfTemplate = new File("src\\resources\\pdf\\ConfirmationForm.pdf");
+            File pdfTemplate = new File("src\\resources\\pdf\\MatchInformation.pdf");
 
             // Create a document and add a page to it
             PDDocument document = new PDDocument().load(pdfTemplate);
             PDPage page = document.getPage(0);
 
-// Create a new font object selecting one of the PDF base fonts
+            // Create a new font object selecting one of the PDF base fonts
             PDFont font = PDType1Font.HELVETICA;
 
             // Start a new content stream which will "hold" 
@@ -62,14 +57,13 @@ public class GenerateSignedPdf {
             contentStream.moveTextPositionByAmount(104, 524);
             contentStream.drawString(person.getInsertion());
             contentStream.endText();
-            
-           
+
             // this content stream places the last name of the customer in the pdf
             contentStream.beginText();
             contentStream.setFont(font, 11);
             contentStream.moveTextPositionByAmount(112, 503);
             contentStream.drawString(person.getLastName());
-           
+
             contentStream.endText();
 
             // this content stream places the first phone numberer of the 
@@ -202,7 +196,7 @@ public class GenerateSignedPdf {
 
             // Make sure that the content stream is closed:
             contentStream.close();
-            
+
             // this file chooser is used to select a directory to save to pdf
             JFileChooser f = new JFileChooser();
             f.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -210,19 +204,15 @@ public class GenerateSignedPdf {
 
             System.out.println(f.getCurrentDirectory());
             System.out.println(f.getSelectedFile());
-            
 
             // Save the results and ensure that the document is properly closed:
-            document.save(f.getSelectedFile() + "\\test.pdf");
+            document.save(f.getSelectedFile() + "\\matchinfo.pdf");
             document.close();
 
         } catch (Exception ex) {
             System.out.println("exception 2 ");
             System.out.println(ex);
         }
-
     }
-    
-     
 
 }
