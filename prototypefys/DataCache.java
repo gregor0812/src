@@ -16,6 +16,7 @@ public class DataCache {
     private static String role; // Permission role of the user
     private static String firstname; // First name of the user
     private static String insertion; // Insertion of the user
+    private static String lastname; // The lastname of the user
 
     /**
      * Get the firstname
@@ -50,7 +51,6 @@ public class DataCache {
     public static void setLastname(String lastname) {
         DataCache.lastname = lastname;
     }
-    private static String lastname; // The lastname of the user
 
     public static String getUsername() {
         return username;
