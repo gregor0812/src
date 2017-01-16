@@ -3,6 +3,7 @@ package prototypefys;
 import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -23,52 +24,46 @@ import javax.swing.JFileChooser;
  *
  * @author Koen Hengsdijk
  */
-
 public class LoginScherm {
-        public static String sessionEmployeeID= "";
-        public static String sessionEmployeeName= "";
-        public static String sessionEmployeeLastName= "";
-    
+
+    public static String sessionEmployeeID = "";
+    public static String sessionEmployeeName = "";
+    public static String sessionEmployeeLastName = "";
+
     private Button login = new Button();
     private Button resetPassword = new Button();
+
     LoginScherm() {
 
     }
-    
-   
 
-    
     private Database db = new Database();
-    
+
     private HomeScreen nieuwscherm = new HomeScreen();
     private HBox homescreen = nieuwscherm.maakhomescreen();
-    
+
     private homeScreenEmployee employeeScherm = new homeScreenEmployee();
-    private HBox HomeEmployee= employeeScherm.maakhomescreen();
-    
+    private HBox HomeEmployee = employeeScherm.maakhomescreen();
+
     Rootpane rootpane = new Rootpane();
 
     public GridPane MaakHetScherm() {
-        
-                
-        
+
         GridPane root = new GridPane();
         root.setAlignment(Pos.CENTER);
         root.setHgap(10);
         root.setVgap(10);
         root.setPadding(new Insets(10, 10, 10, 10));
-        
 
         ImageView Corendon = new ImageView("/resources/CorendonAirlines.png");
         Corendon.setFitHeight(100);
         Corendon.setFitWidth(300);
 
-        
         root.add(Corendon, 0, 0, 2, 1);
-        
+
         Label usernameL = new Label("Username:");
         root.add(usernameL, 0, 1);
-       
+
         TextField userText = new TextField();
         userText.setPrefColumnCount(1);
         userText.setPrefWidth(100);
@@ -76,210 +71,129 @@ public class LoginScherm {
 
         Label passwordL = new Label("Password:");
         root.add(passwordL, 0, 2);
-        
+
         PasswordField passwordText = new PasswordField();
         passwordText.setPrefColumnCount(1);
         passwordText.setPrefWidth(10);
         root.add(passwordText, 1, 2);
 
-        
-        
         Button login = new Button();
         login.setText("Login");
         login.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
-        
-        
+
         Button resetPassword = new Button();
         resetPassword.setText("Reset password");
         resetPassword.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
 
         root.setStyle("-fx-background-color: white");
-               
-        
 
         login.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
-            
-                
-                
+
                 String username = userText.getText();
                 String password = passwordText.getText();
-                
-                
-                LoginCheck(username, password);
-                
-               // rootpane.addnewpane(homescreen);
+
+                if (loginCheck(username, password)) {
+                    rootpane.addnewpane(homescreen);
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setTitle("Verification error");
+                    alert.setHeaderText("Wrong password/username");
+                    alert.setContentText("Wrong password/username");
+                    alert.showAndWait();
+                }
+
+                // rootpane.addnewpane(homescreen);
             }
         });
-        
+
         resetPassword.setOnAction(new EventHandler<ActionEvent>() {
             @Override
-            public void handle(ActionEvent event) {                
-                
-               resetPassword scherm = new resetPassword();
+            public void handle(ActionEvent event) {
 
-               GridPane resetPassword = scherm.maakPasswordReset();
-               rootpane.addnewpane(resetPassword);
-             
+                resetPassword scherm = new resetPassword();
+
+                GridPane resetPassword = scherm.maakPasswordReset();
+                rootpane.addnewpane(resetPassword);
+
             }
         });
-        
+
         root.setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case ENTER:
-                  String username = userText.getText();
-                String password = passwordText.getText();
-                
-                
-                LoginCheck(username, password);
-                        
-                    
+                    String username = userText.getText();
+                    String password = passwordText.getText();
+
+                    if (loginCheck(username, password)) {
+                        rootpane.addnewpane(homescreen);
+                        break;
+                    } else {
+                        Alert alert = new Alert(Alert.AlertType.WARNING);
+                        alert.setTitle("Verification error");
+                        alert.setHeaderText("Wrong password/username");
+                        alert.setContentText("Wrong password/username");
+                        alert.showAndWait();
+                    }
+
                     break;
             }
         });
-       
 
-        root.add(login, 0 , 3);
-        root.add(resetPassword, 0 , 4);
-        
+        root.add(login, 0, 3);
+        root.add(resetPassword, 0, 4);
+
         return root;
     }
-    
-   
-   public void LoginCheck(String username, String password){
-       
-       try {
-        
-        Connection firstConnection = db.getConnection();
-        
-       
-        Statement statement = firstConnection.createStatement();
-        Statement statement2 = firstConnection.createStatement();
-        Statement statement3 = firstConnection.createStatement();
-        Statement statement4 = firstConnection.createStatement();
-        Statement statement5 = firstConnection.createStatement();
-        Statement statement6 = firstConnection.createStatement();
-        System.out.println("database connected");
-        
-        ResultSet knownUsers
-                = statement.executeQuery("SELECT username, password FROM employee;");
-        
-        System.out.println(knownUsers + "teststring");
-        
-        ResultSet NumberUsers = statement2.executeQuery("select count(*) as total from employee;");
-       
-        
-        if (NumberUsers.next()){
-        
+
+    /**
+     * Check the entered credentials and save the account info
+     * 
+     * @param username The username used to login
+     * @param password The password used to login
+     * @return True if the verification is successfull
+     */
+    public boolean loginCheck(String username, String password) {
+
+        // Encrypt password
+        password = Encription.encrypt(password);
+
+        // SQL query to 
+        String sql = "SELECT employeenumber, username, password, firstname, "
+                + "insertion, lastname, role, email "
+                + "FROM employee "
+                + "WHERE username = '" + username + "' "
+                + "AND password = '" + password + "' "
+                + "LIMIT 1";
+
+        try {
+            // Load the databse connection
+            Connection conn = db.getConnection();
+            // Create a statement
+            Statement stmt = conn.createStatement();
+            // Create a resultset to store all 
+            ResultSet rs = stmt.executeQuery(sql);
+            // Loop through all results
+            while (rs.next()) {
+                // Save user data in
+                DataCache.setUsername(rs.getString("username"));
+                DataCache.setPassword(rs.getString("password"));
+                DataCache.setFirstname(rs.getString("firstname"));
+                DataCache.setInsertion(rs.getString("insertion"));
+                DataCache.setLastname(rs.getString("lastname"));
+                DataCache.setRole(rs.getString("role"));
+                DataCache.setEmail(rs.getString("email"));
+                // Return true
+                return true;
+            }
+
+        } catch (SQLException e) {
+            System.err.println(e.getMessage());
         }
-        
-        String[] ListOfKnownUsers;
-           ListOfKnownUsers = new String[10];
-        
-           
-        for (int i = 0; knownUsers.next(); i++){
-            ListOfKnownUsers[i] = 
-                (knownUsers.getString(1) + " " + knownUsers.getString(2) );
-                System.out.println(ListOfKnownUsers[i]);
-        }
-        
-       String EnteredUser = username + " " + password;
-      
-       boolean GoodPassword = false;
-       
-       // checks the role 
-       String role= "";
-       
-       ResultSet roleSet = statement3.executeQuery("select role from employee " +
-        "where password = '" +  password + "'");
-       while(roleSet.next()){
-        role = roleSet.getString(1);
-       }
-       // Check user ID
 
-       ResultSet IDCheck = statement4.executeQuery("select employeenumber from employee " +
-        "where password = '" +  password + "'");
-       while(IDCheck.next()){
-       sessionEmployeeID= IDCheck.getString(1);
-       }
-       //Check FirstName
+        return false;
 
-       ResultSet nameCheck = statement5.executeQuery("select firstname from employee " +
-        "where password = '" +  password + "'");
-       while(nameCheck.next()){
-       sessionEmployeeName= nameCheck.getString(1);
-       }
-       //Check LastName
+    }
 
-       ResultSet lastNameCheck = statement6.executeQuery("select lastname from employee " +
-        "where password = '" +  password + "'");
-       while(nameCheck.next()){
-       sessionEmployeeLastName= nameCheck.getString(1);
-       }
-       
-       
-       
-       
-       for (int i = 0; i < ListOfKnownUsers.length; i++){
-           if(EnteredUser.equals(ListOfKnownUsers[i])){
-               
-                if("admin".equals(role)){          
-               
-                rootpane.addnewpane(homescreen);
-                GoodPassword = true;
-                break;
-                }
-                else{
-                    
-                rootpane.addnewpane(HomeEmployee);
-                GoodPassword = true;
-                break;
-                    
-                }
-                
-                
-           }
-           
-           
-               
-       }
-       
-       if (GoodPassword){
-           firstConnection.close();
-       }
-       else{
-       Alert alert = new Alert(Alert.AlertType.WARNING);
-       alert.setTitle("Wrong password");
-       alert.setHeaderText("Wrong password");
-       alert.setContentText("Wrong password/username");
-       alert.showAndWait();
-       
-       
-       }   
-        
-           
-        } catch (Exception ex){
-            System.out.println("exception 2 ");
-            System.out.println(ex);
-        }
-                    
-
-              
-           
-   }
-   
-          public String GetSessionID(){
-           return sessionEmployeeID;
-       }
-          public String GetSessionName(){
-              return sessionEmployeeName;
-          }
-          public String GetSessionLastName(){
-              return sessionEmployeeLastName;
-          }
-   
-    
-   
 }

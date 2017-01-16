@@ -10,17 +10,27 @@ package prototypefys;
  * @author Erik
  */
 public class DataCache {
-    
+
+    private int employeenumber; // The unique identifier of the user
     private static String username; // Username to login with
     private static String password; // Password to login with
     private static String role; // Permission role of the user
     private static String firstname; // First name of the user
     private static String insertion; // Insertion of the user
     private static String lastname; // The lastname of the user
+    private static String email; // The email address of the user
+
+    public int getEmployeenumber() {
+        return employeenumber;
+    }
+
+    public void setEmployeenumber(int employeenumber) {
+        this.employeenumber = employeenumber;
+    }
 
     /**
      * Get the firstname
-     * 
+     *
      * @return A string with the firstname
      */
     public static String getFirstname() {
@@ -29,7 +39,7 @@ public class DataCache {
 
     /**
      * Set the firstname
-     * 
+     *
      * @param firstname the prefered firstname
      */
     public static void setFirstname(String firstname) {
@@ -75,9 +85,17 @@ public class DataCache {
     public static void setRole(String role) {
         DataCache.role = role;
     }
-    
-    public static String getNaam() {
-        return firstname + " " + insertion + " " + lastname; 
+
+    public static String getEmail() {
+        return email;
     }
-    
+
+    public static void setEmail(String email) {
+        DataCache.email = email;
+    }
+
+    public static String getNaam() {
+        return firstname + " " + insertion + " " + lastname;
+    }
+
 }
