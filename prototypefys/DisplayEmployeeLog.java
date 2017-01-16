@@ -5,6 +5,10 @@
  */
 package prototypefys;
 
+import database.Database;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -29,14 +33,45 @@ import javafx.scene.text.FontWeight;
  *
  * @author Michael Cheung
  */
-public class DisplayEmployeeLog {
+public class DisplayEmployeeLog extends HomeScreen{
     private static Rootpane rootpane = new Rootpane();
     private static GridPane emplog = new GridPane();
     private static adminScherm terugscherm = new adminScherm();
     private static StackPane terugadminscherm = terugscherm.maakAdminScherm();
-    
+    private ObservableList<ObservableList> data;
+    private TableView tableview;
+    private TableView<Logs> EmployeeLog;
+   private  ObservableList<Logs> logList;
+   private Database db = new Database();
     DisplayEmployeeLog(){
         
+    }
+    public void buildData(){
+
+        logList = FXCollections.observableArrayList();
+        try{
+                        Connection c = db.getConnection();
+            Statement statement = c.createStatement();
+
+            String SQL = "SELECT * from CUSTOMer";
+            
+            ResultSet rs = c.createStatement().executeQuery(SQL);
+            
+            logList = FXCollections.observableArrayList();
+            while (rs.next()) {
+                //Iterate Row
+                // the data will be added to the arraylist
+                EmployeeLog.setItems(logList);
+                
+
+            }
+            
+            }
+        catch(Exception e){
+            e.printStackTrace();
+            System.out.println("Error");
+
+        }
     }
     
     
@@ -55,35 +90,36 @@ public class DisplayEmployeeLog {
         emplog.setAlignment(Pos.CENTER);
         
         Scene scene = new Scene(emplog, 900, 800);
+        Connection c;
+
         
-        ObservableList<Logs> logList = FXCollections.observableArrayList(
-                new Logs("001", "Fisher", "Deleted record"), 
-                new Logs("002", "Freed", "Created new case"), 
-                new Logs("003", "Keegan", "Edited case"), 
-                new Logs("004", "Slattery", "Created new case"), 
-                new Logs("005", "Young", "Deleted case"), 
-                new Logs("006", "Jones", "Created new account"), 
-                new Logs("007", "King", "Deleted account"), 
-                new Logs("008", "Kauffman", "Changed password"), 
-                new Logs("009", "Shilling", "Deleted record"), 
-                new Logs("010", "Sigler", "Edited Case")
+        {
+        
+    }
+logList = FXCollections.observableArrayList(
                 );
-    
-        TableView<Logs> EmployeeLog;
+Connection connection;
+
+        
         
         EmployeeLog = new TableView<Logs>(logList);
         
-        TableColumn<Logs, String> fName = new TableColumn<>("Employee ID");
-        fName.setCellValueFactory(new PropertyValueFactory<>("Employee"));
-        EmployeeLog.getColumns().add(fName);
+        TableColumn<Logs, Integer> EmployeeID = new TableColumn<>("employeenumber");
+        EmployeeID.setCellValueFactory(new PropertyValueFactory<>("Employee"));
+        EmployeeLog.getColumns().add(EmployeeID);
         
-        TableColumn<Logs, String> lName = new TableColumn<>("Employee Name");
-        lName.setCellValueFactory(new PropertyValueFactory<>("Name"));
-        EmployeeLog.getColumns().add(lName);
+        TableColumn<Logs, String> EmployeeFirstName = new TableColumn<>("firstname");
+        EmployeeFirstName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        EmployeeLog.getColumns().add(EmployeeFirstName);
+      TableColumn<Logs, String> EmployeeLastName = new TableColumn<>("firstname");
+       EmployeeLastName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        EmployeeLog.getColumns().add(EmployeeLastName);
         
-        TableColumn<Logs, String> cell = new TableColumn<>("Action");
-        cell.setCellValueFactory(new PropertyValueFactory<>("Action"));
-       EmployeeLog.getColumns().add(cell);
+        TableColumn<Logs, String> Action = new TableColumn<>("Action");
+        Action.setCellValueFactory(new PropertyValueFactory<>("Action"));
+        
+        
+       EmployeeLog.getColumns().add(Action);
         
         EmployeeLog.setPrefWidth(800);
         EmployeeLog.setPrefHeight(600);
