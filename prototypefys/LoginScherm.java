@@ -17,8 +17,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
-import javax.swing.JFileChooser;
 
 /**
  *
@@ -79,12 +77,19 @@ public class LoginScherm {
 
         Button login = new Button();
         login.setText("Login");
+
+        login.setStyle("-fx-background-color: #ffffff;-fx-text-fill:BLACK");
+
+
         login.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
+
 
         Button resetPassword = new Button();
         resetPassword.setText("Reset password");
         resetPassword.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
 
+
+        root.setStyle("-fx-background-color: #baf9ff");
         root.setStyle("-fx-background-color: white");
 
         login.setOnAction(new EventHandler<ActionEvent>() {
@@ -93,6 +98,7 @@ public class LoginScherm {
 
                 String username = userText.getText();
                 String password = passwordText.getText();
+
 
                 if (loginCheck(username, password)) {
                     rootpane.addnewpane(homescreen);
@@ -103,6 +109,7 @@ public class LoginScherm {
                     alert.setContentText("Wrong password/username");
                     alert.showAndWait();
                 }
+
 
                 // rootpane.addnewpane(homescreen);
             }
@@ -126,6 +133,9 @@ public class LoginScherm {
                     String username = userText.getText();
                     String password = passwordText.getText();
 
+
+                    loginCheck(username, password);
+
                     if (loginCheck(username, password)) {
                         rootpane.addnewpane(homescreen);
                         break;
@@ -145,6 +155,18 @@ public class LoginScherm {
         root.add(resetPassword, 0, 4);
 
         return root;
+    }
+
+    public String GetSessionID() {
+        return sessionEmployeeID;
+    }
+
+    public String GetSessionName() {
+        return sessionEmployeeName;
+    }
+
+    public String GetSessionLastName() {
+        return sessionEmployeeLastName;
     }
 
     /**
@@ -196,4 +218,4 @@ public class LoginScherm {
 
     }
 
-}
+    }

@@ -28,6 +28,8 @@ import cataloog.LostLuggage;
 import java.util.Optional;
 import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+
 
 /**
  *
@@ -324,6 +326,10 @@ public class ReportLost {
                            alertS.showAndWait(); 
             }
         });
+        
+        
+         
+        
 
         return grid;
 

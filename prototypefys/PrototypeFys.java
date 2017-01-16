@@ -1,6 +1,15 @@
 package prototypefys;
 
+import cataloog.FoundLuggage;
+import cataloog.LostLuggage;
+import database.Database;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javafx.application.Application;
+import javafx.print.PrinterJob;
+import javafx.scene.Node;
 
 
 import javafx.scene.Scene;
@@ -20,6 +29,11 @@ import org.apache.logging.log4j.Logger;
  * @author Koen Hengsdijk
  */
 public class PrototypeFys extends Application {
+     
+    
+    private Database db = new Database();
+    
+    private static Stage pStage;
     
  private static final Logger logger = LogManager.getLogger();   
     @Override
@@ -38,7 +52,7 @@ public class PrototypeFys extends Application {
         
 
     
-    Scene scene = new Scene(scherm, 1400, 800);
+        Scene scene = new Scene(scherm, 1400, 800);
         
     
         primaryStage.setTitle("Corendon luggage system");
@@ -47,12 +61,16 @@ public class PrototypeFys extends Application {
         primaryStage.show();
         primaryStage.setMaximized(true);
         primaryStage.getIcons().add(new Image("/resources/CDF.png"));
+        
+        
+        
+        
     }
     
     public static void main(String[] args) {
         launch(args);
     }
    
-    
-    
+     
+     
 }
