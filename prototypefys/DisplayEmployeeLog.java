@@ -5,6 +5,7 @@
  */
 package prototypefys;
 
+
 import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -38,41 +39,17 @@ public class DisplayEmployeeLog extends HomeScreen{
     private static GridPane emplog = new GridPane();
     private static adminScherm terugscherm = new adminScherm();
     private static StackPane terugadminscherm = terugscherm.maakAdminScherm();
-    private ObservableList<ObservableList> data;
+    private ObservableList<EmployeeTracking> data;
     private TableView tableview;
-    private TableView<Logs> EmployeeLog;
-   private  ObservableList<Logs> logList;
+    private TableView EmployeeLog;
+   private  ObservableList logList;
    private Database db = new Database();
     DisplayEmployeeLog(){
         
     }
     public void buildData(){
 
-        logList = FXCollections.observableArrayList();
-        try{
-                        Connection c = db.getConnection();
-            Statement statement = c.createStatement();
-
-            String SQL = "SELECT * from CUSTOMer";
-            
-            ResultSet rs = c.createStatement().executeQuery(SQL);
-            
-            logList = FXCollections.observableArrayList();
-            while (rs.next()) {
-                //Iterate Row
-                // the data will be added to the arraylist
-                EmployeeLog.setItems(logList);
-                
-//ik probeer wel effe te restarten
-            }
-            
-            
-            }
-        catch(Exception e){
-            e.printStackTrace();
-            System.out.println("Error");
-
-        }
+       
     }
     
     
@@ -91,7 +68,6 @@ public class DisplayEmployeeLog extends HomeScreen{
         emplog.setAlignment(Pos.CENTER);
         
         Scene scene = new Scene(emplog, 900, 800);
-        Connection c;
 
         
         {
@@ -99,24 +75,34 @@ public class DisplayEmployeeLog extends HomeScreen{
     }
 logList = FXCollections.observableArrayList(
                 );
-Connection connection;
+
+
+         logList = FXCollections.observableArrayList();
+        try{
+                        Connection c = db.getConnection();
+            Statement statement = c.createStatement();
+
+            String SQL = "SELECT * from simplelogs";
+            
+            ResultSet rs = c.createStatement().executeQuery(SQL);
+            
+
 
         
+        EmployeeLog = new TableView<String>(logList);
         
-        EmployeeLog = new TableView<Logs>(logList);
-        
-        TableColumn<Logs, Integer> EmployeeID = new TableColumn<>("employeenumber");
-        EmployeeID.setCellValueFactory(new PropertyValueFactory<>("Employee"));
+        TableColumn<EmployeeTracking, Integer> EmployeeID = new TableColumn<>("EmployeeID");
+        EmployeeID.setCellValueFactory(new PropertyValueFactory<>("EmployeeID"));
         EmployeeLog.getColumns().add(EmployeeID);
         
-        TableColumn<Logs, String> EmployeeFirstName = new TableColumn<>("firstname");
-        EmployeeFirstName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+        TableColumn<EmployeeTracking, String> EmployeeFirstName = new TableColumn<>("EmployeeFirstName");
+        EmployeeFirstName.setCellValueFactory(new PropertyValueFactory<>("EmployeeFirstName"));
         EmployeeLog.getColumns().add(EmployeeFirstName);
-      TableColumn<Logs, String> EmployeeLastName = new TableColumn<>("firstname");
-       EmployeeLastName.setCellValueFactory(new PropertyValueFactory<>("Name"));
+      TableColumn<EmployeeTracking, String> EmployeeLastName = new TableColumn<>("EmployeeLastName");
+       EmployeeLastName.setCellValueFactory(new PropertyValueFactory<>("EmployeeLastName"));
         EmployeeLog.getColumns().add(EmployeeLastName);
         
-        TableColumn<Logs, String> Action = new TableColumn<>("Action");
+        TableColumn<EmployeeTracking,String> Action = new TableColumn<>("Action");
         Action.setCellValueFactory(new PropertyValueFactory<>("Action"));
         
         
@@ -125,7 +111,7 @@ Connection connection;
         EmployeeLog.setPrefWidth(800);
         EmployeeLog.setPrefHeight(600);
         
-        TableView.TableViewSelectionModel<Logs> tvSelLogging = 
+        TableView.TableViewSelectionModel tvSelLogging = 
                 EmployeeLog.getSelectionModel();
         
         tvSelLogging.selectedIndexProperty().addListener(new ChangeListener<Number>()
@@ -133,11 +119,34 @@ Connection connection;
             public void changed(ObservableValue<? extends Number> changed, 
                     Number oldVal, Number newVal) {
                 int index = (int)newVal;
-                response.setText("The most recent action of this employee is "
-                        +logList.get(index).getAction());
+
             }
         });
-        
+                    while (rs.next()) {
+                        ObservableList<String> row = FXCollections.observableArrayList();
+
+                for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+                    row.add(rs.getString(i));
+                    System.out.println(row);
+                }
+
+                logList.add(new EmployeeTracking(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4)
+                ));
+
+                //Iterate Row
+                // the data will be added to the arraylist
+                EmployeeLog.setItems(logList);
+                
+//ik probeer wel effe te restarten
+            }
+            
+            
+            }
+        catch(Exception e){
+            e.printStackTrace();
+            System.out.println("Error");
+
+        }
                     Button bt_backButton = new Button("Back ");
             bt_backButton.setPrefSize(100, 50);
 
