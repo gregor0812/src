@@ -59,11 +59,11 @@ public class employeetable {
         root.setVgap(8);
         root.setHgap(10);
 
-        root.setStyle("-fx-background-color: #baf9ff");
+        root.setStyle("-fx-background-color: white");
         
         Button backbuton = new Button("Back to adminscreen");
         backbuton.setPrefSize(180, 50);
-        backbuton.setStyle("-fx-base:darkred;-fx-border-color:black");
+        backbuton.setStyle("-fx-base:darkred;-fx-border-color:white");
         backbuton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -133,7 +133,7 @@ public class employeetable {
         // a button to edit the employee info
         Button editTable = new Button("Edit employee");
         editTable.setPrefSize(180, 50);
-        editTable.setStyle("-fx-base:darkred;-fx-border-color:black");
+        editTable.setStyle("-fx-base:darkred;-fx-border-color:white");
         editTable.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -158,7 +158,7 @@ public class employeetable {
         // this is a button to add a new employee
         Button addEmployee = new Button("Add employee");
         addEmployee.setPrefSize(180, 50);
-        addEmployee.setStyle("-fx-base:darkred;-fx-border-color:black");
+        addEmployee.setStyle("-fx-base:darkred;-fx-border-color:white");
         addEmployee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -171,7 +171,7 @@ public class employeetable {
         // this is a button to remove an employee
         Button removeEmployee = new Button("Remove employee");
         removeEmployee.setPrefSize(180, 50);
-        removeEmployee.setStyle("-fx-base:darkred;-fx-border-color:black");
+        removeEmployee.setStyle("-fx-base:darkred;-fx-border-color:white");
         removeEmployee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {

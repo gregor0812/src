@@ -73,7 +73,7 @@ public class ReportGeneration {
         VBox ButtonContainer = new VBox(10);
         ButtonContainer.setPadding(new Insets(25, 25, 25, 25));
 
-        ButtonContainer.setStyle("-fx-base:darkred;-fx-border-color:darkred");
+        ButtonContainer.setStyle("-fx-base:darkred;-fx-border-color:white");
         ButtonContainer.setAlignment(Pos.CENTER);
         ButtonContainer.setPrefSize(280, 250);
         ButtonContainer.setMaxSize(280, 250);

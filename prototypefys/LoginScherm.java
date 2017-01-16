@@ -86,14 +86,14 @@ public class LoginScherm {
         
         Button login = new Button();
         login.setText("Login");
-        login.setStyle("-fx-background-color: #ffffff;-fx-text-fill:BLACK");
+        login.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
         
         
         Button resetPassword = new Button();
         resetPassword.setText("Reset password");
-        resetPassword.setStyle("-fx-background-color: #ffffff;-fx-text-fill:BLACK");
+        resetPassword.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
 
-        root.setStyle("-fx-background-color: #baf9ff");
+        root.setStyle("-fx-background-color: white");
                
         
 
