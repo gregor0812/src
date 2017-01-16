@@ -581,7 +581,7 @@ public class BagageCatalogue {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
                         alert.setTitle("error");
                         alert.setHeaderText("edit case");
-                        alert.setContentText("Select a case to edit");
+                        alert.setContentText("Select a matched case to view");
 
                         alert.showAndWait();
                     }
@@ -860,7 +860,15 @@ public class BagageCatalogue {
     
     public LostLuggage lostLuggageMatchInfo(int labelnr) {
         
-        String query = "select * from lostluggage where labelnr = " + labelnr;
+        String query = ("select lostluggage.lostID, lostluggage.ownerid, "
+                + "luggageowner.firstname, luggageowner.insertion, luggageowner.lastname,"
+                + "lostluggage.labelnr, lostluggage.flightr, lostluggage.destination, "
+                + "lostluggage.airport, lostluggage.itemname,"
+                + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
+                + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
+                + "inner join luggageowner"
+                + " on lostluggage.ownerid = luggageowner.ownerid "
+                + "where labelnr = " + labelnr);
         
         LostLuggage LostInfo = null;
 
@@ -884,7 +892,7 @@ public class BagageCatalogue {
                         LostLuggageResult.getString(15), LostLuggageResult.getString(16)));
             }
         } catch (SQLException ex) {
-            System.out.println("Failed to retrieve matchinfo ");
+            System.out.println("Failed to retrieve lost luggage matchinfo ");
             System.err.println(ex.getMessage());
         }
 

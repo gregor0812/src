@@ -1,5 +1,12 @@
 package prototypefys;
 
+import cataloog.FoundLuggage;
+import cataloog.LostLuggage;
+import database.Database;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import javafx.application.Application;
 import javafx.print.PrinterJob;
 import javafx.scene.Node;
@@ -7,7 +14,6 @@ import javafx.scene.Node;
 
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.image.WritableImage;
 
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -23,6 +29,9 @@ import org.apache.logging.log4j.Logger;
  * @author Koen Hengsdijk
  */
 public class PrototypeFys extends Application {
+     
+    
+    private Database db = new Database();
     
     private static Stage pStage;
     
@@ -53,9 +62,7 @@ public class PrototypeFys extends Application {
         primaryStage.setMaximized(true);
         primaryStage.getIcons().add(new Image("/resources/CDF.png"));
         
-       
         
-    
         
         
     }
@@ -64,17 +71,6 @@ public class PrototypeFys extends Application {
         launch(args);
     }
    
-    
-    public static void maakpdf(Node node, Stage prStage){
-        PrinterJob job = PrinterJob.createPrinterJob();
-                if (job != null) {
-                    job.showPrintDialog(prStage); // Window must be your main Stage
-                    job.printPage(node);
-                    job.endJob();
-                }
-    }
-    
-     public static Stage getPrimaryStage() {
-        return pStage;
-    }
+     
+     
 }

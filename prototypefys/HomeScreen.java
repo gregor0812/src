@@ -21,7 +21,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import static prototypefys.PrototypeFys.getPrimaryStage;
+
 
 public class HomeScreen {
     

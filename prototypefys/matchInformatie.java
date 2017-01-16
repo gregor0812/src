@@ -9,6 +9,7 @@ import cataloog.BagageCatalogue;
 import cataloog.FoundLuggage;
 import cataloog.LostLuggage;
 import database.Database;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.Statement;
@@ -20,7 +21,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
@@ -39,7 +39,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import static prototypefys.PrototypeFys.getPrimaryStage;
 
 /**
  *
@@ -87,9 +86,9 @@ public class matchInformatie {
         grid.setHgap(10);
 
         GridPane.setConstraints(btnmainmenu, 1, 15);
-        grid.add(caseid, 40, 30, 1, 1);
+        grid.add(caseid, 40, 31, 1, 1);
         // GridPane.setConstraints(btn2, 2, 15);
-        GridPane.setConstraints(btnS, 40, 32, 2, 2);
+        GridPane.setConstraints(btnS, 40, 33, 2, 2);
 
         grid.setStyle("-fx-background-color: white");
 
@@ -294,10 +293,12 @@ public class matchInformatie {
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                  
-                 PrototypeFys kaka = new PrototypeFys();
-        
-             kaka.maakpdf(grid, getPrimaryStage());
+                  matchInfoPdf makePdf = new matchInfoPdf();
+                
+                makePdf.maakMatchPdf(lostInfo, foundInfo);
+                
+                
+                
             }
         });
 
@@ -360,7 +361,8 @@ public class matchInformatie {
         return string;
     }
 
-    private static void sendFromGMail(String from, String pass, String[] to, String subject, String body) {
+    private static void sendFromGMail(String from, String pass, String[] to, 
+        String subject, String body, File file) {
 
         Properties props = System.getProperties();
         String host = "smtp.gmail.com";
@@ -390,7 +392,7 @@ public class matchInformatie {
             messageBodyPart.setText(body);
             multipart.addBodyPart(messageBodyPart);
             String filename = "src\\resources\\pdf\\DHLShipmentForm.pdf";
-            DataSource source = new FileDataSource(filename);
+            DataSource source = new FileDataSource(file);
             BodyPart attachtmentBodyPart = new MimeBodyPart();
             attachtmentBodyPart.setDataHandler(new DataHandler(source));
             attachtmentBodyPart.setFileName(filename);

@@ -134,7 +134,7 @@ public class GenerateSignedPdf {
             contentStream.beginText();
             contentStream.setFont(font, 11);
             contentStream.moveTextPositionByAmount(374, 233);
-            contentStream.drawString("henk de admin ");
+            contentStream.drawString(DataCache.getNaam());
             contentStream.endText();
 
             // this content stream places the time in the pdf
