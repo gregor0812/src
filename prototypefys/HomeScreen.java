@@ -99,7 +99,7 @@ public class HomeScreen {
           
 
             
-            Button bt_ADM = new Button("Admin");
+            Button bt_ADM = new Button("Administrator");
             bt_ADM.setStyle("-fx-base:darkred;-fx-border-color:white"); 
             bt_ADM.setPrefSize(120, 50);
             bt_ADM.setOnAction(new EventHandler<ActionEvent>() {

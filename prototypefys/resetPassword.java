@@ -52,16 +52,17 @@ public class resetPassword {
         TextField userText = new TextField();
         userText.setPrefColumnCount(1);
         userText.setPrefWidth(100);
-        basis.add(userText, 5, 2);
+        basis.add(userText, 5, 2,1,1);
 
         //Short explanation for the user.
-        Text explanation = new Text("Your password will be resetted, your new password will be sent to you mailbox");
-        basis.add(explanation, 4, 0);
+        Text explanation = new Text("Your password will be resetted, your new password will be sent to you mailbox.");
+        basis.add(explanation, 4, 0, 10,1);
         username.setFill(Color.BLACK);
 
         //Creates the button that will activate the "password reset" procedure
         Button resetPassword = new Button();
-        resetPassword.setText("Reset password");
+        resetPassword.setText("Confirm");
+        resetPassword.setPrefSize(100, 20);
         resetPassword.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
         resetPassword.setOnAction((ActionEvent event) -> {
             try {
@@ -105,7 +106,7 @@ public class resetPassword {
         basis.add(resetPassword, 4, 3);
 
         //creates button that sends you back to the loginscreen
-        Button back = new Button("Logout ");
+        Button back = new Button("Cancel");
         back.setStyle("-fx-base:darkred;-fx-border-color:white");
         back.setPrefSize(100, 20);
         back.setOnAction(new EventHandler<ActionEvent>() {

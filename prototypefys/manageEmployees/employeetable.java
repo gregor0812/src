@@ -62,7 +62,7 @@ public class employeetable {
 
         root.setStyle("-fx-background-color: white");
         
-        Button backbuton = new Button("Back to adminscreen");
+        Button backbuton = new Button("Back to administrator screen");
         backbuton.setPrefSize(180, 50);
         backbuton.setStyle("-fx-base:darkred;-fx-border-color:white");
         backbuton.setOnAction(new EventHandler<ActionEvent>() {
@@ -127,14 +127,14 @@ public class employeetable {
             
             // the exception will catch and display an error if something goes wrong
         } catch (Exception ex) {
-            System.out.println("failed to load employee table ");
+            System.out.println("Failed to load employee table ");
             System.out.println(ex);
         }
         
         // a button to edit the employee info
         Button editTable = new Button("Edit employee");
         editTable.setPrefSize(180, 50);
-        editTable.setStyle("-fx-base:darkred;-fx-border-color:white");
+        editTable.setStyle("-fx-base:#BC3434;-fx-border-color:white");
         editTable.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -148,8 +148,8 @@ public class employeetable {
                 } else {
                     // an alert is shown if there is no row selected
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("error");
-                    alert.setHeaderText("edit employee");
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Edit employee");
                     alert.setContentText("Select a employee to edit");
 
                     alert.showAndWait();
@@ -159,7 +159,7 @@ public class employeetable {
         // this is a button to add a new employee
         Button addEmployee = new Button("Add employee");
         addEmployee.setPrefSize(180, 50);
-        addEmployee.setStyle("-fx-base:darkred;-fx-border-color:white");
+        addEmployee.setStyle("-fx-base:#BC3434;-fx-border-color:white");
         addEmployee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -172,7 +172,7 @@ public class employeetable {
         // this is a button to remove an employee
         Button removeEmployee = new Button("Remove employee");
         removeEmployee.setPrefSize(180, 50);
-        removeEmployee.setStyle("-fx-base:darkred;-fx-border-color:white");
+        removeEmployee.setStyle("-fx-base:#BC3434;-fx-border-color:white");
         removeEmployee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -184,7 +184,7 @@ public class employeetable {
                     // really wants to delete the employee
                     Alert alert = new Alert(AlertType.CONFIRMATION);
                     alert.setTitle("Confirmation Dialog");
-                    alert.setHeaderText("deleting employee");
+                    alert.setHeaderText("Deleting employee");
                     alert.setContentText("Are you sure that you want "
                         + "to delete this employee?");
 
@@ -194,8 +194,8 @@ public class employeetable {
                     
                     Alert confirmed = new Alert(AlertType.INFORMATION);
                     confirmed.setTitle("Confirmation Dialog");
-                    confirmed.setHeaderText("succes");
-                    confirmed.setContentText("the employee was deleted ");
+                    confirmed.setHeaderText("Succes");
+                    confirmed.setContentText("The employee was deleted ");
                     confirmed.showAndWait();
                     
                     rootpane.addnewpane(MaakEmployeeTable());
@@ -206,8 +206,8 @@ public class employeetable {
                     // a alert to show the user that they have not selected anything
                 } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
-                    alert.setTitle("error");
-                    alert.setHeaderText("remove employee");
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Remove employee");
                     alert.setContentText("Select a employee to remove");
 
                     alert.showAndWait();
@@ -237,7 +237,7 @@ public class employeetable {
         Button btnS;
 
         btnmainmenu = new Button(); // button 1
-        btnmainmenu.setText("return to employee view");
+        btnmainmenu.setText("Return to employee view");
         btnmainmenu.setPrefSize(250, 50);
         btnmainmenu.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnmainmenu.setFont(Font.font("Verdana", 12));
@@ -266,7 +266,7 @@ public class employeetable {
             }
         });
 
-        Label employeeLabel = new Label("employeedata");
+        Label employeeLabel = new Label("Employee data");
         employeeLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(employeeLabel, 10, 15, 15, 1);
 
@@ -374,7 +374,7 @@ public class employeetable {
             
 
         } catch (Exception ex) {
-            System.out.println("failed to insert data in to the database ");
+            System.out.println("Failed to insert data in to the database ");
             System.err.println(ex.getMessage());
         }
 
@@ -388,7 +388,7 @@ public class employeetable {
 
         // ------------------------------
         btnmainmenu = new Button(); // button 1
-        btnmainmenu.setText("return to employee view");
+        btnmainmenu.setText("Return to employee view");
         btnmainmenu.setPrefSize(250, 50);
         btnmainmenu.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnmainmenu.setFont(Font.font("Verdana", 12));
@@ -396,7 +396,7 @@ public class employeetable {
 
         //--------------------------------
         btnS = new Button(); // button Submit
-        btnS.setText("create new employee");
+        btnS.setText("Create new employee");
         btnS.setPrefSize(160, 50);
         btnS.setStyle("-fx-base:darkred;-fx-border-color:white");
         btnS.setFont(Font.font("Verdana", 12));
@@ -422,11 +422,11 @@ public class employeetable {
             }
         });
 
-        Label Case = new Label("employee data");
+        Label Case = new Label("Employee data");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 15, 15, 1);
         
-        Label employeenumberlabel = new Label("employee number:");
+        Label employeenumberlabel = new Label("Employee number:");
         grid.add(employeenumberlabel, 10, 16, 10, 1);
         TextField employeenumberText = new TextField(Integer.toString(getEmployeenumber()));
         employeenumberText.setDisable(true);
@@ -522,7 +522,7 @@ public class employeetable {
             }
 
         } catch (Exception ex) {
-            System.out.println("exception 2 ");
+            System.out.println("Exception 2 ");
         }
 
         return newEmployeenumber;
@@ -553,14 +553,14 @@ public class employeetable {
             
              // this alert will confirm that the user is added to the database
                 Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("User added");
+                alert.setTitle("Add user");
                 alert.setHeaderText("User added");
-                alert.setContentText("Used is added");
+                alert.setContentText("User is added");
                 alert.showAndWait();
             
 
         } catch (Exception ex) {
-            System.out.println("failed to insert data in to the database ");
+            System.out.println("Failed to insert data in to the database ");
             System.err.println(ex.getMessage());
         }
 
@@ -583,7 +583,7 @@ public class employeetable {
             
 
         } catch (Exception ex) {
-            System.out.println("failed to insert data in to the database ");
+            System.out.println("Failed to insert data in to the database ");
             System.err.println(ex.getMessage());
         }
 
