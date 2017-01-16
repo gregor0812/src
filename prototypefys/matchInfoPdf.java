@@ -121,7 +121,7 @@ public class matchInfoPdf {
             contentStream.beginText();
             contentStream.setFont(font, 11);
             contentStream.moveTextPositionByAmount(90, 470);
-            contentStream.drawString("additional notes test");
+            contentStream.drawString(matchinfo.getOwnerinfo(person.getOwnerid(), 7));
             contentStream.endText();
             
             
@@ -189,7 +189,7 @@ public class matchInfoPdf {
             contentStream.moveTextPositionByAmount(370, 588);
             contentStream.drawString(foundInfo.getAirport());
             contentStream.endText();
-            
+           
             
             
             // this content stream places the item name in the pdf
@@ -217,7 +217,7 @@ public class matchInfoPdf {
             contentStream.beginText();
             contentStream.setFont(font, 11);
             contentStream.moveTextPositionByAmount(310, 498);
-            contentStream.drawString(person.getDescription() + "description test");
+            contentStream.drawString(person.getDescription());
             contentStream.endText();
 
             // Make sure that the content stream is closed:
@@ -231,7 +231,7 @@ public class matchInfoPdf {
             document.close();
 
         } catch (Exception ex) {
-            System.out.println("failed to create a match confirmation form ");
+            System.out.println("failed to create a match information form ");
             System.out.println(ex);
         }
     }

@@ -239,7 +239,7 @@ public class BagageCatalogue {
                         + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
                         + "inner join luggageowner "
                         + "on lostluggage.ownerid = luggageowner.ownerid "
-                        + "WHERE " + output + " LIKE " + "'%" + zoekConditie + "%'");
+                        + "WHERE " + output + " LIKE " + "'%" + zoekConditie + "%' and destroyed = 0");
 
                 } else {
 
