@@ -7,6 +7,7 @@ package prototypefys;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import javax.xml.bind.DatatypeConverter;
 
 /**
  * Encrypt text
@@ -32,6 +33,7 @@ public class Encription {
             // Encrytp the clear text and save it in a new string
             messageDigest.update(clearText.getBytes());
             String encrypted = new String(messageDigest.digest());
+            
             data = encrypted;
         } catch (NoSuchAlgorithmException e) {
             System.err.println(e.getMessage());

@@ -114,7 +114,8 @@ public class LoginScherm {
                 // rootpane.addnewpane(homescreen);
             }
         });
-
+        
+       
         resetPassword.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -126,6 +127,7 @@ public class LoginScherm {
 
             }
         });
+       
 
         root.setOnKeyPressed(e -> {
             switch (e.getCode()) {
@@ -177,9 +179,11 @@ public class LoginScherm {
      * @return True if the verification is successfull
      */
     public boolean loginCheck(String username, String password) {
-
+        System.out.println(password);
+        
         // Encrypt password
         password = Encription.encrypt(password);
+      System.out.println(password);
 
         // SQL query to 
         String sql = "SELECT employeenumber, username, password, firstname, "
@@ -188,6 +192,7 @@ public class LoginScherm {
                 + "WHERE username = '" + username + "' "
                 + "AND password = '" + password + "' "
                 + "LIMIT 1";
+        System.out.println(sql);
 
         try {
             // Load the databse connection
@@ -212,6 +217,7 @@ public class LoginScherm {
 
         } catch (SQLException e) {
             System.err.println(e.getMessage());
+            System.out.println(e);
         }
 
         return false;

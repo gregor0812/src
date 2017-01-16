@@ -33,7 +33,6 @@ public class PrototypeFys extends Application {
     
     private Database db = new Database();
     
-    private static Stage pStage;
     
  private static final Logger logger = LogManager.getLogger();   
     @Override
@@ -48,7 +47,7 @@ public class PrototypeFys extends Application {
         logger.fatal("Test error please ignore");
         
         
-        
+      
         
 
     
