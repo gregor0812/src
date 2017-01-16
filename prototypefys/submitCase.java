@@ -4,6 +4,7 @@ import cataloog.FoundLuggage;
 import cataloog.LostLuggage;
 import database.Database;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -34,6 +35,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.StringConverter;
+import static prototypefys.LoginScherm.sessionEmployeeID;
 
 /**
  *
@@ -43,7 +45,6 @@ import javafx.util.StringConverter;
 public class submitCase {
 
     Rootpane rootpane = new Rootpane();
-
     private static HomeScreen nieuwscherm = new HomeScreen();
     private static HBox homescreen = nieuwscherm.maakhomescreen();
 
@@ -541,8 +542,17 @@ public class submitCase {
                 Statement stmt = insertNewOwner.createStatement();
 
                 stmt.executeUpdate(sql);
+                
+
 
                 ownerId = getOwnerID(firstname, insertion, lastname);
+                
+                String query = " insert into simplelogs (EmployeeID, EmployeeFirstName, EmployeeLastName, Action)"
+        + " values (?, ?, ?, ?)";
+                
+                
+                PreparedStatement.setInt(1,sessionEmployeeID);
+
 
             } catch (SQLException e) {
                 System.err.println(e.getMessage());
