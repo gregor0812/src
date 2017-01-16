@@ -556,7 +556,7 @@ public class ReportLost {
                     LostLuggageResult.getString(15), LostLuggageResult.getString(16)));
             }
 
-         matchCheckConnection.close();
+        // matchCheckConnection.close();
 
 
         } catch (Exception ex) {
@@ -598,13 +598,6 @@ public class ReportLost {
     }
     }
 
-//    public TableView userInfo(){
-//        
-//        
-//        
-//        
-//        
-//        
-//    }
+
 
 
