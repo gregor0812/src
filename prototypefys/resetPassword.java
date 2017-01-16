@@ -16,6 +16,9 @@ import javafx.scene.text.Text;
 import javax.mail.*;
 import java.util.*;
 import javafx.scene.control.Alert;
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
 import javax.mail.internet.*;
 
 /**
@@ -149,11 +152,15 @@ public class resetPassword {
             }
             message.setSubject(subject);
             message.setText(body);
+           
+             
+            
             Transport transport = session.getTransport("smtp");
             transport.connect(host, from, pass);
             transport.sendMessage(message, message.getAllRecipients());
             transport.close();
         } catch (MessagingException me) {
+            System.out.println(me);
         }
     }
 
@@ -183,28 +190,5 @@ public class resetPassword {
 
         return email;
     }
-
-    /*
-    //generates new password
-    int generatedPassword;
-
-    generatedPassword  = (int) (Math.random() * 999999 + 100000);
-
-    String randomGetal = "";
-    for (int i = 0; i < 8; i++) {
-        randomGetal += String.valueOf((int) (Math.random() * ((10 - 1) + 1)));
-    }
-    
-    
-    System.out.println (generatedPassword);
-
-//sets new password
-    String databaseQuery
-            = ("UPDATE `corendon`.`employee` SET `password`" + generatedPassword + " WHERE `email`= " + email + "; ");
-
-//sends generatedPassword to email of employee
-    xxx SHERM --> USERNAME BUTTON CLICK --> ''GENERATED PASSWORD METHODED ACTIVATED''
-
-
-     */
 }
+   

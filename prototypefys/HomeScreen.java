@@ -68,7 +68,6 @@ public class HomeScreen {
                 
                 BagageCatalogue scherm2 = new BagageCatalogue();
                 GridPane cataloog = scherm2.MaakCatalogue();
-                
                 rootpane.addnewpane(cataloog);
             }
             });
@@ -169,5 +168,6 @@ public class HomeScreen {
         hbox.getChildren().addAll(vbox1);
     
         return hbox;
+        
         }
 }   
