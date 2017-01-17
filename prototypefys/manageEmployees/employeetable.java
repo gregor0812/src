@@ -8,6 +8,7 @@ package prototypefys.manageEmployees;
 import database.Database;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Optional;
 import javafx.collections.FXCollections;
@@ -61,7 +62,7 @@ public class employeetable {
         root.setHgap(10);
 
         root.setStyle("-fx-background-color: white");
-        
+
         Button backbuton = new Button("Back to administrator screen");
         backbuton.setPrefSize(180, 50);
         backbuton.setStyle("-fx-base:darkred;-fx-border-color:white");
@@ -73,12 +74,12 @@ public class employeetable {
                 rootpane.addnewpane(adminScherm);
             }
         });
-        
+
         // the table columns are made here
         TableColumn<Employee, String> employeenumberColumn = new TableColumn<>("employee number");
         employeenumberColumn.setCellValueFactory(new PropertyValueFactory<>("employeenumber"));
         employeenumberColumn.setMinWidth(100);
-        
+
         TableColumn<Employee, String> usernameColumn = new TableColumn<>("username");
         usernameColumn.setCellValueFactory(new PropertyValueFactory<>("username"));
 
@@ -96,7 +97,7 @@ public class employeetable {
 
         TableColumn<Employee, String> roleColumn = new TableColumn<>("role");
         roleColumn.setCellValueFactory(new PropertyValueFactory<>("role"));
-        
+
         TableColumn<Employee, String> emailColumn = new TableColumn<>("email");
         emailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
         emailColumn.setMinWidth(160);
@@ -104,7 +105,7 @@ public class employeetable {
         try {
             // a query to select all the info from the database
             String query = "select * from employee";
-            
+
             // a connection is mad
             Connection catalogueConnect = db.getConnection();
             Statement statement = catalogueConnect.createStatement();
@@ -115,22 +116,22 @@ public class employeetable {
             while (TableData.next()) {
                 //while there is info in the resultset it will be added to the observable list
                 data.add(new Employee(TableData.getInt(1), TableData.getString(2), TableData.getString(3), TableData.getString(4),
-                    TableData.getString(5), TableData.getString(6), TableData.getString(7), TableData.getString(8)));
+                        TableData.getString(5), TableData.getString(6), TableData.getString(7), TableData.getString(8)));
             }
-            
+
             // the info is added to the tableview
             employeeView.setItems(data);
             // the columns are added to the tableview
             employeeView.getColumns().addAll(employeenumberColumn, usernameColumn,
-                passwordColumn, firstnameColumn,
-                insertionColumn, lastnameColumn, roleColumn, emailColumn);
-            
+                    passwordColumn, firstnameColumn,
+                    insertionColumn, lastnameColumn, roleColumn, emailColumn);
+
             // the exception will catch and display an error if something goes wrong
         } catch (Exception ex) {
             System.out.println("Failed to load employee table ");
             System.out.println(ex);
         }
-        
+
         // a button to edit the employee info
         Button editTable = new Button("Edit employee");
         editTable.setPrefSize(180, 50);
@@ -140,10 +141,10 @@ public class employeetable {
             public void handle(ActionEvent event) {
                 // the selected info will be used to make an employee object
                 Employee employee = employeeView.getSelectionModel().getSelectedItem();
-                
+
                 // if a table row is selected a editform will be made
                 if (employee != null) {
-                     // the form is added to the screen
+                    // the form is added to the screen
                     rootpane.addnewpane(editUser(employee));
                 } else {
                     // an alert is shown if there is no row selected
@@ -163,12 +164,12 @@ public class employeetable {
         addEmployee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+
                 // a form will be added to the screen to make the new employee
-                rootpane.addnewpane(addUser());                                
+                rootpane.addnewpane(addUser());
             }
         });
-        
+
         // this is a button to remove an employee
         Button removeEmployee = new Button("Remove employee");
         removeEmployee.setPrefSize(180, 50);
@@ -176,7 +177,7 @@ public class employeetable {
         removeEmployee.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-               
+
                 // a employee object will be made using the selected row
                 Employee employee = employeeView.getSelectionModel().getSelectedItem();
                 if (employee != null) {
@@ -186,23 +187,23 @@ public class employeetable {
                     alert.setTitle("Confirmation Dialog");
                     alert.setHeaderText("Deleting employee");
                     alert.setContentText("Are you sure that you want "
-                        + "to delete this employee?");
+                            + "to delete this employee?");
 
                     Optional<ButtonType> result = alert.showAndWait();
-                    if (result.get() == ButtonType.OK){
-                    removeUser(employee.getEmployeenumber());
-                    
-                    Alert confirmed = new Alert(AlertType.INFORMATION);
-                    confirmed.setTitle("Confirmation Dialog");
-                    confirmed.setHeaderText("Succes");
-                    confirmed.setContentText("The employee was deleted ");
-                    confirmed.showAndWait();
-                    
-                    rootpane.addnewpane(MaakEmployeeTable());
+                    if (result.get() == ButtonType.OK) {
+                        removeUser(employee.getEmployeenumber());
+
+                        Alert confirmed = new Alert(AlertType.INFORMATION);
+                        confirmed.setTitle("Confirmation Dialog");
+                        confirmed.setHeaderText("Succes");
+                        confirmed.setContentText("The employee was deleted ");
+                        confirmed.showAndWait();
+
+                        rootpane.addnewpane(MaakEmployeeTable());
                     } else {
-                    
+
                     }
-                    
+
                     // a alert to show the user that they have not selected anything
                 } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -211,26 +212,26 @@ public class employeetable {
                     alert.setContentText("Select a employee to remove");
 
                     alert.showAndWait();
-                }                                        
+                }
             }
         });
-        
+
         // the tableview is added
         root.add(employeeView, 1, 0);
         // this vbox will contain the control buttons
         VBox buttonContainer = new VBox(10);
         // the buttons are added
-        buttonContainer.getChildren().addAll(backbuton, editTable, addEmployee, 
-            removeEmployee);
+        buttonContainer.getChildren().addAll(backbuton, editTable, addEmployee,
+                removeEmployee);
         // the vbox is added to the screen
         root.add(buttonContainer, 0, 0);
         root.setAlignment(Pos.CENTER);
         return root;
     }
-    
+
     // this method will generate an edit form using a employee object
     public GridPane editUser(Employee employee) {
-        
+
         // a button to return to the employeetable
         Button btnmainmenu;
         // a button to sumbit the changes
@@ -254,7 +255,6 @@ public class employeetable {
         grid.setVgap(8);
         grid.setHgap(10);
 
-        
         GridPane.setConstraints(btnmainmenu, 1, 15);
         GridPane.setConstraints(btnS, 20, 25);
         grid.setStyle("-fx-background-color: white");
@@ -295,7 +295,6 @@ public class employeetable {
         grid.add(InsertionLabel, 10, 20, 10, 1);
         TextField InsertionText = new TextField(employee.getInsertion());
         grid.add(InsertionText, 20, 20);
-       
 
         Label lastnameLabel = new Label("Lastname:");
         grid.add(lastnameLabel, 10, 21, 10, 1);
@@ -306,11 +305,11 @@ public class employeetable {
         grid.add(roleLabel, 10, 22, 10, 1);
         TextField roleText = new TextField(employee.getRole());
         grid.add(roleText, 20, 22);
-        
+
         Label emailLabel = new Label("Email:");
         grid.add(emailLabel, 10, 23, 10, 1);
         TextField emailText = new TextField(employee.getEmail());
-        grid.add(emailText, 20, 23);        
+        grid.add(emailText, 20, 23);
 
         ImageView Corendon = new ImageView("/resources/corendon.jpg");
         Corendon.setFitHeight(100);
@@ -321,24 +320,46 @@ public class employeetable {
         // Toevoegen van buttons
         grid.getChildren().addAll(btnmainmenu, btnS);
 
-        btnS.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                
-                // the employee data is received from the textfields
-                int employeenumber = Integer.parseInt(employeenumberText.getText());
-                String username = userNameText.getText();
-                String password = passwordText.getText();
-                String firstname = firstNameText.getText();    
-                String insertion = InsertionText.getText();
-                String lastname = lastnameText.getText();
-                String role = roleText.getText();
-                String email = emailText.getText();
-                
-                // this method will update the employee info
-                updateUser(employeenumber, username, password, firstname,
-                    insertion, lastname, role, email);
+        btnS.setOnAction((ActionEvent event) -> {
+            // the employee data is received from the textfields
+            int employeenumber = Integer.parseInt(employeenumberText.getText());
+            String username = userNameText.getText();
+            String password = passwordText.getText();
+            String firstname = firstNameText.getText();
+            String insertion = InsertionText.getText();
+            String lastname = lastnameText.getText();
+            String role = roleText.getText();
+            String email = emailText.getText();
 
+            // this method will update the employee info
+            if (updateUser(employeenumber, username, password, firstname,
+                    insertion, lastname, role, email)) {
+
+                // Clear all textfields
+                employeenumberText.setText(Integer.toString(getEmployeenumber()));
+                userNameText.setText("");
+                passwordText.setText("");
+                firstNameText.setText("");
+                InsertionText.setText("");
+                lastnameText.setText("");
+                roleText.setText("");
+                emailText.setText("");
+
+                // Notify user about the successfull data mutation
+                Alert updateSuccess = new Alert(AlertType.CONFIRMATION);
+                updateSuccess.setHeaderText("User updated");
+                updateSuccess.setTitle("Success");
+                updateSuccess.setContentText("The user data has been "
+                        + "successfully updated");
+                updateSuccess.showAndWait();
+            } else {
+                // Notify the user about the error
+                Alert updateSuccess = new Alert(AlertType.CONFIRMATION);
+                updateSuccess.setHeaderText("There seems to be a problem");
+                updateSuccess.setTitle("Error");
+                updateSuccess.setContentText("The user could not be updated, "
+                        + "please try again later");
+                updateSuccess.showAndWait();
             }
         });
 
@@ -346,39 +367,42 @@ public class employeetable {
 
     }
 
-    public void updateUser(int employeenumber, String username, String password, String firstname,
-        String insertion, String lastname, String role, String email) {
+    public boolean updateUser(int employeenumber, String username, String password, String firstname,
+            String insertion, String lastname, String role, String email) {
 
         try {
 
             // a connection is made
             Connection employeetableConnect = db.getConnection();
             Statement statement = employeetableConnect.createStatement();
-            
+
             // Encrupt the password
             password = Encription.encrypt(password);
-            
+
             // this query will update the user info using the data entered into the method
             String databaseQuery = ("UPDATE `corendon`.`employee` SET username ="
-                + "'" + username + "', " + "`password`='" + password + "', firstname = "
-                + "'" + firstname + "', insertion = '" + insertion + "', "
-                + "lastname = '" + lastname + "', role = '" + role + "', email = '" + email + "' "
-                + "WHERE `employeenumber`= " + employeenumber + "; ");
-            
-           // String databaseQuery = ("UPDATE `corendon`.`employee` SET `password`" + generatedPassword + " WHERE `employeenumber`= " + employeenumber + "; ");
+                    + "'" + username + "', " + "`password`='" + password + "', firstname = "
+                    + "'" + firstname + "', insertion = '" + insertion + "', "
+                    + "lastname = '" + lastname + "', role = '" + role + "', email = '" + email + "' "
+                    + "WHERE `employeenumber`= " + employeenumber + "; ");
 
+            // String databaseQuery = ("UPDATE `corendon`.`employee` SET `password`" + generatedPassword + " WHERE `employeenumber`= " + employeenumber + "; ");
             System.out.println(databaseQuery);
-            
+
             // the query is executed here
             statement.executeUpdate(databaseQuery);
-            
 
-        } catch (Exception ex) {
+            return true;
+
+        } catch (SQLException ex) {
             System.out.println("Failed to insert data in to the database ");
             System.err.println(ex.getMessage());
         }
 
+        return false;
+
     }
+
     // this method returns a gridpane with a form to add users
     public GridPane addUser() {
 
@@ -416,7 +440,7 @@ public class employeetable {
         btnmainmenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+
                 // this will add the employeeview table to the screen
                 rootpane.addnewpane(MaakEmployeeTable());
             }
@@ -425,14 +449,13 @@ public class employeetable {
         Label Case = new Label("Employee data");
         Case.setFont(Font.font("Verdana", FontWeight.BOLD, 12));
         grid.add(Case, 10, 15, 15, 1);
-        
+
         Label employeenumberlabel = new Label("Employee number:");
         grid.add(employeenumberlabel, 10, 16, 10, 1);
         TextField employeenumberText = new TextField(Integer.toString(getEmployeenumber()));
         employeenumberText.setDisable(true);
         grid.add(employeenumberText, 20, 16);
-        
-        
+
         Label usernameLabel = new Label("Username:");
         grid.add(usernameLabel, 10, 17, 10, 1);
         TextField userNameText = new TextField();
@@ -452,7 +475,6 @@ public class employeetable {
         grid.add(insetionLabel, 10, 20, 10, 1);
         TextField InsertionText = new TextField();
         grid.add(InsertionText, 20, 20);
-        
 
         Label lastnameLabel = new Label("Lastname:");
         grid.add(lastnameLabel, 10, 21, 10, 1);
@@ -463,7 +485,7 @@ public class employeetable {
         grid.add(roleLabel, 10, 22, 10, 1);
         TextField roleText = new TextField();
         grid.add(roleText, 20, 22);
-        
+
         Label emailLabel = new Label("Email:");
         grid.add(emailLabel, 10, 23, 10, 1);
         TextField emailText = new TextField();
@@ -477,26 +499,50 @@ public class employeetable {
 
         // Toevoegen van buttons
         grid.getChildren().addAll(btnmainmenu, btnS);
-        
+
         btnS.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
+
                 // the employee information will be gotten from the textfields
                 int employeenumber = Integer.parseInt(employeenumberText.getText());
                 String username = userNameText.getText();
                 String password = passwordText.getText();
-                String firstname = firstNameText.getText();    
+                String firstname = firstNameText.getText();
                 String insertion = InsertionText.getText();
                 String lastname = lastnameText.getText();
                 String role = roleText.getText();
                 String email = emailText.getText();
-                
-               
-                
+
                 // using the adduser method the employee info is added to the database
-                addUser(employeenumber, username, password, firstname,
-                    insertion, lastname, role, email);
+                if (addUser(employeenumber, username, password, firstname,
+                        insertion, lastname, role, email)) {
+
+                    // Clear all textfields
+                    employeenumberText.setText(Integer.toString(getEmployeenumber()));
+                    userNameText.setText("");
+                    passwordText.setText("");
+                    firstNameText.setText("");
+                    InsertionText.setText("");
+                    lastnameText.setText("");
+                    roleText.setText("");
+                    emailText.setText("");
+
+                    // this alert will confirm that the user is added to the database
+                    Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                    alert.setTitle("Add user");
+                    alert.setHeaderText("User added");
+                    alert.setContentText("User is added");
+                    alert.showAndWait();
+                } else {
+                    // Notify the user about the error
+                    Alert alert = new Alert(AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("The user can not be added");
+                    alert.setContentText("There seems to be a problem, please "
+                            + "try again later");
+                    alert.showAndWait();
+                }
 
             }
         });
@@ -504,9 +550,9 @@ public class employeetable {
         return grid;
 
     }
-    
-    public int getEmployeenumber(){
-        
+
+    public int getEmployeenumber() {
+
         int newEmployeenumber = 0;
 
         try {
@@ -514,7 +560,7 @@ public class employeetable {
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
             ResultSet TableData = statement.executeQuery("select max(employeenumber)"
-                + " from employee");
+                    + " from employee");
 
             while (TableData.next()) {
                 newEmployeenumber = TableData.getInt(1) + 1;
@@ -526,12 +572,11 @@ public class employeetable {
         }
 
         return newEmployeenumber;
-        
+
     }
-    
-    
-    public void addUser(int employeenumber, String username, String password, String firstname,
-        String insertion, String lastname, String role, String email) {
+
+    public boolean addUser(int employeenumber, String username, String password, String firstname,
+            String insertion, String lastname, String role, String email) {
 
         try {
 
@@ -541,31 +586,27 @@ public class employeetable {
 
             // Encrypt the password
             password = Encription.encrypt(password);
-            
-            String databaseQuery = ("insert into employee" +
-            " values (" + employeenumber + ", '" + username + "', '" + password 
-                + "', '" + firstname + "', '" + insertion + "', '" + lastname 
-                + "', '" + role + "', '" + email + "')");
+
+            String databaseQuery = ("insert into employee"
+                    + " values (" + employeenumber + ", '" + username + "', '" + password
+                    + "', '" + firstname + "', '" + insertion + "', '" + lastname
+                    + "', '" + role + "', '" + email + "')");
 
             System.out.println(databaseQuery);
 
             statement.executeUpdate(databaseQuery);
-            
-             // this alert will confirm that the user is added to the database
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Add user");
-                alert.setHeaderText("User added");
-                alert.setContentText("User is added");
-                alert.showAndWait();
-            
+
+            return true;
 
         } catch (Exception ex) {
             System.out.println("Failed to insert data in to the database ");
             System.err.println(ex.getMessage());
         }
 
+        return false;
+
     }
-    
+
     public void removeUser(int employeenumber) {
 
         try {
@@ -575,12 +616,11 @@ public class employeetable {
             Statement statement = employeetableConnect.createStatement();
 
             String databaseQuery = ("DELETE FROM `corendon`.`employee` WHERE"
-                + " `employeenumber`=" + employeenumber + ";");
+                    + " `employeenumber`=" + employeenumber + ";");
 
             System.out.println(databaseQuery);
 
             statement.executeUpdate(databaseQuery);
-            
 
         } catch (Exception ex) {
             System.out.println("Failed to insert data in to the database ");
@@ -588,6 +628,5 @@ public class employeetable {
         }
 
     }
-    
-    
+
 }
