@@ -24,29 +24,15 @@ import javafx.scene.layout.VBox;
 public class HomeScreen {
 
     Rootpane rootpane = new Rootpane();
-// een commit
 
     public HBox maakhomescreen() {
-        
+
         HBox hbox = new HBox(200);
         hbox.setAlignment(Pos.CENTER);
 
         VBox vbox1 = new VBox(20);
         vbox1.setAlignment(Pos.CENTER);
 
-//            Button bt_VEC = new Button("View Existing Case");
-//            bt_VEC.setStyle("-fx-base:darkred;-fx-border-color:black");
-//            bt_VEC.setPrefSize(160, 50);
-//            bt_VEC.setOnAction(new EventHandler<ActionEvent>() {
-//            @Override
-//            public void handle(ActionEvent event) {
-//                
-//                viewExistingCase scherm3 = new viewExistingCase();
-//                GridPane viewcase = scherm3.MaakExistingCase();
-//                
-//                rootpane.addnewpane(viewcase);
-//            }
-//            });
         Button bt_VBC = new Button("View Baggage Catalogue ");
         bt_VBC.setStyle("-fx-base:darkred;-fx-border-color:black");
         bt_VBC.setPrefSize(160, 50);
@@ -97,8 +83,6 @@ public class HomeScreen {
                 rootpane.addnewpane(adminScherm);
             }
         });
-        
-        
 
         System.err.println(DataCache.getTest());
 
@@ -113,17 +97,14 @@ public class HomeScreen {
                 rootpane.addnewpane(loginScherm);
             }
         });
-
-//            Button bt_OPT = new Button("Options ");
-//            bt_OPT.setStyle("-fx-base:darkred;-fx-border-color:black");   
-//            bt_OPT.setPrefSize(120, 50);            
+         
         Button bt_STA = new Button("Statistics");
         bt_STA.setStyle("-fx-base:darkred;-fx-border-color:white");
         bt_STA.setPrefSize(120, 50);
 
         hbox.setStyle("-fx-background-color: white");
 
-        //           bt_VEC.setPrefSize(180, 20);
+        // bt_VEC.setPrefSize(180, 20);
         bt_VBC.setPrefSize(180, 50);
         bt_RFB.setPrefSize(180, 50);
         bt_RLB.setPrefSize(180, 50);
@@ -132,7 +113,7 @@ public class HomeScreen {
         bt_ADM.setPrefSize(180, 50);
         bt_LOG.setPrefSize(180, 50);
 
-//            vbox1.getChildren().add(bt_VEC);
+        //vbox1.getChildren().add(bt_VEC);
         vbox1.getChildren().add(bt_VBC);
         vbox1.getChildren().add(bt_RFB);
         vbox1.getChildren().add(bt_RLB);
@@ -149,8 +130,8 @@ public class HomeScreen {
                 rootpane.addnewpane(rapport);
             }
         });
-        
-        if(!"admin".equals(DataCache.getRole())) {
+
+        if (!"admin".equals(DataCache.getRole())) {
             bt_ADM.setVisible(false);
             vbox1.getChildren().remove(bt_ADM);
         } else {
