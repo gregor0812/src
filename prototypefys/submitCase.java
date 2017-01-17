@@ -322,10 +322,8 @@ public class submitCase {
             if (foundCustomers.getValue() != "New") {
                 // Save the current selected item in a string
                 String item = foundCustomers.getValue().toString();
-
-                String[] test = item.split(" ");
-
-                ownerID = Integer.parseInt(test[0]);
+                String[] itemArray = item.split(" ");
+                ownerID = Integer.parseInt(itemArray[0]);
             }
 
             // the lugggage info will get the value of their respective fields

@@ -96,6 +96,9 @@ public class LoginScherm {
                     HBox homescreen = nieuwscherm.maakhomescreen();
                     rootpane.addnewpane(homescreen);
                 } else {
+                    
+                    passwordText.setText("");
+                    
                     Alert alert = new Alert(Alert.AlertType.WARNING);
                     alert.setTitle("Verification error");
                     alert.setHeaderText("Wrong password/username");
@@ -165,7 +168,7 @@ public class LoginScherm {
             ResultSet rs = stmt.executeQuery(sql);
             // Loop through all results
             while (rs.next()) {
-                // Save user data in
+                // Save user data
                 DataCache.setEmployeenumber(rs.getInt("employeenumber"));
                 DataCache.setUsername(rs.getString("username"));
                 DataCache.setPassword(rs.getString("password"));
