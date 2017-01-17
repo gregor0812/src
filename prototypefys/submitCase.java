@@ -35,7 +35,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.util.StringConverter;
-import static prototypefys.LoginScherm.sessionEmployeeID;
 
 /**
  *
@@ -44,33 +43,20 @@ import static prototypefys.LoginScherm.sessionEmployeeID;
  */
 public class submitCase {
 
-
-   
-  
-   
     Rootpane rootpane = new Rootpane();
     private static HomeScreen nieuwscherm = new HomeScreen();
     private static HBox homescreen = nieuwscherm.maakhomescreen();
-     
+
     private Database db = new Database();
-    
-private static String lognaam;
 
-   
-   
-  
-
+    private static String lognaam;
 
     submitCase() {
- 
+
     }
 
-    
-    
     public GridPane MakeSubmitScreen() {
 
-        
-        
         Button btn;
         Button btn2;
         Button btnS;
@@ -218,7 +204,7 @@ private static String lognaam;
         foundCustomers.setMaxWidth(160);
         foundCustomers.getSelectionModel().selectFirst();
         foundCustomers.setStyle("-fx-background-color: white; "
-            + "-fx-base:white; -fx-border-color:darkred");
+                + "-fx-base:white; -fx-border-color:darkred");
         grid.add(foundCustomers, 40, 23);
 
         // Add Event when de combobox os shown
@@ -338,7 +324,7 @@ private static String lognaam;
                 String item = foundCustomers.getValue().toString();
 
                 String[] test = item.split(" ");
-                
+
                 ownerID = Integer.parseInt(test[0]);
             }
 
@@ -557,26 +543,19 @@ private static String lognaam;
                 Statement stmt = insertNewOwner.createStatement();
 
                 stmt.executeUpdate(sql);
-                
-
 
                 ownerId = getOwnerID(firstname, insertion, lastname);
-                
-                
+
                 String query = " insert into simplelogs (EmployeeFirstname, EmployeeLastName, Action)"
-        + " values (?, ?, ?)";
-                
+                        + " values (?, ?, ?)";
+
                 PreparedStatement logging = insertNewOwner.prepareStatement(query);
-                
-
-
 
                 logging.setString(1, DataCache.getFirstname());
-                logging.setString(2,DataCache.getLastname());
-                logging.setString(3,"Created case ID "+caseid);
-                
-                logging.execute();
+                logging.setString(2, DataCache.getLastname());
+                logging.setString(3, "Created case ID " + caseid);
 
+                logging.execute();
 
             } catch (SQLException e) {
                 System.err.println(e.getMessage());
@@ -584,7 +563,6 @@ private static String lognaam;
             }
         }
 
-    
         try {
 
             // a connection is made
@@ -609,7 +587,7 @@ private static String lognaam;
                     + "'" + Brand + "', "
                     + "'" + color + "', "
                     + "'" + description + "', "
-                    + "'" + dateFound + "', "  
+                    + "'" + dateFound + "', "
                     + "'" + time + "', "
                     + "'open'"
                     + ");");
@@ -621,7 +599,7 @@ private static String lognaam;
 
             // een resultset met verloren labelnummers
             try {
- 
+
                 Statement statement2 = matchCheckConnection.createStatement();
                 ResultSet knownlabelnr = statement2.executeQuery("select labelnr from lostluggage");
                 List rowValues = new ArrayList();
@@ -768,9 +746,7 @@ private static String lognaam;
     }
 
     private String lognaam() {
-    lognaam = DataCache.getFirstname();
-    return lognaam;
-}
+        lognaam = DataCache.getFirstname();
+        return lognaam;
     }
-
-
+}
