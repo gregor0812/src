@@ -43,6 +43,10 @@ public class LoginScherm {
 
     public GridPane MaakHetScherm() {
 
+         StatisticsPDF test = new StatisticsPDF();
+         test.makeStatistics();
+        
+        
         GridPane root = new GridPane();
         root.setAlignment(Pos.CENTER);
         root.setHgap(10);
