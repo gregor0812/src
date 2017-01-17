@@ -84,7 +84,7 @@ public class HomeScreen {
             }
         });
 
-        System.err.println(DataCache.getTest());
+       
 
         Button bt_LOG = new Button("Logout ");
         bt_LOG.setStyle("-fx-base:darkred;-fx-border-color:white");

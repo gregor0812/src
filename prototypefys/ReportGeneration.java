@@ -260,7 +260,7 @@ public class ReportGeneration {
             }
         });
         
-        String pattern = "yyyy-mm-dd";
+        String pattern = "yyyy-MM-dd";
         startDate.setPromptText(pattern.toLowerCase());
         startDate.setConverter(new StringConverter<LocalDate>() {
             DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(pattern);

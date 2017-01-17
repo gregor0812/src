@@ -213,7 +213,8 @@ public class GenerateSignedPdf {
             
 
             // Save the results and ensure that the document is properly closed:
-            document.save(f.getSelectedFile() + "\\test.pdf");
+            document.save(f.getSelectedFile() + "\\confirmation" + person.getFirstName() + 
+              "_" + person.getLastName() + "_" +  person.getDateLost() + ".pdf");
             document.close();
 
         } catch (Exception ex) {
