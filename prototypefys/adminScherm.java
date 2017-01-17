@@ -5,6 +5,7 @@
  */
 package prototypefys;
 
+import deletedCasesPackage.deletedCasesView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -85,7 +86,11 @@ public class adminScherm {
             @Override
             public void handle(ActionEvent event) {
                 
-                System.out.println("X");
+                deletedCasesView instantie = new deletedCasesView();
+                
+                
+                rootpane.addnewpane(instantie.makeTableView());
+                
             }
             });
             

@@ -107,12 +107,12 @@ public class BagageCatalogue {
             + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
             + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
             + "inner join luggageowner "
-            + "on lostluggage.ownerid = luggageowner.ownerid");
+            + "on lostluggage.ownerid = luggageowner.ownerid where destroyed = 0");
         //root.add(catalogue, 2, 3, 2, 3);
 
         catalogue.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        FoundLuggageTable("Select * FROM foundluggage");
+        FoundLuggageTable("Select * FROM foundluggage where destroyed = 0");
         catalogueFound.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         TablePane.getChildren().addAll(catalogue, catalogueFound);
         catalogueFound.setVisible(false);
@@ -289,7 +289,7 @@ public class BagageCatalogue {
                     catalogue.getItems().clear();
                     catalogue.getColumns().clear();
                     FoundLuggageTable("SELECT * FROM foundluggage "
-                        + "WHERE " + output + " LIKE " + "'%" + zoekConditie + "%'");
+                        + "WHERE " + output + " LIKE " + "'%" + zoekConditie + "% and destroyed = 0'");
 
                 }
             }
@@ -309,7 +309,7 @@ public class BagageCatalogue {
                 // programm knows the found luggage is displayed
                 lostOrFound = false;
                 // this query will select all the data from the database
-                FoundLuggageTable("Select * FROM foundluggage where labelnr = 0");
+                FoundLuggageTable("Select * FROM foundluggage where labelnr = 0 and destroyed = 0");
                
                 comboBoxFound.setVisible(true);
                 comboBox.setVisible(false);
@@ -331,7 +331,7 @@ public class BagageCatalogue {
                 // programm knows the found luggage is displayed
                 lostOrFound = false;
                 // this query will select all the data from the database
-                FoundLuggageTable("Select * FROM foundluggage");
+                FoundLuggageTable("Select * FROM foundluggage where destroyed = 0");
                
                 comboBoxFound.setVisible(true);
                 comboBox.setVisible(false);
@@ -355,7 +355,7 @@ public class BagageCatalogue {
                     + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
                     + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
                     + "inner join luggageowner"
-                    + " on lostluggage.ownerid = luggageowner.ownerid");
+                    + " on lostluggage.ownerid = luggageowner.ownerid where destroyed = 0");
                 // LostLuggageTable("Select * FROM lostluggage");
                 lostOrFound = true;
                 comboBoxFound.setVisible(false);
@@ -385,7 +385,7 @@ public class BagageCatalogue {
                     + "lostluggage.brand, lostluggage.colors, lostluggage.description, "
                     + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
                     + "inner join luggageowner"
-                    + " on lostluggage.ownerid = luggageowner.ownerid");
+                    + " on lostluggage.ownerid = luggageowner.ownerid where destroyed = 0");
 
                     } catch (Exception ex) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -404,7 +404,7 @@ public class BagageCatalogue {
                         String found = "foundluggage";
                         String ID = "foundID";
                         DeleteCase(person, found, ID);
-                        FoundLuggageTable("Select * FROM foundluggage");
+                        FoundLuggageTable("Select * FROM foundluggage where destroyed = 0");
 
                     } catch (Exception ex) {
                         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -818,8 +818,8 @@ public class BagageCatalogue {
             Connection ReportGenerationConnect = db.getConnection();
             Statement statement = ReportGenerationConnect.createStatement();
             // this query will delete the selected row from the database
-            statement.executeUpdate("DELETE FROM `corendon`. " + table + " WHERE " + whichID
-                + " ='" + id + "';");
+            statement.executeUpdate("update " + table + " set destroyed = 1 " +
+                "where " + whichID + " = " + id);
 
         } catch (Exception ex) {
             System.out.println("Failed to delete case ");
