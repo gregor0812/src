@@ -24,10 +24,6 @@ import javafx.scene.layout.HBox;
  */
 public class LoginScherm {
 
-    public static String sessionEmployeeID = "";
-    public static String sessionEmployeeName = "";
-    public static String sessionEmployeeLastName = "";
-
     private Button login = new Button();
     private Button resetPassword = new Button();
 
@@ -38,7 +34,7 @@ public class LoginScherm {
     private Database db = new Database();
 
     private HomeScreen nieuwscherm = new HomeScreen();
-    private HBox homescreen = nieuwscherm.maakhomescreen();
+    
 
     private homeScreenEmployee employeeScherm = new homeScreenEmployee();
     private HBox HomeEmployee = employeeScherm.maakhomescreen();
@@ -101,6 +97,7 @@ public class LoginScherm {
                 String password = passwordText.getText();
 
                 if (loginCheck(username, password)) {
+                    HBox homescreen = nieuwscherm.maakhomescreen();
                     rootpane.addnewpane(homescreen);
                 } else {
                     Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -138,18 +135,6 @@ public class LoginScherm {
         root.add(resetPassword, 0, 4);
 
         return root;
-    }
-
-    public String GetSessionID() {
-        return sessionEmployeeID;
-    }
-
-    public String GetSessionName() {
-        return sessionEmployeeName;
-    }
-
-    public String GetSessionLastName() {
-        return sessionEmployeeLastName;
     }
 
     /**
