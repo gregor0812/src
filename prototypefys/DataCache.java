@@ -11,7 +11,7 @@ package prototypefys;
  */
 public class DataCache {
 
-    private int employeenumber; // The unique identifier of the user
+    private static int employeenumber; // The unique identifier of the user
     private static String username; // Username to login with
     private static String password; // Password to login with
     private static String role; // Permission role of the user
@@ -20,12 +20,12 @@ public class DataCache {
     private static String lastname; // The lastname of the user
     private static String email; // The email address of the user
 
-    public int getEmployeenumber() {
-        return employeenumber;
+    public static int getEmployeenumber() {
+        return DataCache.employeenumber;
     }
 
-    public void setEmployeenumber(int employeenumber) {
-        this.employeenumber = employeenumber;
+    public static void setEmployeenumber(int employeenumber) {
+        DataCache.employeenumber = employeenumber;
     }
 
     /**

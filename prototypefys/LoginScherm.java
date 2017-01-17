@@ -80,14 +80,11 @@ public class LoginScherm {
 
         login.setStyle("-fx-background-color: #ffffff;-fx-text-fill:BLACK");
 
-
         login.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
-
 
         Button resetPassword = new Button();
         resetPassword.setText("Reset password");
         resetPassword.setStyle("-fx-background-color: darkred;-fx-text-fill:white");
-
 
         root.setStyle("-fx-background-color: #baf9ff");
         root.setStyle("-fx-background-color: white");
@@ -99,7 +96,6 @@ public class LoginScherm {
                 String username = userText.getText();
                 String password = passwordText.getText();
 
-
                 if (loginCheck(username, password)) {
                     rootpane.addnewpane(homescreen);
                 } else {
@@ -110,12 +106,10 @@ public class LoginScherm {
                     alert.showAndWait();
                 }
 
-
                 // rootpane.addnewpane(homescreen);
             }
         });
-        
-       
+
         resetPassword.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -127,28 +121,11 @@ public class LoginScherm {
 
             }
         });
-       
 
         root.setOnKeyPressed(e -> {
             switch (e.getCode()) {
                 case ENTER:
-                    String username = userText.getText();
-                    String password = passwordText.getText();
-
-
-                    loginCheck(username, password);
-
-                    if (loginCheck(username, password)) {
-                        rootpane.addnewpane(homescreen);
-                        break;
-                    } else {
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setTitle("Verification error");
-                        alert.setHeaderText("Wrong password/username");
-                        alert.setContentText("Wrong password/username");
-                        alert.showAndWait();
-                    }
-
+                    login.fire();
                     break;
             }
         });
@@ -173,17 +150,17 @@ public class LoginScherm {
 
     /**
      * Check the entered credentials and save the account info
-     * 
+     *
      * @param username The username used to login
      * @param password The password used to login
      * @return True if the verification is successfull
      */
     public boolean loginCheck(String username, String password) {
         System.out.println(password);
-        
+
         // Encrypt password
         password = Encription.encrypt(password);
-      System.out.println(password);
+        System.out.println(password);
 
         // SQL query to 
         String sql = "SELECT employeenumber, username, password, firstname, "
@@ -204,6 +181,7 @@ public class LoginScherm {
             // Loop through all results
             while (rs.next()) {
                 // Save user data in
+                DataCache.setEmployeenumber(rs.getInt("employeenumber"));
                 DataCache.setUsername(rs.getString("username"));
                 DataCache.setPassword(rs.getString("password"));
                 DataCache.setFirstname(rs.getString("firstname"));
@@ -211,6 +189,7 @@ public class LoginScherm {
                 DataCache.setLastname(rs.getString("lastname"));
                 DataCache.setRole(rs.getString("role"));
                 DataCache.setEmail(rs.getString("email"));
+
                 // Return true
                 return true;
             }
@@ -224,4 +203,4 @@ public class LoginScherm {
 
     }
 
-    }
+}
