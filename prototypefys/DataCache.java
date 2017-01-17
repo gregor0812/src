@@ -19,9 +19,6 @@ public class DataCache {
     private static String insertion; // Insertion of the user
     private static String lastname; // The lastname of the user
     private static String email; // The email address of the user
- 
-
-   
     
     public static int getEmployeenumber() {
         return DataCache.employeenumber;
