@@ -595,22 +595,37 @@ public class BagageCatalogue {
         root.add(CreateMatch, 3, 4, 1, 2);
         CreateMatch.setTranslateX(750);
         CreateMatch.setTranslateY(150);
-        clearPotential.setOnAction(new EventHandler<ActionEvent>() {
+        CreateMatch.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                
-                if (lostOrFound) {
-                    if (potentialDataLost.isEmpty()) {
 
-                        Alert alert = new Alert(Alert.AlertType.WARNING);
-                        alert.setContentText("there is no lost luggage in the \n"
-                            + "potential match table");
-                        alert.showAndWait();
-                    } else {
-                       // hier methode maken om match te maken en found cas the updaten
+                if (potentialDataLost.isEmpty() || potentialDataFound.isEmpty()) {
+
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setContentText("there is no luggage in one of the \n"
+                        + "potential match tables");
+                    alert.showAndWait();
+                } else {
+
+                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                    alert.setContentText("are you sure you want to "
+                        + " create this match?");
+
+                    ButtonType confirm = new ButtonType("yes", ButtonBar.ButtonData.CANCEL_CLOSE);
+                    ButtonType cancel = new ButtonType("cancel");
+                    alert.getButtonTypes().setAll(confirm, cancel);
+
+                    Optional<ButtonType> result = alert.showAndWait();
+                    if (result.get() == confirm) {
+
+                        LostLuggage lostMatch = potentialMatchLost.getItems().get(0);
+                        FoundLuggage foundMatch = potentialMatchFound.getItems().get(0);
+
+                        createMatch(lostMatch, foundMatch);
                     }
-                
+
                 }
+
             }
         });
 
@@ -651,11 +666,10 @@ public class BagageCatalogue {
                         alert.getButtonTypes().setAll(okButton, cancel);
 
                         Optional<ButtonType> result = alert.showAndWait();
-                        if (result.get() == okButton){
+                        if (result.get() == okButton) {
                             dataFound.remove(dataFound.get(catalogueFound.getSelectionModel().getSelectedIndex()));
-                             potentialDataFound.add(person);
+                            potentialDataFound.add(person);
                         }
-                        
 
                     } else {
 
@@ -1108,27 +1122,48 @@ public class BagageCatalogue {
 
         return LostInfo;
     }
-    
-    public void createMatch(LostLuggage lost, FoundLuggage found){
-        
-        try{
-            
+
+    public void createMatch(LostLuggage lost, FoundLuggage found) {
+
+        try {
+
             Connection matchCheckConnection = db.getConnection();
             Statement statement = matchCheckConnection.createStatement();
-            
-            String query = "Update Foundluggage SET labelnr = " + lost.getLabelnr() 
-                + ", ownerid = " + lost.getOwnerid() + ", flightnr = " + lost.getFlightnr() + 
-                    "ownername = " + lost.getFirstName() + ", insertion = " 
-                + lost.getInsertion() + ", lastname = " + lost.getLastName() 
-                + ", destination = " + lost.getDestination() + "where foundID = " 
-                + found.getCaseid(); 
-            
+
+            String query = "Update Foundluggage SET labelnr = " + lost.getLabelnr()
+                + ", ownerid = " + lost.getOwnerid() + ", flightnr = " + lost.getFlightnr()
+                + ", ownername = '" + lost.getFirstName() + "' , insertion = '"
+                + lost.getInsertion() + "' , lastname = '" + lost.getLastName()
+                + "' , destination = '" + lost.getDestination() + "' , status = 'matched' " + "where foundID = "
+                + found.getCaseid();
+
+            String query2 = "update LostLuggage SET status = 'matched' WHERE labelnr = "
+                + lost.getLabelnr();
+
             statement.executeUpdate(query);
-            
+            statement.executeUpdate(query2);
+
         } catch (Exception ex) {
-            System.out.println("Failed to create a match");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setContentText("failed to create a new match");
+            alert.showAndWait();
             System.err.println(ex.getMessage());
         }
-        
+
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setContentText("succedfully created a new match");
+        ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.CANCEL_CLOSE);
+        ButtonType ViewMatchBtn = new ButtonType("View match");
+        alert.getButtonTypes().setAll(okButton, ViewMatchBtn);
+
+        Optional<ButtonType> result = alert.showAndWait();
+
+        if (result.get() == ViewMatchBtn) {
+
+            matchInformatie matchscherm = new matchInformatie();
+            GridPane infoScherm = matchscherm.matchInfo(lost, found);
+            basisPane.addnewpane(infoScherm);
+
+        }
     }
 }
