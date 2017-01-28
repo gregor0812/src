@@ -7,7 +7,7 @@ package prototypefys;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  */
 import cataloog.BagageCatalogue;
 import javafx.event.ActionEvent;

@@ -7,10 +7,6 @@ package prototypefys;
 
 import cataloog.FoundLuggage;
 import cataloog.LostLuggage;
-import java.io.File;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Optional;
 import java.util.Properties;
 import javafx.event.ActionEvent;
@@ -43,7 +39,7 @@ import javax.mail.internet.MimeMultipart;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  */
 public class FoundLuggageMail {
 
@@ -56,36 +52,50 @@ public class FoundLuggageMail {
 
     private static boolean sendOrNot = true;
 
+    /**
+     *
+     * @param lostInfo a instance of the lostluggage class containing the 
+     * information of the lost luggage
+     * @param foundInfo a instancce of the foundluggage class containing the 
+     * information of the foundluggage
+     * @return this return a gridpane containing the email maker
+     */
     public GridPane makeTheMail(LostLuggage lostInfo, FoundLuggage foundInfo) {
-
+        
+        // the gridpane that serves as a basis
         GridPane root = new GridPane();
         root.setPadding(new Insets(10, 10, 10, 10));
         root.setVgap(8);
         root.setHgap(10);
         root.setAlignment(Pos.CENTER);
-
+        
+        // the corendon logo
         ImageView Corendon = new ImageView("/resources/CorendonAirlines.png");
         Corendon.setFitHeight(100);
         Corendon.setFitWidth(300);
 
         root.add(Corendon, 0, 0, 3, 1);
         root.setStyle("-fx-background-color: white");
-
+        
+        // the label and textfield of the person that receives the email
         Label emailL = new Label("to: ");
         root.add(emailL, 1, 1);
         TextField emailT = new TextField();
         root.add(emailT, 2, 1);
-
+        
+        // the label and textfield of the subject of the email
         Label subjectL = new Label("subject: ");
         root.add(subjectL, 1, 2);
         TextField subjectT = new TextField();
         root.add(subjectT, 2, 2);
-
+        
+        // the label and textarea that will contain the text of the email
         Label emailLabel = new Label("email text:");
         root.add(emailLabel, 1, 3);
         TextArea emailBody = new TextArea();
         root.add(emailBody, 1, 4, 4, 1);
-
+        
+        // a button that will return to the matchview
         Button btnBack = new Button(); // button Submit
         btnBack.setText("back to matchview");
         btnBack.setPrefSize(160, 50);
@@ -96,12 +106,13 @@ public class FoundLuggageMail {
             public void handle(ActionEvent event) {
 
                 matchInformatie backtoInfo = new matchInformatie();
-
+                // the rootpane will add the matchview pane
                 rootpane.addnewpane(backtoInfo.matchInfo(lostInfo, foundInfo));
             }
         });
         GridPane.setConstraints(btnBack, 1, 8, 2, 2);
-
+        
+        // the button that sends the email
         Button btnS = new Button(); // button Submit
         btnS.setText("sent email");
         btnS.setPrefSize(100, 50);
@@ -109,7 +120,7 @@ public class FoundLuggageMail {
         btnS.setFont(Font.font("Verdana", 12));
         btnS.setOnAction((ActionEvent event) -> {
 
-            String email = emailT.getText();
+            
 
             //generates new password
             int generatedPassword;
@@ -162,10 +173,20 @@ public class FoundLuggageMail {
 
         return root;
     }
-
+    
+     /**
+     *
+     * @param from the sender of the emmail
+     * @param pass the password of the send of the email
+     * @param to the receiver of the email
+     * @param subject the subject of the email
+     * @param body  the text of the email
+     */
+    
     private static void matchEmail(String from, String pass, String to,
         String subject, String body) {
-
+        
+        // the properties of te email
         Properties props = System.getProperties();
         String host = "smtp.gmail.com";
         props.put("mail.smtp.starttls.enable", "true");
@@ -190,11 +211,13 @@ public class FoundLuggageMail {
             BodyPart messageBodyPart = new MimeBodyPart();
             messageBodyPart.setText(body);
             multipart.addBodyPart(messageBodyPart);
+            // the match confirmation form
             String filename = "src\\resources\\pdf\\filledinConfirmation\\FilledMatchInformation.pdf";
             DataSource source = new FileDataSource(filename);
             BodyPart attachtmentBodyPart = new MimeBodyPart();
             attachtmentBodyPart.setDataHandler(new DataHandler(source));
             attachtmentBodyPart.setFileName(filename);
+            // the dhl shipment form
             String dhlFile = "src\\resources\\pdf\\DHLShipmentForm.pdf";
             DataSource source2 = new FileDataSource(dhlFile);
             BodyPart dhlBodyPart = new MimeBodyPart();

@@ -25,8 +25,8 @@ import org.apache.logging.log4j.Logger;
 
 
 /**
- * jasdhakjsdjkas
- * @author Koen Hengsdijk
+ * 
+ * @author IS-109-2
  */
 public class PrototypeFys extends Application {
      

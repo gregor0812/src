@@ -38,7 +38,7 @@ import prototypefys.adminScherm;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  */
 public class employeetable {
 
@@ -47,9 +47,16 @@ public class employeetable {
     private TableView<Employee> employeeView = new TableView();
     private Database db = new Database();
 
+    /**
+     *
+     */
     public employeetable() {
     }
 
+    /**
+     *
+     * @return
+     */
     public GridPane MaakEmployeeTable() {
 
         employeeView.getItems().clear();
@@ -230,6 +237,12 @@ public class employeetable {
     }
 
     // this method will generate an edit form using a employee object
+
+    /**
+     *
+     * @param employee
+     * @return
+     */
     public GridPane editUser(Employee employee) {
 
         // a button to return to the employeetable
@@ -367,6 +380,18 @@ public class employeetable {
 
     }
 
+    /**
+     *
+     * @param employeenumber
+     * @param username
+     * @param password
+     * @param firstname
+     * @param insertion
+     * @param lastname
+     * @param role
+     * @param email
+     * @return
+     */
     public boolean updateUser(int employeenumber, String username, String password, String firstname,
             String insertion, String lastname, String role, String email) {
 
@@ -404,6 +429,11 @@ public class employeetable {
     }
 
     // this method returns a gridpane with a form to add users
+
+    /**
+     *
+     * @return
+     */
     public GridPane addUser() {
 
         Button btnmainmenu;
@@ -551,6 +581,10 @@ public class employeetable {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public int getEmployeenumber() {
 
         int newEmployeenumber = 0;
@@ -575,6 +609,18 @@ public class employeetable {
 
     }
 
+    /**
+     *
+     * @param employeenumber
+     * @param username
+     * @param password
+     * @param firstname
+     * @param insertion
+     * @param lastname
+     * @param role
+     * @param email
+     * @return
+     */
     public boolean addUser(int employeenumber, String username, String password, String firstname,
             String insertion, String lastname, String role, String email) {
 
@@ -607,6 +653,10 @@ public class employeetable {
 
     }
 
+    /**
+     *
+     * @param employeenumber
+     */
     public void removeUser(int employeenumber) {
 
         try {

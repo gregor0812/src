@@ -13,7 +13,6 @@ import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.SnapshotParameters;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
@@ -22,8 +21,6 @@ import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -32,7 +29,7 @@ import javafx.util.StringConverter;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  */
 public class ReportGeneration {
 
@@ -65,6 +62,10 @@ public class ReportGeneration {
 
     }
 
+    /**
+     *
+     * @return this will return a bordenpane containing the reportgeneartion screen
+     */
     public BorderPane MakeReportScreen() {
 
         // this boolean checks if a barchart is used or a piechart
@@ -384,7 +385,12 @@ public class ReportGeneration {
         return root;
     }
 
-    // test 5634t
+    /**
+     * 
+     * @param query the query that will retrieve the required information out of
+     * the database
+     * @param TableName the name of the piechart 
+     */
     private void setPieChartData(String query, String TableName) {
         
         dataPie.clear();
@@ -413,7 +419,14 @@ public class ReportGeneration {
         chart.setData(dataPie);
         
     }
-
+    
+    /**
+     * 
+     * @param query the query that will retrieve the info from the database
+     * @param title the title of the barchart
+     * @param xAxisLabel the name of the xaxis of the barchart
+     * @param yAxisLabel the name of the yaxis of the barchart
+     */
     private void setBarchartData(String query, String title, String xAxisLabel, String yAxisLabel) {
         
         bc = null;

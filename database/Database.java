@@ -10,7 +10,7 @@ import java.sql.*;
 /**
  * Create a connection to the database.
  *
- * @author Erik Wolters <erik.wolters@hva.nl>
+ * @author IS-109-2
  */
 public class Database {
 

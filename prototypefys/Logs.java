@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleStringProperty;
 
 /**
  *
- * @author Michael Cheung
+ * @author IS-109-2
  */
 public class Logs {
     

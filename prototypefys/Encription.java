@@ -12,7 +12,7 @@ import javax.xml.bind.DatatypeConverter;
 /**
  * Encrypt text
  *
- * @author Erik Wolters <erik.wolters@hva.nl>
+ * @author IS-109-2
  */
 public class Encription {
 

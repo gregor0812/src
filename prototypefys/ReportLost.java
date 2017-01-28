@@ -33,7 +33,7 @@ import javafx.scene.image.Image;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  */
 public class ReportLost {
 
@@ -48,6 +48,10 @@ public class ReportLost {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public GridPane MakeLostReport() {
 
         Button btn;
@@ -335,6 +339,10 @@ public class ReportLost {
 
     }
 
+    /**
+     *
+     * @return
+     */
     public int getCaseId() {
 
         int newCaseId = 0;
@@ -357,6 +365,10 @@ public class ReportLost {
         return newCaseId;
     }
 
+    /**
+     *
+     * @return
+     */
     public int getOwnerId() {
 
         int newOwnerId = 0;
@@ -379,6 +391,31 @@ public class ReportLost {
         return newOwnerId;
     }
 
+    /**
+     *
+     * @param ownerid the id of the luggage owner
+     * @param firstname the first name of the luggage owner
+     * @param insertion the insertion of the luggage owner
+     * @param Lastname the last name of the luggage owner
+     * @param phone1 the first phonenumber of the luggage owner
+     * @param phone2 the second phonenumber of the luggage owner
+     * @param email the email of the luggage owner
+     * @param notes the notes about  the luggage owner
+     * @param caseid the case id of the luggage
+     * @param labelnr the labelnr of the luggage
+     * @param flightnr the flightnr of the luggage
+     * @param destination the destination of the luggagee
+     * @param airportName the name of the airport the luggage was registrated
+     * @param itemname the item name of the luggage
+     * @param Brand the brand of the luggage
+     * @param color the color of the luggage
+     * @param description the description of the luggage
+     * @param dateLost the date the luggage was lost
+     * @param address the owner address
+     * @param city the city the luggage owner lives in
+     * @param zipcode the zipcode of the luggage owner
+     * @param country the country the luggage owner lives in
+     */
     public void insertIntoDatabase(int ownerid, String firstname, String insertion,
         String Lastname, int phone1, Integer phone2, String email, String notes,
         int caseid, int labelnr, int flightnr, String destination, String airportName,
@@ -406,8 +443,7 @@ public class ReportLost {
                 + "' , '" + Brand + "' , '" + color + "', '" 
                 + description + "' , '" + dateLost + "', 'open');");
 
-                System.out.println(databaseQuery);
-                
+                                
             statement.executeUpdate(databaseQuery);
             statement.executeUpdate(query2);
             statement.executeUpdate(addressQuery);
@@ -520,7 +556,7 @@ public class ReportLost {
                 
                 
 
-                System.out.println(rowValues);
+                
             } catch (Exception ex) {
                 System.out.println("failed to check for matches");
                 System.err.println(ex.getMessage());
@@ -538,6 +574,12 @@ public class ReportLost {
 
     }
 
+    /**
+     *
+     * @param query the query that will retrieve the required info from the
+     * database
+     * @return this will return a instance of the lostluggage class
+     */
     public LostLuggage lostLuggageMatchInfo(String query) {
 
         LostLuggage LostInfo = null;
@@ -566,7 +608,7 @@ public class ReportLost {
 
 
         } catch (Exception ex) {
-            System.out.println("failed to inser data in to the database ");
+            System.out.println("failed to insert data in to the database ");
             System.err.println(ex.getMessage());
         }
 
@@ -575,6 +617,12 @@ public class ReportLost {
         return LostInfo;
     }
 
+    /**
+     *
+     * @param query  the query that will retrieve the required info from the
+     * database
+     * @return this will return a instance of the foundluggage class
+     */
     public FoundLuggage foundLuggageMatchInfo(String query) {
 
         FoundLuggage FoundInfo = null;

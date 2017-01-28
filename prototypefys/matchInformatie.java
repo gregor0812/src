@@ -42,7 +42,7 @@ import javax.mail.internet.MimeMultipart;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  */
 public class matchInformatie {
 

@@ -20,7 +20,7 @@ import javafx.scene.layout.HBox;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  */
 public class LoginScherm {
 
@@ -42,10 +42,6 @@ public class LoginScherm {
     Rootpane rootpane = new Rootpane();
 
     public GridPane MaakHetScherm() {
-
-         StatisticsPDF test = new StatisticsPDF();
-         test.makeStatistics();
-        
         
         GridPane root = new GridPane();
         root.setAlignment(Pos.CENTER);
@@ -148,11 +144,9 @@ public class LoginScherm {
      * @return True if the verification is successfull
      */
     public boolean loginCheck(String username, String password) {
-        System.out.println(password);
 
         // Encrypt password
         password = Encription.encrypt(password);
-        System.out.println(password);
 
         // SQL query to 
         String sql = "SELECT employeenumber, username, password, firstname, "
@@ -161,7 +155,6 @@ public class LoginScherm {
                 + "WHERE username = '" + username + "' "
                 + "AND password = '" + password + "' "
                 + "LIMIT 1";
-        System.out.println(sql);
 
         try {
             // Load the databse connection

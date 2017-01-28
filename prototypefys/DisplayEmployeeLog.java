@@ -32,7 +32,7 @@ import javafx.scene.text.FontWeight;
 
 /**
  *
- * @author Michael Cheung
+ * @author IS-109-2
  */
 public class DisplayEmployeeLog extends HomeScreen{
     private static Rootpane rootpane = new Rootpane();

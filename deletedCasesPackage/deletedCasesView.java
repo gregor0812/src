@@ -37,9 +37,9 @@ import prototypefys.matchInformatie;
  */
 public class deletedCasesView {
 
-    
-    
-    
+    /**
+     *
+     */
     public deletedCasesView() {    
     }
     
@@ -56,11 +56,18 @@ public class deletedCasesView {
     private ObservableList<deletedFound> dataFound;
     private TableView<deletedFound> catalogueFound = new TableView();
     
-      public Database CatalogueDatabase = new Database();
+    /**
+     *
+     */
+    public Database CatalogueDatabase = new Database();
 
     // this boolean checks wether the lost or found luggage is displayed
     private boolean lostOrFound = true;
     
+    /**
+     *
+     * @return this return the tableview with the deleted luggage
+     */
     public GridPane makeTableView() {
 
         // this stackpane contains the tableviews
@@ -322,7 +329,7 @@ public class deletedCasesView {
         });
         
         
-
+        // this button shows the lost luggage that was deleted
         Button showLost = new Button("Show deleted cases \n that were lost");
         showLost.setMinSize(150, 40);
         showLost.setOnAction(new EventHandler<ActionEvent>() {
@@ -339,7 +346,7 @@ public class deletedCasesView {
                     + "`date lost`, lostluggage.timeLost, lostluggage.status from lostluggage "
                     + "inner join luggageowner"
                     + " on lostluggage.ownerid = luggageowner.ownerid where destroyed = 1");
-                // LostLuggageTable("Select * FROM lostluggage");
+             
                 lostOrFound = true;
                 comboBoxFound.setVisible(false);
                 comboBox.setVisible(true);
@@ -349,7 +356,7 @@ public class deletedCasesView {
         
          // this button will return to the main meny
         Button buttonMainMenu = new Button("return to \nadminscreen");
-        //buttonCurrent.setPrefSize(90, 50);
+      
         buttonMainMenu.setStyle("-fx-base:darkred;-fx-border-color:white");
         buttonMainMenu.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -387,6 +394,12 @@ public class deletedCasesView {
     }
     
      // this is the table with the found luggage
+
+    /**
+     *
+     * @param query this is the query that will select all the info from the 
+     * database
+     */
     public void FoundLuggageTable(String query) {
         catalogueFound.setEditable(true);
         catalogueFound.setMinWidth(1500);
@@ -480,6 +493,10 @@ public class deletedCasesView {
 
     }
     
+    /**
+     *
+     * @param query this query will retrieve the required info from the database
+     */
     public void LostLuggageTable(String query) {
 
         // de table colums are made here

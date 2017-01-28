@@ -10,7 +10,7 @@ import java.util.Random;
 /**
  * Generate a strong, multicharacter password
  *
- * @author Erik Wolters <erik.wolters@hva.nl>
+ * @author IS-109-2
  */
 public class PasswordGenerator {
 

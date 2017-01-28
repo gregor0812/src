@@ -20,7 +20,7 @@ import org.apache.pdfbox.pdmodel.graphics.image.PDImageXObject;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  */
 public class GenerateSignedPdf {
 

@@ -22,7 +22,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -33,7 +32,7 @@ import prototypefys.matchInformatie;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  */
 public class BagageCatalogue {
 
@@ -59,14 +58,25 @@ public class BagageCatalogue {
         = FXCollections.observableArrayList();
     private TableView<FoundLuggage> potentialMatchFound = new TableView();
 
+    /**
+     * the standard constructor
+     */
     public BagageCatalogue() {
     }
 
+    /**
+     * a database instance is made
+     */
     public Database CatalogueDatabase = new Database();
 
     // this boolean checks wether the lost or found luggage is displayed
     private boolean lostOrFound = true;
 
+    /**
+     *
+     * @return this method will return a gridpane that can be added to 
+     * the primary stage
+     */
     public GridPane MaakCatalogue() {
 
         // this stackpane contains the tableviews
@@ -686,7 +696,8 @@ public class BagageCatalogue {
                 }
             }
         });
-
+        
+          // the colums for the potential match table are made here
         TableColumn<LostLuggage, Integer> caseidColumn = new TableColumn<>("lostID");
         caseidColumn.setCellValueFactory(new PropertyValueFactory<>("caseid"));
         //caseidColumn.setMaxWidth(100);
@@ -751,7 +762,8 @@ public class BagageCatalogue {
         potentialMatchLost.setMaxHeight(60);
         potentialMatchLost.setFixedCellSize(30.0);
         potentialMatchLost.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
+        
+        // the colums for the potential match table are made here
         TableColumn<FoundLuggage, Integer> caseidColumnFound = new TableColumn<>("foundID");
         caseidColumnFound.setCellValueFactory(new PropertyValueFactory<>("caseid"));
 
@@ -843,6 +855,10 @@ public class BagageCatalogue {
 
     }
 
+    /**
+     *
+     * @param query this query will select all the info out of the database
+     */
     public void LostLuggageTable(String query) {
 
         catalogue.setEditable(true);
@@ -904,7 +920,6 @@ public class BagageCatalogue {
             // a connection is made
             Connection catalogueConnect = db.getConnection();
             Statement statement = catalogueConnect.createStatement();
-            System.out.println(query);
             ResultSet TableData = statement.executeQuery(query);
 
             // this while loop gets data in the ovservable list
@@ -926,7 +941,6 @@ public class BagageCatalogue {
             catalogue.getItems().clear();
             catalogue.getColumns().clear();
 
-            //System.out.println(data);
             catalogue.setItems(data);
             catalogue.getColumns().addAll(caseidColumn, owneridColumn,
                 firstNameColumn, insertionColumn, lastNameColumn, labelnrColumn,
@@ -940,6 +954,11 @@ public class BagageCatalogue {
     }
 
     // this is the table with the found luggage
+
+    /**
+     *
+     * @param query this query will select all the info out of the database
+     */
     public void FoundLuggageTable(String query) {
         catalogueFound.setEditable(true);
         catalogueFound.setMinWidth(1500);
@@ -1014,7 +1033,6 @@ public class BagageCatalogue {
 
             }
 
-            System.out.println(query);
             catalogueFound.setFixedCellSize(30.0);
             // the table is cleared
             catalogueFound.getItems().clear();
@@ -1034,7 +1052,13 @@ public class BagageCatalogue {
 
     }
 
-    // a method to delete a case
+
+    /**
+     *
+     * @param id the number of the lost or found id
+     * @param table the table that will be updated
+     * @param whichID the lost or the found id
+     */
     public void DeleteCase(int id, String table, String whichID) {
 
         try {
@@ -1052,6 +1076,12 @@ public class BagageCatalogue {
 
     }
 
+    /**
+     *
+     * @param labelnr the labelnr of the selected case 
+     * @return a lostlugga instance wil be returned containing the info of the 
+     * selected case
+     */
     public FoundLuggage foundLuggageMatchInfo(int labelnr) {
 
         String query = "select * from foundluggage where labelnr = " + labelnr;
@@ -1082,6 +1112,12 @@ public class BagageCatalogue {
         return FoundInfo;
     }
 
+    /**
+     *
+     * @param labelnr the labelnr of the selected case
+     * @return a lostlugga instance wil be returned containing the info of the 
+     * selected case
+     */
     public LostLuggage lostLuggageMatchInfo(int labelnr) {
 
         String query = ("select lostluggage.lostID, lostluggage.ownerid, "
@@ -1123,6 +1159,13 @@ public class BagageCatalogue {
         return LostInfo;
     }
 
+    /**
+     *
+     * @param lost a instance of the Lostluggage class containing the information
+     * of the lostluggage the was selected
+     * @param found a instance of the Lostluggage class containing the information
+     * of the lostluggage the was selected
+     */
     public void createMatch(LostLuggage lost, FoundLuggage found) {
 
         try {
@@ -1150,7 +1193,7 @@ public class BagageCatalogue {
             System.err.println(ex.getMessage());
         }
 
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("succedfully created a new match");
         ButtonType okButton = new ButtonType("ok", ButtonBar.ButtonData.CANCEL_CLOSE);
         ButtonType ViewMatchBtn = new ButtonType("View match");

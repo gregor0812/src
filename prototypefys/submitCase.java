@@ -38,7 +38,7 @@ import javafx.util.StringConverter;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  *
  */
 public class submitCase {
@@ -55,6 +55,10 @@ public class submitCase {
 
     }
 
+    /**
+     *
+     * @return this will report a gridpane where you can add foundluggage
+     */
     public GridPane MakeSubmitScreen() {
 
         Button btn;
@@ -378,6 +382,11 @@ public class submitCase {
     }
 
     // this function will get a new caseid 
+
+    /**
+     *
+     * @return this will return a caseid for the new case
+     */
     public int getCaseId() {
 
         // the value will be 0 at first
@@ -684,6 +693,11 @@ public class submitCase {
 
     }
 
+    /**
+     *
+     * @param query this query will retrieve the required info from the database
+     * @return this will return a instance of the lostluggage class
+     */
     public LostLuggage lostLuggageMatchInfo(String query) {
 
         LostLuggage LostInfo = null;
@@ -715,6 +729,11 @@ public class submitCase {
         return LostInfo;
     }
 
+    /**
+     *
+     * @param query this will retrieve the required info from the database
+     * @return this will return a instance of the foundluggage class
+     */
     public FoundLuggage foundLuggageMatchInfo(String query) {
 
         FoundLuggage FoundInfo = null;

@@ -29,7 +29,7 @@ import prototypefys.Rootpane;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  */
 public class EditForm {
 
@@ -40,6 +40,12 @@ public class EditForm {
 
     }
 
+    /**
+     *
+     * @param person a instance of the lostluggage class that contains the info 
+     * of the case that is edited
+     * @return the gridpane that contains the edit form
+     */
     public GridPane MakeEdit(LostLuggage person) {
 
         Button btnmainmenu;
@@ -283,6 +289,13 @@ public class EditForm {
     }
     
     // this method will get the owner information
+
+    /**
+     *
+     * @param ownerid the ownerid of the owner that is being edited
+     * @param infoNumber the column number of the info that is being used
+     * @return a string with the info requested
+     */
     public String getOwnerinfo(int ownerid, int infoNumber) {
 
         String info = "";
@@ -307,6 +320,12 @@ public class EditForm {
         return info;
     }
 
+    /**
+     *
+     * @param ownerid the id of the owner that is being is edited
+     * @param infoNumber the column number of the info thats being requested
+     * @return a string containing the info
+     */
     public String getAddressInfo(int ownerid, int infoNumber) {
 
         String info = "";
@@ -331,6 +350,31 @@ public class EditForm {
         return info;
     }
 
+    /**
+     *
+     * @param ownerid the id of the luggage owner
+     * @param firstname the first name of the luggage owner
+     * @param insertion the insertion of the luggage owner
+     * @param Lastname the last name of the luggage owner
+     * @param phone1 the first phonenumber of the luggage owner
+     * @param phone2 the second phonenumber of the luggage owner
+     * @param email the email of the luggage owner
+     * @param notes the notes about  the luggage owner
+     * @param caseid the case id of the luggage
+     * @param labelnr the labelnr of the luggage
+     * @param flightnr the flightnr of the luggage
+     * @param destination the destination of the luggagee
+     * @param airportName the name of the airport the luggage was registrated
+     * @param itemname the item name of the luggage
+     * @param Brand the brand of the luggage
+     * @param color the color of the luggage
+     * @param description the description of the luggage
+     * @param dateLost the date the luggage was lost
+     * @param address the owner address
+     * @param city the city the luggage owner lives in
+     * @param zipcode the zipcode of the luggage owner
+     * @param country the country the luggage owner lives in
+     */
     public void insertEditIntoDatabase(int ownerid, String firstname, String insertion,
         String Lastname, int phone1, Integer phone2, String email, String notes,
         int caseid, int labelnr, int flightnr, String destination, String airportName,
@@ -438,6 +482,13 @@ public class EditForm {
     }
 
 // this is an edit form for the found luggage
+
+    /**
+     *
+     * @param person a instance of the foundluggage class that contains the info
+     * that will be edited
+     * @return a gridpane of the edit form
+     */
     public GridPane MakeEdit(FoundLuggage person) {
 
         // the buttons are made here
@@ -610,6 +661,23 @@ public class EditForm {
     }
 
     // this method will insert the updates made to the found luggage in the database
+
+    /**
+     *
+     * @param foundId the case id of the found luggage
+     * @param labelnr the labelnr of the found luggage
+     * @param flightnr the flightnumber of the found luggage
+     * @param firstName the first name of the owner of the found luggage
+     * @param insertion the instertion of the foundluggage owner
+     * @param lastName the lastname of the foundluggage owner
+     * @param airport the airport where the luggage was found
+     * @param destination the destination of the found luggage
+     * @param itemname the item name of the found luggage
+     * @param brand the brand of the found luggage
+     * @param colors the color of the foundluggage
+     * @param description the description of the foundluggage
+     * @param dateFound the date the luggage was found
+     */
     public void UpdateFoundLuggage(int foundId, int labelnr, int flightnr,
         String firstName, String insertion, String lastName, String airport,
         String destination, String itemname, String brand, String colors,

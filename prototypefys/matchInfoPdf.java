@@ -18,7 +18,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 /**
  *
- * @author Koen Hengsdijk
+ * @author IS-109-2
  */
 public class matchInfoPdf {
 
@@ -27,6 +27,11 @@ public class matchInfoPdf {
     }
     private matchInformatie matchinfo = new matchInformatie();
 
+    /**
+     *
+     * @param person a instance of the LostLuggage class
+     * @param foundInfo a instance of the FoundLuggage class
+     */
     public void maakMatchPdf(LostLuggage person, FoundLuggage foundInfo) {
         try {
 

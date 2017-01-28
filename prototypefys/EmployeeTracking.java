@@ -12,7 +12,7 @@ import javafx.beans.property.StringProperty;
 
 /**
  *
- * @author Delug
+ * @author IS-109-2
  */
 public class EmployeeTracking {
     private IntegerProperty EmployeeID;

@@ -7,7 +7,7 @@ package prototypefys;
 
 /**
  *
- * @author Erik
+ * @author IS-109-2
  */
 public class DataCache {
 

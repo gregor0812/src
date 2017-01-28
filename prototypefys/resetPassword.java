@@ -22,7 +22,7 @@ import javax.mail.internet.*;
 
 /**
  *
- * @author Daniel Uterwijk
+ * @author IS-109-2
  */
 public class resetPassword {
 
